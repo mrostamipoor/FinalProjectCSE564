@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MDS and PCP</title>
+	  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" type="text/css" href="../static/style.css"></link>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+    <script src="../static/all.js"></script>
+	  <script src='../static/babel.min.js'></script>
+  <script src='../static/jLouvain.js'></script>
+  <script src='../static/lodash.js'></script>
+  <script src='../static/correlation-graph.js'></script>
+  <script src='../static/draw-pictogram-table.js'></script>
+	
+    <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <ul>
+  <li><a >Maryam Rostamipoor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CSE 564/Lab 2b</a></li>
+</ul>
+<div class="divadd"></div>
+			<div >
+              <span class="custom-dropdown big">
+
+                  <select class="form-control" id="controlId">
+
+				 <option value="Notfilled">Select attribute</option>
+				 <option value="task1.1">Create Euclidean MDS plot</option>
+				 <option value="task1.2">Create Correlation MDS plot</option>
+				 <option value="task1.3">Create PCP plot</option>
+				 <option value="task1.5">Create Correlation plot</option>
+                  </select>
+				
+              </span>
+			  	<span id='place'></span>
+				<div id="div0" class="static"></div>
+				<output id="output"></output>
+				<div id="div1" style="text-align:center;"></div>
+				
+			 </div>
+			   <main class='main'>
+			  
+
+    <div class="flex-container">
+      <div class='flex-child graph-container' id='graph'></div>
+	  <div class="flex-child matrix" id="div3" ></div>
+    </div>
+ 
+	<div class="center" id="div2"></div>
+  </main>
+
+    <script type="text/javascript">
+	createMDSE()
+	//  paths
+	function resetFade() {
+		document.getElementById("div2").innerHTML = ""
+		paths=[];
+      d3.selectAll('.link').style('stroke', '#1f78b4');
+  }
+        d3.select("#controlId").on("change", function () {
+		column = this.value;
+		if(column=== "Notfilled"){
+			alert("fill the task");
+			}
+		if (column=== "task1.1"){
+		document.getElementById("place").innerHTML = ""
+			if (dataobjE.length==0){
+			alert('please wait, it is processing');
+			return
+			}
+			drawBiplot(dataobjE,1)
+			}
+			if (column=== "task1.2"){
+			document.getElementById("place").innerHTML = ""
+			createMDSC();
+			}
+			
+			if (column=== "task1.3"){
+				document.getElementById("place").innerHTML = ""
+				getPCPData();
+		}
+		if (column=== "task1.5"){
+		d3.selectAll('svg').remove();
+		d3.selectAll('p').remove();
+		document.getElementById("div2").innerHTML = ""
+		document.getElementById("div1").innerHTML = ""
+				const para1 = document.createElement("button");
+				para1.innerText = "Clear";
+				para1.addEventListener("click", resetFade);
+				const para2 = document.createElement("button");
+				para2.innerText = "Draw";
+				para2.addEventListener("click", mydraw);
+				document.getElementById("place").appendChild(para1);
+				document.getElementById("place").appendChild(para2);
+				createCorrelationPlot();
+				  
+				
+				  d3.queue()
+					.defer(d3.json, './static/graph.json')
+					.await((error, data) => {
+					  //
+					  // draw correlation graph
+					  //
+					  if (error) throw error;
+					  const correlationGraphProps = {
+						selector: '.graph-container',
+						data,
+						options: { 
+						  fixedNodeSize: undefined
+						}
+					  }
+					  window.correlationGraph(correlationGraphProps);
+
+					});
+		}
+		});
+		function mydraw(){
+		//console.log(paths.length)
+		if(paths.length===0){
+			alert("Please select the path with clicking on the attributes!")
+			return
+		}else{
+			getSortedPath()
+		}
+			}
+
+		
+		
+    </script> 
+</body>
+</html>
