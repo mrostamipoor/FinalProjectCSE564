@@ -31,7 +31,7 @@ def dokmeans(labaled_data):
     
 data = pd.read_csv('static/data/GSoDI_v5.1.csv')
 data=data.dropna()
-data=data[['ID_year','democratic_performance_numeric','C_SD11','C_SD12','C_SD13','C_SD14','C_SD21','C_SD22A','C_SD22B','C_SD22C','C_SD22D','C_SD22E','C_SD23A','C_SD23B','C_SD23C','C_SD31','C_SD32','C_SD33','C_SD41','C_SD42','C_SD51','C_SD52','C_SD53','C_SD54']]
+data=data[['ID_year','democratic_performance_numeric','ID_country_name','C_SD11','C_SD12','C_SD13','C_SD14','C_SD21','C_SD22A','C_SD22B','C_SD22C','C_SD22D','C_SD22E','C_SD23A','C_SD23B','C_SD23C','C_SD31','C_SD32','C_SD33','C_SD41','C_SD42','C_SD51','C_SD52','C_SD53','C_SD54']]
 data.rename(columns={'C_SD11':'clean_elections' }, inplace=True)
 data.rename(columns={'C_SD12':'inclusive_suffrage' }, inplace=True)
 data.rename(columns={'C_SD13':'free_political_parties' }, inplace=True)
@@ -54,40 +54,16 @@ data.rename(columns={'C_SD51':'civil_society_participation'}, inplace=True)
 data.rename(columns={'C_SD52':'electoral_participation'}, inplace=True)
 data.rename(columns={'C_SD53':'direct_democracy'}, inplace=True)
 data.rename(columns={'C_SD54':'local_democracy'}, inplace=True)
+data.rename(columns={'ID_country_name':'country'}, inplace=True)
 print(data.columns)
 corr_martrix=data.corr()
 corr_martrix.to_csv('static/data/corr.csv', sep=',')
 data.to_csv('static/data/newDemo.csv', sep=',')
-scaled_data = standardizing_data(data)
+scaled_data = standardizing_data(data.loc[:, data.columns != 'country'])
 labaled_data=data.copy(deep=False)
-labaled_data=dokmeans(labaled_data)
-labaled_data.rename(columns={'C_SD11':'clean_elections' }, inplace=True)
-labaled_data.rename(columns={'C_SD12':'inclusive_suffrage' }, inplace=True)
-labaled_data.rename(columns={'C_SD13':'free_political_parties' }, inplace=True)
-labaled_data.rename(columns={'C_SD14':'elected_government'}, inplace=True)
-labaled_data.rename(columns={'C_SD21':'access_to_justice'}, inplace=True)
-labaled_data.rename(columns={'C_SD22A':'freedom_of_expression'}, inplace=True)
-labaled_data.rename(columns={'C_SD22B':'freedom_of_association_and_assembly'}, inplace=True)
-labaled_data.rename(columns={'C_SD22C':'freedom_of_religion' }, inplace=True)
-labaled_data.rename(columns={'C_SD22D':'freedom_of_movement'}, inplace=True)
-labaled_data.rename(columns={'C_SD22E':'personal_integrity_and_security2'}, inplace=True)
-labaled_data.rename(columns={'C_SD23A':'social_group_equality'}, inplace=True)
-labaled_data.rename(columns={'C_SD23B':'basic_welfare'}, inplace=True)
-labaled_data.rename(columns={'C_SD23C':'gender_equality'}, inplace=True)
-labaled_data.rename(columns={'C_SD31':'effective_parliament'}, inplace=True)
-labaled_data.rename(columns={'C_SD32':'judicial_independence'}, inplace=True)
-labaled_data.rename(columns={'C_SD33':'media_integrity'}, inplace=True)
-labaled_data.rename(columns={'C_SD41':'absence_of_corruption'}, inplace=True)
-labaled_data.rename(columns={'C_SD42':'predictable_enforcement'}, inplace=True)
-labaled_data.rename(columns={'C_SD51':'civil_society_participation'}, inplace=True)
-labaled_data.rename(columns={'C_SD52':'electoral_participation'}, inplace=True)
-labaled_data.rename(columns={'C_SD53':'direct_democracy'}, inplace=True)
-labaled_data.rename(columns={'C_SD54':'local_democracy'}, inplace=True)
-
+labaled_data=dokmeans(labaled_data.loc[:, labaled_data.columns != 'country'])
 corr_martrix=data.corr()
 corr_martrix.to_csv('static/data/data.csv', sep=',')
-
-#for creating graph.json
 columnsNamesArr = corr_martrix.columns.values
 
 dic1=[]
@@ -128,7 +104,10 @@ with open('./static/graph.json','w') as fp:
 def index():
     return render_template('index.html')
 
-
+@app.route('/test.html')
+def test():
+    return render_template('test.html')
+    
 @app.route('/kmeans')
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def findelbow():

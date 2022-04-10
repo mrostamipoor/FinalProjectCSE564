@@ -225,15 +225,12 @@ function drawBiplot(data,index){
     
     
 }
-//'#a6cee3','#cab2d6', '#b2df8a'
-function drawPcpPlot(fileName,count,indx){
 
-	if (indx==0){
-		document.getElementById("output").innerHTML = ""
-		document.getElementById("div0").innerHTML = ""
-			}
+function drawPcpPlot(fileName,count,indx,coutryname){
+document.getElementById("pcp").innerHTML = ""
+
 	//colors = ['#a6cee3','#cab2d6', '#b2df8a', '#b15928', '#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f', '#cab2d6', '#ffff99'];
-	colors = ['#74add4','#b2df8a', '#f4a2a4']
+	colors = ['#74add4','#b2df8a', '#f4a2a4','#fb9a99', '#fdbf6f', '#cab2d6']
 //['#cab2d6
 //b2df8a
 //fdbf6f
@@ -242,11 +239,7 @@ function drawPcpPlot(fileName,count,indx){
 
 
 	//"#5DA5B3","#DB7F85"]
-    if (fileName=="labaled_data.csv"){
-	d3.selectAll('svg').remove();
-	}else{
-	   document.getElementById("div2").innerHTML = ""
-   }
+
     if(count>12)
 	{
 	svgWidth = 1350,
@@ -274,24 +267,17 @@ function drawPcpPlot(fileName,count,indx){
 	}
 
     var x, y = {}, dimensions, dragging = {}, background, foreground;
-    if(fileName=="labaled_data.csv"){
-		var svg = d3.select("body").append("svg")
-        .attr("width", svgWidth)
-        .attr("height", svgHeight)
-	.append("g")
-	.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	}
-	else{
-		var svg = d3.select("#div2").append("svg")
+
+		var svg = d3.select("#pcp").append("svg")
         .attr("width", svgWidth)
         .attr("height", svgHeight)
 		.append("g")	
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	}
+	
      
-d3.csv("static/data/"+fileName, function(error, data) {    
+d3.csv("static/data/newDemo.csv", function(error, data) {    
     dimensions = d3.keys(data[0]).filter(function (key) {
-        if (key !=='ID_year'||key == 'democratic_performance_numeric'||key == 'clean_elections'||key == 'inclusive_suffrage'||key == 'free_political_parties'||key == 'elected_government'||key == 'access_to_justice'||key == 'freedom_of_expression'||key == 'freedom_of_association_and_assembly'||key == 'freedom_of_religion'||key == 'freedom_of_movement'||key == 'personal_integrity_and_security2') {
+        if (key =='ID_year'||key =='direct_democracy'||key =='electoral_participation'||key =='basic_welfare'||key =='inclusive_suffrage'||key =='social_group_equality'||key =='elected_government'||key =='absence_of_corruption'||key =='access_to_justice'||key =='freedom_of_religion'||key =='civil_society_participation') {
 			console.log(key);
 		   y[key] = d3.scaleLinear()
                 .domain(d3.extent(data, function (d) { return +d[key]; }))
@@ -302,15 +288,11 @@ d3.csv("static/data/"+fileName, function(error, data) {
 				.on("start", brushstart);
             return key;
         }
-		/*else{
-			if (key =='genres'||
-				key =='language'|| 
-				key =='content_rating'
-				|| key =='country'){
-			 y[key] = d3.scaleBand()
+		else{
+			if ( key =='countrys'){
+			 y[key] = d3.scalePoint()
 			.domain(data.map(function (d) {
 				return d[key]; }))
-               // .domain(d3.extent(data, function (d) { return d[key]; }))
                 .range([height, 0]);
 			y[key].brush = d3.brushY()
                 .extent([[-5, y[key].range()[1]], [5, y[key].range()[0]]])
@@ -318,7 +300,7 @@ d3.csv("static/data/"+fileName, function(error, data) {
 				.on("start", brushstart);
 			return key;
 			}
-		}*/
+		}
     });
     
     x = d3.scalePoint()
@@ -338,12 +320,18 @@ d3.csv("static/data/"+fileName, function(error, data) {
         .data(data)
         .enter().append("path")
         .attr("d", line)
-        .style("stroke", function(d) { return colors[d.kmeans_label];});
+        .style("stroke", function(d) { 
+		if(d.country==coutryname){
+			return 'red';
+		}
+		else{
+		return colors[d.democratic_performance_numeric-1];}
+		});
     
     var g = svg.selectAll(".dimension")
         .data(dimensions)
         .enter().append("g")
-        .attr("class", "dimension")
+        .attr("class", "PCPaxis")
         .attr("transform", function (d) { return "translate(" + x(d) + ")"; })
         .call(d3.drag()
             .on("start", function (d) {
@@ -370,7 +358,6 @@ d3.csv("static/data/"+fileName, function(error, data) {
             }));
     
     g.append("g")
-        .attr("class", "axiss")
         .each(function (d) { d3.select(this).call(d3.axisLeft().scale(y[d])); })
         .append("text")
         .style("text-anchor", "middle")
@@ -398,7 +385,6 @@ function brushstart() {
 
 function brush() {
         var actives = [];
-        //filter brushed extents
         svg.selectAll(".brush")
             .filter(function(d) {
                 return d3.brushSelection(this);

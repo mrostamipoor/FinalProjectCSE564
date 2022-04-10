@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MDS and PCP</title>
+	  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="stylesheet" type="text/css" href="../static/style.css"></link>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
+    <script src="../static/all.js"></script>
+	  <script src='../static/babel.min.js'></script>
+  <script src='../static/jLouvain.js'></script>
+  <script src='../static/lodash.js'></script>
+  <script src='../static/correlation-graph.js'></script>
+  <script src='../static/draw-pictogram-table.js'></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+       <div id="map_canvas" ></div>
+		<div id="pcp" ></div>
+    <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+  </main>
+
+    <script type="text/javascript">
+
+function drawMap() {
+	countries=[]
+	var tmp=	['Country', 'DemocraticPerformance'];
+	countriesList=[]
+	countriesList.push(tmp);
+	d3.csv("./static/data/newDemo.csv", function(data) {
+    for (var i = 0; i < data.length; i++) {
+		if (!countries.includes(data[i].country, 0)){
+		tmp=[]
+        countries.push(data[i].country);
+		tmp.push(data[i].country);
+		tmp.push(parseInt(data[i].democratic_performance_numeric));
+		countriesList.push(tmp);
+		}
+    }
+});
+	
+	
+	var test=[['Country', 'DemocraticPerformance'],['Cuba', 5],['Haiti', 3],['Dominican Republic', 3],['Jamaica', 2],['Trinidad and Tobago', 2],['Mexico', 4],['Guatemala', 3],['Honduras', 3],['El Salvador', 3],['Nicaragua', 3],['Costa Rica', 2],['Panama', 5],['Colombia', 3],['Venezuela', 2],['Ecuador', 2],['Peru', 2],['Brazil', 2],['Bolivia', 3],['Paraguay', 5],['Chile', 2],['Argentina', 2],['Uruguay', 3],['Spain', 1],['Portugal', 2],['Poland', 2],['Hungary', 2],['Czechia', 2],['Italy', 2],['Albania', 2],['Croatia', 2],['Serbia', 2],['Slovenia', 2],['Greece', 2],['Cyprus', 2],['Bulgaria', 2],['Moldova', 3],['Romania', 2],['Russia', 4],['Estonia', 2],['Latvia', 2],['Lithuania', 2],['Ukraine', 3],['Belarus', 4],['Armenia', 4],['Azerbaijan', 5],['Guinea-Bissau', 3],['Gambia', 5],['Senegal', 3],['Niger', 2],["Cote d'Ivoire", 5],['Guinea', 5],['Burkina Faso', 4],['Liberia', 3],['Sierra Leone', 2],['Ghana', 3],['Togo', 4],['Cameroon', 5],['Nigeria', 5],['Gabon', 5],['Republic of Congo', 5],['Uganda', 5],['Kenya', 4],['Tanzania', 4],['Ethiopia', 5],['Mozambique', 3],['Zambia', 5],['Zimbabwe', 5],['Malawi', 3],['South Africa', 5],['Namibia', 2],['Botswana', 2],['Madagascar', 3],['Morocco', 5],['Algeria', 5],['Tunisia', 5],['Sudan', 5],['Iran', 5],['Turkey', 2],['Egypt', 5],['Lebanon', 3],['Jordan', 5],['Israel', 2],['Yemen', 4],['Kuwait', 5],['Oman', 5],['Kazakhstan', 5],['Mongolia', 2],['Republic of Korea', 2],['India', 2],['Pakistan', 5],['Bangladesh', 4],['Myanmar', 5],['Sri Lanka', 4],['Thailand', 3],['Malaysia', 4],['Philippines', 2],['Indonesia', 5]]
+	console.log(countriesList);
+    var data = google.visualization.arrayToDataTable(test);
+    
+    var options = {
+        dataMode: 'regions',
+		backgroundColor: '#efefef',
+        width: 834,
+        height: 521
+    };
+    
+    var container = document.getElementById('map_canvas');
+    var chart = new google.visualization.GeoChart(container);
+    
+    function myClickHandler(){
+        var selection = chart.getSelection();
+        var message = '';
+        for (var i = 0; i < selection.length; i++) {
+            var item = selection[i];
+            if (item.row != null && item.column != null) {
+                message += '{row:' + test[item.row] + ',column:' + item.column + '}';
+            } else if (item.row != null) {
+                message += '{row:' + test[item.row][0] + '}';
+				drawPcpPlot("labaled_data.csv",10,0,test[item.row][0])	
+            } else if (item.column != null) {
+                message += '{column:' + item.column + '}';
+            }
+        }
+        if (message == '') {
+            message = 'nothing';
+        }
+        alert('You selected ' + message);
+    }
+    
+    google.visualization.events.addListener(chart, 'select', myClickHandler);
+    
+    chart.draw(data, options);
+}
+google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
+drawPcpPlot("labaled_data.csv",10,0,'test')		
+/*var isoCountries = {
+  'IT': 'Italy',
+  'JO': 'Jordan',
+  'LB': 'Lebanon',
+};
+
+function getCountryName(countryCode) {
+  if (isoCountries.hasOwnProperty(countryCode)) {
+    return isoCountries[countryCode];
+  } else {
+    return countryCode;
+  }
+};
+
+// Load the Visualization API and the corechart package.
+google.charts.load('current', {
+  'packages': ['geochart'],
+
+  'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
+});
+
+// Set a callback to run when the Google Visualization API is loaded.
+google.charts.setOnLoadCallback(drawRegionsMap);
+
+// Callback that creates and populates a data table,
+// instantiates the chart, passes in the data and
+// draws it.
+function drawRegionsMap() {
+  // Create the data table.
+  var data = new google.visualization.DataTable();
+  data.addColumn('string', 'Country');
+  data.addColumn('number', 'Members');
+  data.addRows([
+    ['LB', 3],
+    ['JO', 2],
+    ['IT', 24],
+  ]);
+
+  // Set chart options
+  var options = {
+    colorAxis: {
+      colors: ['#c1c1cd', '#53556e']
+    },
+    legend: 'none',
+    backgroundColor: '#efefef'
+  };
+
+  // Create new data table for iso and full country name
+  var dataMod = new google.visualization.DataTable();
+  dataMod.addColumn('string', 'Country');
+  dataMod.addColumn('number', 'Members');
+
+  // Adding rows with iso and full country name
+  var numRows = data.getNumberOfRows();
+
+  for (var i = 0; i < numRows; i++) {
+    dataMod.addRows([
+      [{
+        v: String(data.getValue(i, 0)),
+        f: String(getCountryName(data.getValue(i, 0)))
+      }, data.getValue(i, 1)],
+    ]);
+  };
+
+  // Instantiate and draw our chart, passing in some options.
+  var chart = new google.visualization.GeoChart(document.getElementById('map_canvas'));
+  chart.draw(dataMod, options);
+
+}*/
+    </script> 
+</body>
+</html>
