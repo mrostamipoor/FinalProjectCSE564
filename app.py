@@ -104,56 +104,6 @@ with open('./static/graph.json','w') as fp:
 def index():
     return render_template('index.html')
 
-@app.route('/test.html')
-def test():
-    return render_template('test.html')
-    
-@app.route('/kmeans')
-@cross_origin(origin='*',headers=['Content-Type','Authorization'])
-def findelbow():
-
-    kmeans_df = data
-    wcss = []
-    for i in range(1, 14):
-        kmeans = KMeans(n_clusters=i,random_state=0)
-        kmeans.fit(kmeans_df)
-        wcss.append(kmeans.inertia_)
-        
-    return jsonify(wcss)  
-    
-
-def get_MDS_data(dataset,metric_type):
-    seed = np.random.RandomState(seed=3)
-    mds = MDS(n_components=2, max_iter=3000, eps=1e-9,random_state=seed,dissimilarity="precomputed", n_jobs=1)
-    if'euclidean' in metric_type:
-        distance_matrix = pairwise_distances(dataset,   metric = metric_type)
-    else:
-        distance_matrix=1-np.absolute(corr_martrix)
-    
-    mds_trans = mds.fit_transform(distance_matrix)
-    return  mds_trans.tolist()
-
-@app.route('/euclideanMDS')
-@cross_origin(origin='*',headers=['Content-Type','Authorization'])    
-def euclidean_MDS():
-    metric_type =  'euclidean'
-    eMDS=get_MDS_data(scaled_data,metric_type)
-    l_data=labaled_data['kmeans_label'].tolist()
-    return jsonify(eMDS,l_data)
-    
-@app.route('/correlationMDS')
-@cross_origin(origin='*',headers=['Content-Type','Authorization'])    
-def correlation_MDS():
-    metric_type =  'correlation'
-    cMDS=get_MDS_data(scaled_data,metric_type)
-    l_data=labaled_data['kmeans_label'].tolist()
-    columnsNamesArr = corr_martrix.columns.values.tolist()
-    #print(type(cMDS))
-    np.savetxt("GFG.csv",  cMDS,
-           delimiter =", ", 
-           fmt ='% s')
-    return jsonify(cMDS,l_data,columnsNamesArr)    
-
 @app.route('/fetchPCPData', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 def pcp_data():
@@ -167,27 +117,7 @@ def pcp_data():
     temp.to_csv('static/data/labaled_data.csv', sep=',')
     return jsonify(l_data)
 
-atrributes = {0:'num_critic_for_reviews',1:'duration'
-    ,2:'director_facebook_likes',3:'actor_3_facebook_likes',
-    4:'actor_1_facebook_likes',5:'gross',6:'num_voted_users',
-    7:'cast_total_facebook_likes',8:'facenumber_in_poster',
-    9:'num_user_for_reviews',10:'budget',11:'actor_2_facebook_likes',
-    12:'imdb_score',13:'movie_facebook_likes'}
-    
-@app.route('/fetchSortedPath', methods=['GET'])
-@cross_origin(origin='*',headers=['Content-Type','Authorization'])
-def sort_path():
-    sorted_path=[]
-    index=request.args.get("indexes")
-    indexes=index.split(".")
-    for indx in indexes:
-        indx=int(indx)
-        sorted_path.append(atrributes[indx])
-    newdata = data.reindex(columns=sorted_path)
-    l_data=labaled_data['kmeans_label'].tolist()
-    newdata["kmeans_label"] = l_data
-    newdata.to_csv('static/data/sorted_data.csv', sep=',')
-    return jsonify(sorted_path)
+
        
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
