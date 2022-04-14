@@ -30,7 +30,7 @@ def dokmeans(labaled_data):
     return labaled_data
     
 data = pd.read_csv('static/data/GSoDI_v5.1.csv')
-data=data.dropna()
+# data=data.dropna()
 data=data[['ID_year','democratic_performance_numeric','ID_country_name','C_SD11','C_SD12','C_SD13','C_SD14','C_SD21','C_SD22A','C_SD22B','C_SD22C','C_SD22D','C_SD22E','C_SD23A','C_SD23B','C_SD23C','C_SD31','C_SD32','C_SD33','C_SD41','C_SD42','C_SD51','C_SD52','C_SD53','C_SD54']]
 data.rename(columns={'C_SD11':'clean_elections' }, inplace=True)
 data.rename(columns={'C_SD12':'inclusive_suffrage' }, inplace=True)
@@ -55,6 +55,16 @@ data.rename(columns={'C_SD52':'electoral_participation'}, inplace=True)
 data.rename(columns={'C_SD53':'direct_democracy'}, inplace=True)
 data.rename(columns={'C_SD54':'local_democracy'}, inplace=True)
 data.rename(columns={'ID_country_name':'country'}, inplace=True)
+
+
+data.drop(data[data['democratic_performance_numeric'].isnull() ].index, inplace=True)
+
+# fill missing value with mean
+features_name = list(data.columns)
+for feature in features_name:
+    if feature != 'country' and data[feature].isnull().sum() > 0:
+        data[feature] = data.groupby('democratic_performance_numeric')[feature].transform(lambda grp: grp.fillna(np.mean(grp)))
+
 print(data.columns)
 corr_martrix=data.corr()
 corr_martrix.to_csv('static/data/corr.csv', sep=',')
