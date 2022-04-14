@@ -53,46 +53,18 @@ async function getPCPData(){
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function drawPcpPlot(fileName,count,indx,coutryname){
+function drawPcpPlot(coutryname){
 document.getElementById("pcp").innerHTML = ""
 
 	//colors = ['#a6cee3','#cab2d6', '#b2df8a', '#b15928', '#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f', '#cab2d6', '#ffff99'];
 	colors = ['#74add4','#b2df8a', '#f4a2a4','#fb9a99', '#fdbf6f', '#cab2d6']
-//['#cab2d6
-//b2df8a
-//fdbf6f
-//e31a1c
 
-
-
-	//"#5DA5B3","#DB7F85"]
-
-    if(count>12)
-	{
-	svgWidth = 1350,
-    svgHeight = 550,
-    margin = { top: 80, right: 50, bottom: 30, left: 100 },
-    width = svgWidth - margin.left - margin.right,
-    height = svgHeight - margin.top - margin.bottom;
-	}
-	else{
-	if(count>8){
 	svgWidth = 900,
     svgHeight = 550,
     margin = { top: 80, right: 50, bottom: 30, left: 100 },
     width = svgWidth - margin.left - margin.right,
     height = svgHeight - margin.top - margin.bottom;
-    
-	
-	}else{
-	svgWidth = 650,
-    svgHeight = 550,
-    margin = { top: 80, right: 50, bottom: 30, left: 100 },
-    width = svgWidth - margin.left - margin.right,
-    height = svgHeight - margin.top - margin.bottom;
-	}
-	}
-
+  
     var x, y = {}, dimensions, dragging = {}, background, foreground;
 
 		var svg = d3.select("#pcp").append("svg")

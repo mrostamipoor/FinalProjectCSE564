@@ -65,7 +65,7 @@ function drawMap() {
                 message += '{row:' + test[item.row] + ',column:' + item.column + '}';
             } else if (item.row != null) {
                 message += '{row:' + test[item.row][0] + '}';
-				drawPcpPlot("labaled_data.csv",10,0,test[item.row][0])	
+				drawPcpPlot(test[item.row][0])	
             } else if (item.column != null) {
                 message += '{column:' + item.column + '}';
             }
@@ -81,7 +81,7 @@ function drawMap() {
     chart.draw(data, options);
 }
 google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
-drawPcpPlot("labaled_data.csv",10,0,'test')		
+drawPcpPlot('test')		
 piechart()
 /*var isoCountries = {
   'IT': 'Italy',

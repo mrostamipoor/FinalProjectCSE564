@@ -66,9 +66,10 @@ for feature in features_name:
         data[feature] = data.groupby('democratic_performance_numeric')[feature].transform(lambda grp: grp.fillna(np.mean(grp)))
 
 print(data.columns)
+data.to_csv('static/data/newDemo.csv', sep=',')
 corr_martrix=data.corr()
 corr_martrix.to_csv('static/data/corr.csv', sep=',')
-data.to_csv('static/data/newDemo.csv', sep=',')
+
 scaled_data = standardizing_data(data.loc[:, data.columns != 'country'])
 labaled_data=data.copy(deep=False)
 labaled_data=dokmeans(labaled_data.loc[:, labaled_data.columns != 'country'])
@@ -116,6 +117,7 @@ def index():
 
 @app.route('/fetchPCPData', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
+
 def pcp_data():
     print('test')
     print(labaled_data.columns)
