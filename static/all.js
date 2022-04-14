@@ -254,6 +254,225 @@ function brush() {
 });	
 }
 
+function piechart(){
+	/*var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    radius = Math.min(width, height) / 2,
+    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
+var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d.population; });
+
+var path = d3.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(radius - 70);
+
+var label = d3.arc()
+    .outerRadius(radius - 40)
+    .innerRadius(radius - 40);
+
+d3.csv("./static/data/pie.csv", function(d) {
+  d.population = +d.population;
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  var arc = g.selectAll(".arc")
+    .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+  arc.append("path")
+      .attr("d", path)
+      .attr("fill", function(d) { return color(d.data.democratic_performance_name); });
+
+  arc.append("text")
+      .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
+      .attr("dy", "0.35em")
+      .text(function(d) { return d.data.democratic_performance_name; });
+});*/
+/*var data = [10, 20, 100];
+
+var width = 960,
+    height = 500,
+    radius = Math.min(width, height) / 2;
+
+var color = d3.scaleOrdinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888"]);
+
+var arc = d3.arc()
+    .outerRadius(radius - 10)
+    .innerRadius(0);
+
+var labelArc = d3.arc()
+    .outerRadius(radius - 40)
+    .innerRadius(radius - 40);
+
+var pie = d3.pie()
+    .sort(null)
+    .value(function(d) { return d; });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+  var g = svg.selectAll(".arc")
+      .data(pie(data))
+    .enter().append("g")
+      .attr("class", "arc");
+
+  g.append("path")
+      .attr("d", arc)
+      .style("fill", function(d) { return color(d.data); });
+
+  g.append("text")
+      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+      .attr("dy", ".35em")
+      .text(function(d) { return d.data; });*/
+	  var data = [
+  {name: "Authoritarian Regime", value: 60},
+  {name: "High performing democracy", value: 20},
+  {name: "Hybrid Regime", value: 30},
+  {name: "Mid-range performing democracy", value: 15},
+  {name: "Weak democracy", value: 10},
+];
+var text = "";
+
+var width = 200;
+var height = 200;
+var thickness = 40;
+var duration = 750;
+var padding = 10;
+var opacity = .8;
+var opacityHover = 1;
+var otherOpacityOnHover = .8;
+var tooltipMargin = 13;
+
+var radius = Math.min(width-padding, height-padding) / 2;
+var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+var svg = d3.select("#chart")
+.append('svg')
+.attr('class', 'pie')
+.attr('width', width)
+.attr('height', height);
+
+var g = svg.append('g')
+.attr('transform', 'translate(' + (width/2) + ',' + (height/2) + ')');
+
+var arc = d3.arc()
+.innerRadius(0)
+.outerRadius(radius);
+
+var pie = d3.pie()
+.value(function(d) { return d.value; })
+.sort(null);
+
+var path = g.selectAll('path')
+  .data(pie(data))
+  .enter()
+  .append("g")  
+  .append('path')
+  .attr('d', arc)
+  .attr('fill', (d,i) => color(i))
+  .style('opacity', opacity)
+  .style('stroke', 'white')
+  .on("mouseover", function(d) {
+      d3.selectAll('path')
+        .style("opacity", otherOpacityOnHover);
+      d3.select(this) 
+        .style("opacity", opacityHover);
+
+      let g = d3.select("svg")
+        .style("cursor", "pointer")
+        .append("g")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+ 
+      g.append("text")
+        .attr("class", "name-text")
+        .text(`${d.data.name} (${d.data.value})`)
+        .attr('text-anchor', 'middle');
+    
+      let text = g.select("text");
+      let bbox = text.node().getBBox();
+      let padding = 2;
+      g.insert("rect", "text")
+        .attr("x", bbox.x - padding)
+        .attr("y", bbox.y - padding)
+        .attr("width", bbox.width + (padding*2))
+        .attr("height", bbox.height + (padding*2))
+        .style("fill", "white")
+        .style("opacity", 0.75);
+    })
+  .on("mousemove", function(d) {
+        let mousePosition = d3.mouse(this);
+        let x = mousePosition[0] + width/2;
+        let y = mousePosition[1] + height/2 - tooltipMargin;
+    
+        let text = d3.select('.tooltip text');
+        let bbox = text.node().getBBox();
+        if(x - bbox.width/2 < 0) {
+          x = bbox.width/2;
+        }
+        else if(width - x - bbox.width/2 < 0) {
+          x = width - bbox.width/2;
+        }
+    
+        if(y - bbox.height/2 < 0) {
+          y = bbox.height + tooltipMargin * 2;
+        }
+        else if(height - y - bbox.height/2 < 0) {
+          y = height - bbox.height/2;
+        }
+    
+        d3.select('.tooltip')
+          .style("opacity", 1)
+          .attr('transform',`translate(${x}, ${y})`);
+    })
+  .on("mouseout", function(d) {   
+      d3.select("svg")
+        .style("cursor", "none")  
+        .select(".tooltip").remove();
+    d3.selectAll('path')
+        .style("opacity", opacity);
+    })
+  .on("touchstart", function(d) {
+      d3.select("svg")
+        .style("cursor", "none");    
+  })
+  .each(function(d, i) { this._current = i; });
+
+let legend = d3.select("#chart").append('div')
+			.attr('class', 'legend')
+			.style('margin-top', '30px');
+
+let keys = legend.selectAll('.key')
+			.data(data)
+			.enter().append('div')
+			.attr('class', 'key')
+			.style('display', 'flex')
+			.style('align-items', 'center')
+			.style('margin-right', '20px');
+
+		keys.append('div')
+			.attr('class', 'symbol')
+			.style('height', '10px')
+			.style('width', '10px')
+			.style('margin', '5px 5px')
+			.style('background-color', (d, i) => color(i));
+
+		keys.append('div')
+			.attr('class', 'name')
+			.text(d => `${d.name} (${d.value})`);
+
+		keys.exit().remove();
+}
 
 

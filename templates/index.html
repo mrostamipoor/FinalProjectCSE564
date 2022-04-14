@@ -15,6 +15,7 @@
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
        <div id="map_canvas" ></div>
 		<div id="pcp" ></div>
+		<div id="chart"></div>
     <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -81,6 +82,7 @@ function drawMap() {
 }
 google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
 drawPcpPlot("labaled_data.csv",10,0,'test')		
+piechart()
 /*var isoCountries = {
   'IT': 'Italy',
   'JO': 'Jordan',
