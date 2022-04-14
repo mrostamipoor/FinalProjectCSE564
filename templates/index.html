@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MDS and PCP</title>
 	  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link rel="stylesheet" type="text/css" href="../static/style.css"></link>
     <script src="https://d3js.org/d3.v4.min.js"></script>
@@ -73,7 +72,7 @@ function drawMap() {
         if (message == '') {
             message = 'nothing';
         }
-        alert('You selected ' + message);
+        //alert('You selected ' + message);
     }
     
     google.visualization.events.addListener(chart, 'select', myClickHandler);

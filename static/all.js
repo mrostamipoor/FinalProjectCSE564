@@ -152,7 +152,14 @@ d3.csv("static/data/newDemo.csv", function(error, data) {
 			return 'red';
 		}
 		else{
-		return colors[d.democratic_performance_numeric-1];}
+		if(coutryname=='test')
+		{
+		  return colors[d.democratic_performance_numeric-1];
+		}
+		else{
+			return '#dadada';
+		}
+		}
 		});
     
     var g = svg.selectAll(".dimension")
