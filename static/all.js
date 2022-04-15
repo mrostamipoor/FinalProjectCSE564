@@ -92,7 +92,7 @@ function drawPcpPlot(coutryname, demo_status,year) {
 						//}
 					}))
 					.range([height, 0]);
-					console.log(y)
+					//console.log(y)
 					y[key].brush = d3.brushY()
 					.extent([
 						[-5, y[key].range()[1]],
@@ -136,7 +136,7 @@ function drawPcpPlot(coutryname, demo_status,year) {
 			
 			else {
 				if (d.democratic_performance_numeric == demo_status) {
-					return '#8c564b ';
+					return '#8c564b';
 				} else {
 					return '#dadada'
 				}
@@ -358,6 +358,28 @@ d3.csv("./static/data/pie.csv", function(d) {
 			value: 10
 		},
 	];
+	var csv_data=[];
+	var setdata=[];
+/*d3.csv("./static/data/afile.csv", function(error, data) {
+            if (error) {
+                throw error;
+            }
+            for (var i = 0; i < data.length; i++) {
+                var key = data[i]['name'] + '-' + data[i]['value'];
+				
+				if (!csv_data.includes(key)){
+					csv_data.push(key);
+					 console.log(key);
+					 var map = new Map();
+					 map.set('name', data[i]['name']);
+					 map.set('value', data[i]['value']);
+					 console.log(map);
+					 setdata.push(map);
+				}
+	}
+	});
+	console.log(setdata)
+	console.log(data)*/
 	var text = "";
 
 	var width = 200;
