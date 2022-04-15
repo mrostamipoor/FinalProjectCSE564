@@ -26,6 +26,13 @@ atrributes.set(10, 'budget');
 atrributes.set(11, 'actor_2_facebook_likes');
 atrributes.set(12, 'imdb_score');
 atrributes.set(13, 'movie_facebook_likes');
+
+var colorsg = new Map();
+colorsg.set(1, '#ff7f0e');
+colorsg.set(2, '#d62728');
+colorsg.set(3, '#9467bd');
+colorsg.set(4, '#2ca02c');
+colorsg.set(5, '#1f77b4');
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 async function getPCPData() {
@@ -117,10 +124,10 @@ function drawPcpPlot(coutryname, demo_status,year) {
 			.style("stroke", function(d) {
 			if (demo_status==6){
 				if (d.country == coutryname) {
-					return 'red';
+					return '#8c564b ';
 				} else {
 					if (coutryname == 'test') {
-						return colors[d.democratic_performance_numeric - 1];
+						return colorsg.get(+d.democratic_performance_numeric);
 					} else {
 						return '#dadada';
 					}
@@ -129,7 +136,7 @@ function drawPcpPlot(coutryname, demo_status,year) {
 			
 			else {
 				if (d.democratic_performance_numeric == demo_status) {
-					return 'red';
+					return '#8c564b ';
 				} else {
 					return '#dadada'
 				}
