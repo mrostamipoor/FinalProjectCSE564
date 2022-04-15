@@ -81,13 +81,9 @@ function drawPcpPlot(coutryname, demo_status,year) {
 				
 					y[key] = d3.scaleLinear()
 					.domain(d3.extent(data, function(d) {
-						//if(d['ID_year']==year){
-							//console.log(key+":"+year)
 						    return +d[key];
-						//}
 					}))
 					.range([height, 0]);
-					//console.log(y)
 					y[key].brush = d3.brushY()
 					.extent([
 						[-5, y[key].range()[1]],
@@ -145,6 +141,7 @@ function drawPcpPlot(coutryname, demo_status,year) {
 			.attr("transform", function(d) {
 				return "translate(" + x(d) + ")";
 			})
+			
 			.call(d3.drag()
 				.on("start", function(d) {
 					dragging[d] = x(d);
@@ -175,8 +172,12 @@ function drawPcpPlot(coutryname, demo_status,year) {
 
 		g.append("g")
 			.each(function(d) {
+				if (d==='ID_year'){
+					d3.select(this).call(d3.axisLeft().scale(y[d]).tickFormat(d3.format("d")));
 				
-				d3.select(this).call(d3.axisLeft().scale(y[d]));
+				}else{
+					d3.select(this).call(d3.axisLeft().scale(y[d]));
+				}
 			})
 			.append("text")
 			.style("text-anchor", "middle")
