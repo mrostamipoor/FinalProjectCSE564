@@ -3,27 +3,30 @@
 <head>
 	  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     <link rel="stylesheet" type="text/css" href="../static/style.css"></link>
-    <script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.6/d3-legend.min.js"></script>
     <script src="../static/all.js"></script>
-	  <script src='../static/babel.min.js'></script>
-  <script src='../static/jLouvain.js'></script>
-  <script src='../static/lodash.js'></script>
-  <script src='../static/correlation-graph.js'></script>
-  <script src='../static/draw-pictogram-table.js'></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-       <div id="map_canvas" ></div>
-		<div id="pcp" ></div>
-		<div id="chart"></div>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
     <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
-  </main>
+    <input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 840px;">
+	<p>Year: <span id="demo"></span></p>
+	<div id="map_canvas" ></div>
+	<div id="pcp" ></div>
+	<div id="chart"></div>
+  </body>
 
     <script type="text/javascript">
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+var year='2020'
 
+slider.oninput = function() {
+  output.innerHTML = this.value;
+  year=this.value;
+}
 function drawMap() {
 	countries=[]
 	var tmp=	['Country', 'DemocraticPerformance'];
@@ -49,8 +52,8 @@ function drawMap() {
     var options = {
         dataMode: 'regions',
 		backgroundColor: '#efefef',
-        width: 834,
-        height: 521
+        width: 850,
+        height: 400
     };
     
     var container = document.getElementById('map_canvas');
@@ -65,7 +68,7 @@ function drawMap() {
                 message += '{row:' + test[item.row] + ',column:' + item.column + '}';
             } else if (item.row != null) {
                 message += '{row:' + test[item.row][0] + '}';
-				drawPcpPlot(test[item.row][0],6)	
+				drawPcpPlot(test[item.row][0],6,year)	
             } else if (item.column != null) {
                 message += '{column:' + item.column + '}';
             }
@@ -81,7 +84,7 @@ function drawMap() {
     chart.draw(data, options);
 }
 google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
-drawPcpPlot('test',6)		
+drawPcpPlot('test',6,year)		
 piechart()
 /*var isoCountries = {
   'IT': 'Italy',

@@ -40,7 +40,7 @@ async function getPCPData() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function drawPcpPlot(coutryname, demo_status) {
+function drawPcpPlot(coutryname, demo_status,year) {
 	document.getElementById("pcp").innerHTML = ""
 
 	//colors = ['#a6cee3','#cab2d6', '#b2df8a', '#b15928', '#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f', '#cab2d6', '#ffff99'];
@@ -70,13 +70,22 @@ function drawPcpPlot(coutryname, demo_status) {
 
 	d3.csv("static/data/newDemo.csv", function(error, data) {
 		dimensions = d3.keys(data[0]).filter(function(key) {
-			if (key == 'ID_year' || key == 'direct_democracy' || key == 'electoral_participation' || key == 'basic_welfare' || key == 'inclusive_suffrage' || key == 'social_group_equality' || key == 'elected_government' || key == 'absence_of_corruption' || key == 'access_to_justice' || key == 'freedom_of_religion' || key == 'civil_society_participation') {
-				console.log(key);
-				y[key] = d3.scaleLinear()
+			if (key == 'ID_year' || key == 'direct_democracy'
+			|| key == 'electoral_participation' || 
+			key == 'basic_welfare' || key == 'inclusive_suffrage'
+			|| key == 'social_group_equality' || key == 'elected_government' 
+			|| key == 'absence_of_corruption' || key == 'access_to_justice' 
+			|| key == 'freedom_of_religion' || key == 'civil_society_participation') {
+				
+					y[key] = d3.scaleLinear()
 					.domain(d3.extent(data, function(d) {
-						return +d[key];
+						//if(d['ID_year']==year){
+							//console.log(key+":"+year)
+						    return +d[key];
+						//}
 					}))
 					.range([height, 0]);
+					console.log(y)
 				y[key].brush = d3.brushY()
 					.extent([
 						[-5, y[key].range()[1]],
@@ -85,22 +94,6 @@ function drawPcpPlot(coutryname, demo_status) {
 					.on("brush", brush)
 					.on("start", brushstart);
 				return key;
-			} else {
-				if (key == 'countrys') {
-					y[key] = d3.scalePoint()
-						.domain(data.map(function(d) {
-							return d[key];
-						}))
-						.range([height, 0]);
-					y[key].brush = d3.brushY()
-						.extent([
-							[-5, y[key].range()[1]],
-							[5, y[key].range()[0]]
-						])
-						.on("brush", brush)
-						.on("start", brushstart);
-					return key;
-				}
 			}
 		});
 
@@ -429,19 +422,19 @@ d3.csv("./static/data/pie.csv", function(d) {
 			let text = d3.select('.tooltip text');
 			value=text.node().innerHTML
 			if(value.includes("High")){
-				drawPcpPlot('pie',1)	
+				drawPcpPlot('pie',1,'2020')	
 			}
 			if(value.includes("Mid-range")){
-				drawPcpPlot('pie',2)
+				drawPcpPlot('pie',2,'2020')
 			}
 			if(value.includes("Weak")){
-				drawPcpPlot('pie',3)
+				drawPcpPlot('pie',3,'2020')
 			}
 			if(value.includes("Hybrid")){
-			drawPcpPlot('pie',4)	
+			drawPcpPlot('pie',4,'2020')	
 			}
 			if(value.includes("Authoritarian")){
-			drawPcpPlot('pie',5)	
+			drawPcpPlot('pie',5,'2020')	
 			}
 			
 			/*let mousePosition = d3.mouse(this);
