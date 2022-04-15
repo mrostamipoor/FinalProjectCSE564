@@ -28,11 +28,17 @@ atrributes.set(12, 'imdb_score');
 atrributes.set(13, 'movie_facebook_likes');
 
 var colorsg = new Map();
-colorsg.set(1, '#ff7f0e');
-colorsg.set(2, '#d62728');
+colorsg.set(1, '#1f77b4');
+colorsg.set(2, '#2ca02c');
 colorsg.set(3, '#9467bd');
-colorsg.set(4, '#2ca02c');
-colorsg.set(5, '#1f77b4');
+colorsg.set(4, '#d62728');
+colorsg.set(5, '#ff7f0e');
+var performance = new Map();
+performance.set('High performing democracy',1);
+performance.set('Mid-range performing democracy',2);
+performance.set('Weak democracy',3);
+performance.set('Hybrid Regime',4);
+performance.set('Authoritarian Regime',5);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 async function getPCPData() {
@@ -42,8 +48,6 @@ async function getPCPData() {
 
 	return drawPcpPlot("labaled_data.csv", 18, 0)
 }
-
-
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -115,7 +119,8 @@ function drawPcpPlot(coutryname, demo_status,year) {
 			.style("stroke", function(d) {
 			if (demo_status==6){
 				if (d.country == coutryname) {
-					return '#8c564b ';
+					//return '#8c564b ';
+					return '#fa26a0';
 				} else {
 					if (coutryname == 'test') {
 						return colorsg.get(+d.democratic_performance_numeric);
@@ -255,23 +260,23 @@ function piechart() {
 
 	var data = [
 		{
-			name: "Authoritarian Regime",
+			name: "High performing democracy",
 			value: 60
 		},
 		{
-			name: "High performing democracy",
+			name: "Mid-range performing democracy",
 			value: 20
 		},
 		{
-			name: "Hybrid Regime",
+			name: "Weak democracy",
 			value: 30
 		},
 		{
-			name: "Mid-range performing democracy",
+			name: "Hybrid Regime",
 			value: 15
 		},
 		{
-			name: "Weak democracy",
+			name: "Authoritarian Regime",
 			value: 10
 		},
 	];
@@ -337,7 +342,10 @@ function piechart() {
 		.append("g")
 		.append('path')
 		.attr('d', arc)
-		.attr('fill', (d, i) => color(i))
+		.attr('fill', function(d, i)  { 
+		var tmp=Object.values(Object.values(d)[0])[0];
+		var indx=performance.get(tmp);
+		return colorsg.get(indx)})
 		.style('opacity', opacity)
 		.style('stroke', 'white')
 		.on("mouseover", function(d) {
@@ -422,7 +430,11 @@ function piechart() {
 		.style('height', '10px')
 		.style('width', '10px')
 		.style('margin', '5px 5px')
-		.style('background-color', (d, i) => color(i));
+		.style('background-color', function(d, i) { 
+		console.log(Object.values(d)[0]);
+		var tmp=Object.values(d)[0];
+		var indx=performance.get(tmp);
+		return colorsg.get(indx)});
 
 	keys.append('div')
 		.attr('class', 'name')
