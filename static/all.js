@@ -86,7 +86,7 @@ function drawPcpPlot(coutryname, demo_status,year) {
 					}))
 					.range([height, 0]);
 					console.log(y)
-				y[key].brush = d3.brushY()
+					y[key].brush = d3.brushY()
 					.extent([
 						[-5, y[key].range()[1]],
 						[5, y[key].range()[0]]
@@ -173,6 +173,7 @@ function drawPcpPlot(coutryname, demo_status,year) {
 
 		g.append("g")
 			.each(function(d) {
+				
 				d3.select(this).call(d3.axisLeft().scale(y[d]));
 			})
 			.append("text")
@@ -237,9 +238,12 @@ function drawPcpPlot(coutryname, demo_status,year) {
 		}
 
 		function line(d) {
+			if (d['ID_year']==year){
 			return d3.line()(dimensions.map(function(key) {
 				return [x(key), y[key](d[key])];
-			}));
+		}));}else{
+			return;
+		}
 		}
 	});
 }
@@ -421,20 +425,22 @@ d3.csv("./static/data/pie.csv", function(d) {
 		.on("click", function(d) {
 			let text = d3.select('.tooltip text');
 			value=text.node().innerHTML
+			var slider = document.getElementById("myRange");
+			var year = slider.value;
 			if(value.includes("High")){
-				drawPcpPlot('pie',1,'2020')	
+				drawPcpPlot('pie',1,year)	
 			}
 			if(value.includes("Mid-range")){
-				drawPcpPlot('pie',2,'2020')
+				drawPcpPlot('pie',2,year)
 			}
 			if(value.includes("Weak")){
-				drawPcpPlot('pie',3,'2020')
+				drawPcpPlot('pie',3,year)
 			}
 			if(value.includes("Hybrid")){
-			drawPcpPlot('pie',4,'2020')	
+			drawPcpPlot('pie',4,year)	
 			}
 			if(value.includes("Authoritarian")){
-			drawPcpPlot('pie',5,'2020')	
+			drawPcpPlot('pie',5,year)	
 			}
 			
 			/*let mousePosition = d3.mouse(this);

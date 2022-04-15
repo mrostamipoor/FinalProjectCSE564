@@ -26,6 +26,7 @@ var year='2020'
 slider.oninput = function() {
   output.innerHTML = this.value;
   year=this.value;
+  drawPcpPlot('test',6,year)
 }
 function drawMap() {
 	countries=[]
