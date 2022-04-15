@@ -127,7 +127,7 @@ function drawPcpPlot(coutryname, demo_status,year) {
 			
 			else {
 				if (d.democratic_performance_numeric == demo_status) {
-					return '#8c564b';
+					return colorsg.get(+d.democratic_performance_numeric);
 				} else {
 					return '#dadada'
 				}
