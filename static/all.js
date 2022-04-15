@@ -77,12 +77,7 @@ function drawPcpPlot(coutryname, demo_status,year) {
 
 	d3.csv("static/data/newDemo.csv", function(error, data) {
 		dimensions = d3.keys(data[0]).filter(function(key) {
-			if (key == 'ID_year' || key == 'direct_democracy'
-			|| key == 'electoral_participation' || 
-			key == 'basic_welfare' || key == 'inclusive_suffrage'
-			|| key == 'social_group_equality' || key == 'elected_government' 
-			|| key == 'absence_of_corruption' || key == 'access_to_justice' 
-			|| key == 'freedom_of_religion' || key == 'civil_society_participation') {
+			if (key == 'ID_year' || key == 'absence_of_corruption'|| key ==  'inclusive_suffrage'|| key ==  'electoral_participation'|| key ==  'social_group_equality'|| key ==  'predictable_enforcement'|| key ==  'elected_government'|| key ==  'basic_welfare'|| key ==  'access_to_justice'|| key ==  'personal_integrity_and_security2'|| key ==  'free_political_parties') {
 				
 					y[key] = d3.scaleLinear()
 					.domain(d3.extent(data, function(d) {
@@ -256,86 +251,7 @@ function drawPcpPlot(coutryname, demo_status,year) {
 }
 
 function piechart() {
-	/*var svg = d3.select("svg"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height"),
-    radius = Math.min(width, height) / 2,
-    g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-var pie = d3.pie()
-    .sort(null)
-    .value(function(d) { return d.population; });
-
-var path = d3.arc()
-    .outerRadius(radius - 10)
-    .innerRadius(radius - 70);
-
-var label = d3.arc()
-    .outerRadius(radius - 40)
-    .innerRadius(radius - 40);
-
-d3.csv("./static/data/pie.csv", function(d) {
-  d.population = +d.population;
-  return d;
-}, function(error, data) {
-  if (error) throw error;
-
-  var arc = g.selectAll(".arc")
-    .data(pie(data))
-    .enter().append("g")
-      .attr("class", "arc");
-
-  arc.append("path")
-      .attr("d", path)
-      .attr("fill", function(d) { return color(d.data.democratic_performance_name); });
-
-  arc.append("text")
-      .attr("transform", function(d) { return "translate(" + label.centroid(d) + ")"; })
-      .attr("dy", "0.35em")
-      .text(function(d) { return d.data.democratic_performance_name; });
-});*/
-	/*var data = [10, 20, 100];
-
-	var width = 960,
-	    height = 500,
-	    radius = Math.min(width, height) / 2;
-
-	var color = d3.scaleOrdinal()
-	    .range(["#98abc5", "#8a89a6", "#7b6888"]);
-
-	var arc = d3.arc()
-	    .outerRadius(radius - 10)
-	    .innerRadius(0);
-
-	var labelArc = d3.arc()
-	    .outerRadius(radius - 40)
-	    .innerRadius(radius - 40);
-
-	var pie = d3.pie()
-	    .sort(null)
-	    .value(function(d) { return d; });
-
-	var svg = d3.select("body").append("svg")
-	    .attr("width", width)
-	    .attr("height", height)
-	  .append("g")
-	    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-	  var g = svg.selectAll(".arc")
-	      .data(pie(data))
-	    .enter().append("g")
-	      .attr("class", "arc");
-
-	  g.append("path")
-	      .attr("d", arc)
-	      .style("fill", function(d) { return color(d.data); });
-
-	  g.append("text")
-	      .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-	      .attr("dy", ".35em")
-	      .text(function(d) { return d.data; });*/
 	var data = [
 		{
 			name: "Authoritarian Regime",
@@ -471,30 +387,7 @@ d3.csv("./static/data/pie.csv", function(d) {
 			if(value.includes("Authoritarian")){
 			drawPcpPlot('pie',5,year)	
 			}
-			
-			/*let mousePosition = d3.mouse(this);
-			let x = mousePosition[0] + width / 2;
-			let y = mousePosition[1] + height / 2 - tooltipMargin;
 
-			let text = d3.select('.tooltip text');
-			let bbox = text.node().getBBox();
-			//console.log(text.node().innerHTML)
-			if (x - bbox.width / 2 < 0) {
-				x = bbox.width / 2;
-			} else if (width - x - bbox.width / 2 < 0) {
-				x = width - bbox.width / 2;
-			}
-
-			if (y - bbox.height / 2 < 0) {
-				y = bbox.height + tooltipMargin * 2;
-			} else if (height - y - bbox.height / 2 < 0) {
-				y = height - bbox.height / 2;
-			}
-
-			d3.select('.tooltip')
-				.style("opacity", 1)
-				.attr('transform', `translate(${x}, ${y})`);
-		*/
 		})
 		.on("mouseout", function(d) {
 			d3.select("svg")

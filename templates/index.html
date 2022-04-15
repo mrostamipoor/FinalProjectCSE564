@@ -18,32 +18,32 @@
   </body>
 
     <script type="text/javascript">
-var slider = document.getElementById("myRange");
-var output = document.getElementById("demo");
-output.innerHTML = slider.value;
-var year='2020'
+	var slider = document.getElementById("myRange");
+	var output = document.getElementById("demo");
+	output.innerHTML = slider.value;
+	var year='2020'
 
-slider.oninput = function() {
-  output.innerHTML = this.value;
-  year=this.value;
-  drawPcpPlot('test',6,year)
-}
-function drawMap() {
-	countries=[]
-	var tmp=	['Country', 'DemocraticPerformance'];
-	countriesList=[]
-	countriesList.push(tmp);
-	d3.csv("./static/data/newDemo.csv", function(data) {
-    for (var i = 0; i < data.length; i++) {
-		if (!countries.includes(data[i].country, 0)){
-		tmp=[]
-        countries.push(data[i].country);
-		tmp.push(data[i].country);
-		tmp.push(parseInt(data[i].democratic_performance_numeric));
+	slider.oninput = function() {
+	  output.innerHTML = this.value;
+	  year=this.value;
+	  drawPcpPlot('test',6,year)
+	}
+	function drawMap() {
+		countries=[]
+		var tmp=	['Country', 'DemocraticPerformance'];
+		countriesList=[]
 		countriesList.push(tmp);
+		d3.csv("./static/data/newDemo.csv", function(data) {
+		for (var i = 0; i < data.length; i++) {
+			if (!countries.includes(data[i].country, 0)){
+			tmp=[]
+			countries.push(data[i].country);
+			tmp.push(data[i].country);
+			tmp.push(parseInt(data[i].democratic_performance_numeric));
+			countriesList.push(tmp);
+			}
 		}
-    }
-});
+	});
 	
 	
 	var test=[
@@ -101,85 +101,15 @@ function drawMap() {
         if (message == '') {
             message = 'nothing';
         }
-        //alert('You selected ' + message);
     }
     
     google.visualization.events.addListener(chart, 'select', myClickHandler);
     
     chart.draw(data, options);
 }
-google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
-drawPcpPlot('test',6,year)		
-piechart()
-/*var isoCountries = {
-  'IT': 'Italy',
-  'JO': 'Jordan',
-  'LB': 'Lebanon',
-};
-
-function getCountryName(countryCode) {
-  if (isoCountries.hasOwnProperty(countryCode)) {
-    return isoCountries[countryCode];
-  } else {
-    return countryCode;
-  }
-};
-
-// Load the Visualization API and the corechart package.
-google.charts.load('current', {
-  'packages': ['geochart'],
-
-  'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
-});
-
-// Set a callback to run when the Google Visualization API is loaded.
-google.charts.setOnLoadCallback(drawRegionsMap);
-
-// Callback that creates and populates a data table,
-// instantiates the chart, passes in the data and
-// draws it.
-function drawRegionsMap() {
-  // Create the data table.
-  var data = new google.visualization.DataTable();
-  data.addColumn('string', 'Country');
-  data.addColumn('number', 'Members');
-  data.addRows([
-    ['LB', 3],
-    ['JO', 2],
-    ['IT', 24],
-  ]);
-
-  // Set chart options
-  var options = {
-    colorAxis: {
-      colors: ['#c1c1cd', '#53556e']
-    },
-    legend: 'none',
-    backgroundColor: '#efefef'
-  };
-
-  // Create new data table for iso and full country name
-  var dataMod = new google.visualization.DataTable();
-  dataMod.addColumn('string', 'Country');
-  dataMod.addColumn('number', 'Members');
-
-  // Adding rows with iso and full country name
-  var numRows = data.getNumberOfRows();
-
-  for (var i = 0; i < numRows; i++) {
-    dataMod.addRows([
-      [{
-        v: String(data.getValue(i, 0)),
-        f: String(getCountryName(data.getValue(i, 0)))
-      }, data.getValue(i, 1)],
-    ]);
-  };
-
-  // Instantiate and draw our chart, passing in some options.
-  var chart = new google.visualization.GeoChart(document.getElementById('map_canvas'));
-  chart.draw(dataMod, options);
-
-}*/
+	google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
+	drawPcpPlot('test',6,year)		
+	piechart()
     </script> 
 </body>
 </html>
