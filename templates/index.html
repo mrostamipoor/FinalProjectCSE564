@@ -45,36 +45,10 @@
       }
     });
     
-    
-    var test=[
-    ['Country', 'DemocraticPerformance'],
-    ['Cuba', 5],
-    ['Haiti', 3],
-    ['Dominican Republic', 3],
-    ['Jamaica', 2],['Trinidad and Tobago', 2],
-    ['Mexico', 4],['Guatemala', 3],['Honduras', 3],
-    ['El Salvador', 3],['Nicaragua', 3],['Costa Rica', 2],['Panama', 5],
-    ['Colombia', 3],['Venezuela', 2],
-    ['Ecuador', 2],['Peru', 2],['Brazil', 2],
-    ['Bolivia', 3],['Paraguay', 5],['Chile', 2],
-    ['Argentina', 2],['Uruguay', 3],['Spain', 1],
-    ['Portugal', 2],['Poland', 2],['Hungary', 2],
-    ['Czechia', 2],['Italy', 2],['Albania', 2],['Croatia', 2],
-    ['Serbia', 2],['Slovenia', 2],['Greece', 2],['Cyprus', 2],
-    ['Bulgaria', 2],['Moldova', 3],['Romania', 2],['Russia', 4],
-    ['Estonia', 2],['Latvia', 2],['Lithuania', 2],['Ukraine', 3],
-    ['Belarus', 4],['Armenia', 4],['Azerbaijan', 5],['Guinea-Bissau', 3],
-    ['Gambia', 5],['Senegal', 3],['Niger', 2],["Cote d'Ivoire", 5],
-    ['Guinea', 5],['Burkina Faso', 4],['Liberia', 3],['Sierra Leone', 2],
-    ['Ghana', 3],['Togo', 4],['Cameroon', 5],['Nigeria', 5],['Gabon', 5],
-    ['Republic of Congo', 5],['Uganda', 5],['Kenya', 4],['Tanzania', 4],
-    ['Ethiopia', 5],['Mozambique', 3],['Zambia', 5],['Zimbabwe', 5],
-    ['Malawi', 3],['South Africa', 5],['Namibia', 2],['Botswana', 2],
-    ['Madagascar', 3],['Morocco', 5],['Algeria', 5],['Tunisia', 5],['Sudan', 5],
-    ['Iran', 5],['Turkey', 2],['Egypt', 5],['Lebanon', 3],['Jordan', 5],['Israel', 2],
-    ['Yemen', 4],['Kuwait', 5],['Oman', 5],['Kazakhstan', 5],['Mongolia', 2],['Republic of Korea', 2],
-    ['India', 2],['Pakistan', 5],['Bangladesh', 4],['Myanmar', 5],['Sri Lanka', 4],['Thailand', 3],
-    ['Malaysia', 4],['Philippines', 2],['Indonesia', 5]]
+    console.log("mydata");
+    var test = {{ mydata_json | safe }} ;
+    console.log(test);
+    console.log("mydata end");
     //console.log(countriesList);
     var data = google.visualization.arrayToDataTable(test);
     

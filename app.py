@@ -113,7 +113,10 @@ with open('./static/graph.json','w') as fp:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+
+    mylist = data[data['ID_year'] == 2020][['country', 'democratic_performance_numeric']].values
+    mylist = np.insert(mylist, [0], ['Country', 'DemocraticPerformance'], axis = 0).tolist()
+    return render_template('index.html', mydata_json=mylist)
 
 @app.route('/fetchPCPData', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
