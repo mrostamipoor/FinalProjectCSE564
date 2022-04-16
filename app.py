@@ -113,9 +113,10 @@ with open('./static/graph.json','w') as fp:
 
 @app.route('/')
 def index():
-
-    mylist = data[data['ID_year'] == 2020][['country', 'democratic_performance_numeric']].values
-    mylist = np.insert(mylist, [0], ['Country', 'DemocraticPerformance'], axis = 0).tolist()
+    mylist = [0] * (2021 - 1975)
+    for i in range(1975, 2021):
+        tmplist = data[data['ID_year'] == i][['country', 'democratic_performance_numeric']].values
+        mylist[i - 1975] = np.insert(tmplist, [0], ['Country', 'DemocraticPerformance'], axis = 0).tolist()
     return render_template('index.html', mydata_json=mylist)
 
 @app.route('/fetchPCPData', methods=['GET'])

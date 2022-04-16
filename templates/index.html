@@ -25,8 +25,10 @@
   
   slider.oninput = function() {
     output.innerHTML = this.value;
-    year=this.value;
+    year =this.value;
     drawPcpPlot('test',6,year)
+    data = google.visualization.arrayToDataTable(test[year-1975]);
+    google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
   }
   function drawMap() {
     countries=[]
@@ -49,8 +51,9 @@
     var test = {{ mydata_json | safe }} ;
     console.log(test);
     console.log("mydata end");
+    
     //console.log(countriesList);
-    var data = google.visualization.arrayToDataTable(test);
+    var data = google.visualization.arrayToDataTable(test[year-1975]);
     
     var options = {
       colorAxis: {colors: ['#1f77b4','#2ca02c', '#9467bd','#d62728','#ff7f0e']},
@@ -70,10 +73,10 @@
       for (var i = 0; i < selection.length; i++) {
         var item = selection[i];
         if (item.row != null && item.column != null) {
-          message += '{row:' + test[item.row] + ',column:' + item.column + '}';
+          message += '{row:' + test[year-1975][item.row] + ',column:' + item.column + '}';
         } else if (item.row != null) {
-          message += '{row:' + test[item.row][0] + '}';
-          drawPcpPlot(test[item.row][0],6,year)	
+          message += '{row:' + test[year-1975][item.row][0] + '}';
+          drawPcpPlot(test[year-1975][item.row][0],6,year)	
         } else if (item.column != null) {
           message += '{column:' + item.column + '}';
         }
