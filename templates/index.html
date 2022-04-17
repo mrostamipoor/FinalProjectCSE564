@@ -158,7 +158,7 @@
   function drawLinechart(country, country2, attr){
     document.getElementById("line-chart").innerHTML = ""
 
-    var margin = { top: 50, right: 70, bottom: 70, left:80 },
+    var margin = { top: 30, right: 70, bottom: 70, left:50 },
     width = 800 - margin.left - margin.right,
     height = 450 - margin.top - margin.bottom;
     
@@ -224,7 +224,7 @@
     svg.append("text")
     .attr("class", "labeltext")
     .attr("text-anchor", "middle") 
-    .attr("transform", "translate(" + (540) + "," + (480) + ")") 
+    .attr("transform", "translate(" + (width/2) + "," + 1.175*height + ")") 
     .text("year");
     
     svg.append("path")
