@@ -251,6 +251,14 @@
       .y(function(d) { return yScale(d.value) })
       )
     }
+
+    var legend_h = height
+    svg.append("circle").attr("cx", 70).attr("cy", legend_h).attr("r", 6).style("fill", "steelblue")
+    svg.append("text").attr("x", 90).attr("y", legend_h).text(country).style("font-size", "10px").attr("alignment-baseline","middle")
+    if (country2 != "None"){
+      svg.append("circle").attr("cx", 70).attr("cy", legend_h - 30).attr("r", 6).style("fill", "orange")
+      svg.append("text").attr("x", 90).attr("y", legend_h - 30).text(country2).style("font-size", "10px").attr("alignment-baseline","middle")
+    }
     
   }
 </script> 
