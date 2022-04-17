@@ -17,6 +17,7 @@
     <div id="map_canvas" ></div>
     <div style="text-align: center;">
       <select id="selectCountry"></select>
+      <select id="selectCountry2"></select>
       <select id="selectAttr"></select>
       <div id="line-chart"></div>
     </div>
@@ -39,6 +40,19 @@
     	.append('option')
       .text(function (d) { return d; }) // text showed in the menu
       .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+  countrylist2 = countrylist
+  countrylist2.unshift("None");
+  d3.select("#selectCountry2")
+      .selectAll('myOptions')
+      .data(countrylist2)
+      .enter()
+      .append('option')
+      .text(function (d) { return d; }) // text showed in the menu
+      .attr("value", function (d) { return d; }) // corresponding value returned by the button
+
+  console.log("countrylist, None")
+  console.log(countrylist.unshift("None"))
 
   d3.select("#selectAttr")
     .selectAll('myOptions')
@@ -126,24 +140,27 @@
   piechart()
 
   var country = document.getElementById("selectCountry").value;
+  var country2 = document.getElementById("selectCountry2").value;
   var attr = document.getElementById("selectAttr").value;
-  drawLinechart(country, attr)
+  drawLinechart(country, country2, attr)
 
   document.getElementById("selectCountry").onchange = function() {onchangeFunc()};
+  document.getElementById("selectCountry2").onchange = function() {onchangeFunc()};
   document.getElementById("selectAttr").onchange = function() {onchangeFunc()};
 
   function onchangeFunc() {
     var country = document.getElementById("selectCountry").value;
+    var country2 = document.getElementById("selectCountry2").value;
     var attr = document.getElementById("selectAttr").value;
-    drawLinechart(country, attr)
+    drawLinechart(country, country2, attr)
   }
 
-  function drawLinechart(country, attr){
+  function drawLinechart(country, country2, attr){
     document.getElementById("line-chart").innerHTML = ""
 
-    var margin = { top: 50, right: 70, bottom: 130, left:80 },
+    var margin = { top: 50, right: 70, bottom: 70, left:80 },
     width = 800 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 450 - margin.top - margin.bottom;
     
     // svg frame added
     var svg = d3.select("#line-chart")
@@ -165,22 +182,27 @@
     var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
-    // linechartdata = {{ linechartdata | safe }} ;
-    // console.log(linechartdata);
-    
     linechartdatafull = {{ linechartdata | safe }} ;
-    // console.log(linechartdatafull);
-    // console.log('linechartdata');
-    // console.log(linechartdatafull['Canada']['clean_elections']);
-    // console.log('linechartdata, Canada, clean_elections');
-
-    // linechartdata = linechartdatafull['Canada']['clean_elections']
     linechartdata = linechartdatafull[country][attr]
+
+    if (country2 != "None") {
+      linechartdata2 = linechartdatafull[country2][attr]
+    }
 
     var xScale = d3.scaleLinear().range([0, width]);
     var yScale = d3.scaleLinear().range([height, 0]);
-    xScale.domain([d3.min(linechartdata, function (d) {return d.key;}), d3.max(linechartdata, function (d) {return d.key;})]);
-    yScale.domain([0, d3.max(linechartdata, function (d) {return d.value;})]);
+    if (country2 != "None") {
+      xScale.domain([ Math.min(d3.min(linechartdata2, function (d) {return d.key;}), d3.min(linechartdata, function (d) {return d.key;})), d3.max(linechartdata, function (d) {return d.key;})]);
+    } else {
+      xScale.domain([d3.min(linechartdata, function (d) {return d.key;}), d3.max(linechartdata, function (d) {return d.key;})]);
+    }
+    if (country2 != "None") {
+      yScale.domain([0, Math.max(d3.max(linechartdata, function (d) {return d.value;}), d3.max(linechartdata2, function (d) {return d.value;}))]);
+    } else {
+      yScale.domain([0, d3.max(linechartdata, function (d) {return d.value;})]);
+    }
+    
+    Math.max(1, 3)
     
     g.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -215,6 +237,20 @@
     .x(function(d) { return xScale(d.key) })
     .y(function(d) { return yScale(d.value) })
     )
+
+    if (country2 != "None"){
+      svg.append("path")
+      .datum(linechartdata2)
+      .attr("transform", "translate(" + (margin.left) + "," + (margin.top) + ")")
+      .attr("fill", "none")
+      .attr("stroke", "orange")
+      .attr("stroke-width", 1.5)
+      .attr("d", d3.line()
+      .x(function(d) { return xScale(d.key) })
+      .y(function(d) { return yScale(d.value) })
+      )
+    }
+    
   }
 </script> 
 </body>
