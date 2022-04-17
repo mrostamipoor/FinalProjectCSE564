@@ -10,15 +10,35 @@
   <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-  <input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 840px;">
-  <p>Year: <span id="demo"></span></p>
+  
 
   <div style="display:flex;">
-    <div id="map_canvas" ></div>
+    <div>
+      <input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 840px;">
+      <p>Year: <span id="demo"></span></p>
+      <div id="map_canvas" ></div>
+    </div>
+    
     <div style="text-align: center;">
-      <select id="selectCountry" style="width: 150px;"></select>
-      <select id="selectCountry2" style="width: 150px;"></select>
-      <select id="selectAttr" style="width: 150px;"></select>
+      <div style="display: flex; justify-content: space-evenly;">
+        <div>
+          <div>Country 1</div>
+          <br>
+          <select id="selectCountry" style="width: 150px;"></select>
+        </div>
+        <div>
+          <div>Country 2</div>
+          <br>
+          <select id="selectCountry2" style="width: 150px;"></select>
+        </div>
+        <div>
+          <div>Metric</div>
+          <br>
+          <select id="selectAttr" style="width: 150px;"></select>
+        </div>
+      </div>
+      
+      
       <div id="line-chart"></div>
     </div>
   </div>
