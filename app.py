@@ -29,9 +29,9 @@ def dokmeans(labaled_data):
     labaled_data['kmeans_label'] = kmeans_label
     return labaled_data
     
-data = pd.read_csv('static/data/GSoDI_v5.1.csv')
+data = pd.read_csv('static/data/newDemo.csv')
 # data=data.dropna()
-data=data[['ID_year','democratic_performance_numeric','ID_country_name','C_SD11','C_SD12','C_SD13','C_SD14','C_SD21','C_SD22A','C_SD22B','C_SD22C','C_SD22D','C_SD22E','C_SD23A','C_SD23B','C_SD23C','C_SD31','C_SD32','C_SD33','C_SD41','C_SD42','C_SD51','C_SD52','C_SD53','C_SD54']]
+'''data=data[['ID_year','democratic_performance_numeric','ID_country_name','C_SD11','C_SD12','C_SD13','C_SD14','C_SD21','C_SD22A','C_SD22B','C_SD22C','C_SD22D','C_SD22E','C_SD23A','C_SD23B','C_SD23C','C_SD31','C_SD32','C_SD33','C_SD41','C_SD42','C_SD51','C_SD52','C_SD53','C_SD54']]
 data.rename(columns={'C_SD11':'clean_elections' }, inplace=True)
 data.rename(columns={'C_SD12':'inclusive_suffrage' }, inplace=True)
 data.rename(columns={'C_SD13':'free_political_parties' }, inplace=True)
@@ -66,50 +66,17 @@ for feature in features_name:
         data[feature] = data.groupby('democratic_performance_numeric')[feature].transform(lambda grp: grp.fillna(np.mean(grp)))
 
 print(data.columns)
-data.to_csv('static/data/newDemo.csv', sep=',')
-corr_martrix=data.corr()
-corr_martrix.to_csv('static/data/corr.csv', sep=',')
+data.to_csv('static/data/newDemo.csv', sep=',')'''
+#corr_martrix=data.corr()
+#corr_martrix.to_csv('static/data/corr.csv', sep=',')
 
-scaled_data = standardizing_data(data.loc[:, data.columns != 'country'])
-labaled_data=data.copy(deep=False)
-labaled_data=dokmeans(labaled_data.loc[:, labaled_data.columns != 'country'])
-corr_martrix=data.corr()
-corr_martrix.to_csv('static/data/data.csv', sep=',')
-columnsNamesArr = corr_martrix.columns.values
+#scaled_data = standardizing_data(data.loc[:, data.columns != 'country'])
+#labaled_data=data.copy(deep=False)
+#labaled_data=dokmeans(labaled_data.loc[:, labaled_data.columns != 'country'])
+#corr_martrix=data.corr()
+#corr_martrix.to_csv('static/data/data.csv', sep=',')
+#columnsNamesArr = corr_martrix.columns.values
 
-dic1=[]
-i=0
-for elem in corr_martrix:
-    dictionary_tmp ={}
-    dictionary_tmp["id"] = i
-    dictionary_tmp["name"]=elem
-    dic1.append(dictionary_tmp)
-    i=i+1
-#print(dic1)    
-
-dic2=[]
-i=0
-for elem in corr_martrix:
-    tmp=corr_martrix[elem]
-    j=0
-    for indx in tmp: 
-        dictionary_tmp ={}
-        dictionary_tmp["source"] = i
-        dictionary_tmp["target"] = j
-        dictionary_tmp["weight"]=indx
-        dic2.append(dictionary_tmp)
-        j=j+1
-    
-    i=i+1
-#print(dic2)  
-
-dictnew={}
-dictnew["nodes"] = dic1
-dictnew["edges"] = dic2
-#print(dictnew)
-r = json.dumps(dictnew)
-with open('./static/graph.json','w') as fp:
-    json.dump(dictnew, fp)
 
 @app.route('/')
 def index():
@@ -136,7 +103,7 @@ def index():
 
     return render_template('index.html', mapdata=maplist, linechartdata=linechartdata, countrylist=countrylist, attributeslist=attributeslist)
 
-@app.route('/fetchPCPData', methods=['GET'])
+'''@app.route('/fetchPCPData', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
 
 def pcp_data():
@@ -148,7 +115,7 @@ def pcp_data():
     l_data=labaled_data['kmeans_label'].tolist()
     temp["kmeans_label"] = l_data
     temp.to_csv('static/data/labaled_data.csv', sep=',')
-    return jsonify(l_data)
+    return jsonify(l_data)'''
 
 
        

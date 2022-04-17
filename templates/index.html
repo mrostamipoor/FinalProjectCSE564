@@ -47,6 +47,18 @@
 </body>
 
 <script type="text/javascript">
+var colorsg = new Map();
+colorsg.set(1, '#1f77b4');
+colorsg.set(2, '#2ca02c');
+colorsg.set(3, '#9467bd');
+colorsg.set(4, '#d62728');
+colorsg.set(5, '#ff7f0e');
+var performance = new Map();
+performance.set('High performing democracy',1);
+performance.set('Mid-range performing democracy',2);
+performance.set('Weak democracy',3);
+performance.set('Hybrid Regime',4);
+performance.set('Authoritarian Regime',5);
   console.log("countrylist");
   countrylist = {{ countrylist | safe }} ;
 
@@ -164,8 +176,7 @@
     var margin = { top: 30, right: 70, bottom: 70, left:50 },
     width = 800 - margin.left - margin.right,
     height = 450 - margin.top - margin.bottom;
-    
-    // svg frame added
+	
     var svg = d3.select("#line-chart")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -208,7 +219,7 @@
     g.append("g")
     .attr("transform", "translate(0," + height + ")")
     .attr("class", "axis")
-    .call(d3.axisBottom(xScale));
+    .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
     
     g.append("g")
     .attr("class", "axis")
@@ -261,6 +272,193 @@
     }
     
   }
+  
+  function piechart() {
+
+	var data = [
+		{
+			name: "High performing democracy",
+			value: 60
+		},
+		{
+			name: "Mid-range performing democracy",
+			value: 20
+		},
+		{
+			name: "Weak democracy",
+			value: 30
+		},
+		{
+			name: "Hybrid Regime",
+			value: 15
+		},
+		{
+			name: "Authoritarian Regime",
+			value: 10
+		},
+	];
+	var csv_data=[];
+	var setdata=[];
+/*d3.csv("./static/data/afile.csv", function(error, data) {
+            if (error) {
+                throw error;
+            }
+            for (var i = 0; i < data.length; i++) {
+                var key = data[i]['name'] + '-' + data[i]['value'];
+				
+				if (!csv_data.includes(key)){
+					csv_data.push(key);
+					 console.log(key);
+					 var map = new Map();
+					 map.set('name', data[i]['name']);
+					 map.set('value', data[i]['value']);
+					 console.log(map);
+					 setdata.push(map);
+				}
+	}
+	});
+	console.log(setdata)
+	console.log(data)*/
+	var text = "";
+
+	var width = 200;
+	var height = 200;
+	var thickness = 40;
+	var duration = 750;
+	var padding = 10;
+	var opacity = .8;
+	var opacityHover = 1;
+	var otherOpacityOnHover = .8;
+	var tooltipMargin = 13;
+
+	var radius = Math.min(width - padding, height - padding) / 2;
+	var color = d3.scaleOrdinal(d3.schemeCategory10);
+
+	var svg = d3.select("#chart")
+		.append('svg')
+		.attr('class', 'pie')
+		.attr('width', width)
+		.attr('height', height);
+
+	var g = svg.append('g')
+		.attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+
+	var arc = d3.arc()
+		.innerRadius(0)
+		.outerRadius(radius);
+
+	var pie = d3.pie()
+		.value(function(d) {
+			return d.value;
+		})
+		.sort(null);
+
+	var path = g.selectAll('path')
+		.data(pie(data))
+		.enter()
+		.append("g")
+		.append('path')
+		.attr('d', arc)
+		.attr('fill', function(d, i)  { 
+		var tmp=Object.values(Object.values(d)[0])[0];
+		var indx=performance.get(tmp);
+		return colorsg.get(indx)})
+		.style('opacity', opacity)
+		.style('stroke', 'white')
+		.on("mouseover", function(d) {
+			d3.selectAll('path')
+				.style("opacity", otherOpacityOnHover);
+			d3.select(this)
+				.style("opacity", opacityHover);
+
+			let g = d3.select("svg")
+				.style("cursor", "pointer")
+				.append("g")
+				.attr("class", "tooltip")
+				.style("opacity", 0);
+
+			g.append("text")
+				.attr("class", "name-text")
+				.text(`${d.data.name} (${d.data.value})`)
+				.attr('text-anchor', 'middle');
+
+			let text = g.select("text");
+			let bbox = text.node().getBBox();
+			let padding = 2;
+			g.insert("rect", "text")
+				.attr("x", bbox.x - padding)
+				.attr("y", bbox.y - padding)
+				.attr("width", bbox.width + (padding * 2))
+				.attr("height", bbox.height + (padding * 2))
+				.style("fill", "white")
+				.style("opacity", 0.75);
+		})
+		.on("click", function(d) {
+			let text = d3.select('.tooltip text');
+			value=text.node().innerHTML
+			var slider = document.getElementById("myRange");
+			var year = slider.value;
+			if(value.includes("High")){
+				drawPcpPlot('pie',1,year)	
+			}
+			if(value.includes("Mid-range")){
+				drawPcpPlot('pie',2,year)
+			}
+			if(value.includes("Weak")){
+				drawPcpPlot('pie',3,year)
+			}
+			if(value.includes("Hybrid")){
+			drawPcpPlot('pie',4,year)	
+			}
+			if(value.includes("Authoritarian")){
+			drawPcpPlot('pie',5,year)	
+			}
+
+		})
+		.on("mouseout", function(d) {
+			d3.select("svg")
+				.style("cursor", "none")
+				.select(".tooltip").remove();
+			d3.selectAll('path')
+				.style("opacity", opacity);
+		})
+		.on("touchstart", function(d) {
+			d3.select("svg")
+				.style("cursor", "none");
+		})
+		.each(function(d, i) {
+			this._current = i;
+		});
+
+	let legend = d3.select("#chart").append('div')
+		.attr('class', 'legend')
+		.style('margin-top', '30px');
+
+	let keys = legend.selectAll('.key')
+		.data(data)
+		.enter().append('div')
+		.attr('class', 'key')
+		.style('display', 'flex')
+		.style('align-items', 'center')
+		.style('margin-right', '20px');
+
+	keys.append('div')
+		.attr('class', 'symbol')
+		.style('height', '10px')
+		.style('width', '10px')
+		.style('margin', '5px 5px')
+		.style('background-color', function(d, i) { 
+		console.log(Object.values(d)[0]);
+		var tmp=Object.values(d)[0];
+		var indx=performance.get(tmp);
+		return colorsg.get(indx)});
+
+	keys.append('div')
+		.attr('class', 'name')
+		.text(d => `${d.name} (${d.value})`);
+
+	keys.exit().remove();
+}
 </script> 
 </body>
 </html>
