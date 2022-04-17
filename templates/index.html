@@ -11,7 +11,7 @@
 </head>
 <body>
   
-
+  
   <div style="display:flex;">
     <div>
       <input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 840px;">
@@ -47,54 +47,54 @@
 </body>
 
 <script type="text/javascript">
-var colorsg = new Map();
-colorsg.set(1, '#1f77b4');
-colorsg.set(2, '#2ca02c');
-colorsg.set(3, '#9467bd');
-colorsg.set(4, '#d62728');
-colorsg.set(5, '#ff7f0e');
-var performance = new Map();
-performance.set('High performing democracy',1);
-performance.set('Mid-range performing democracy',2);
-performance.set('Weak democracy',3);
-performance.set('Hybrid Regime',4);
-performance.set('Authoritarian Regime',5);
+  var colorsg = new Map();
+  colorsg.set(1, '#1f77b4');
+  colorsg.set(2, '#2ca02c');
+  colorsg.set(3, '#9467bd');
+  colorsg.set(4, '#d62728');
+  colorsg.set(5, '#ff7f0e');
+  var performance = new Map();
+  performance.set('High performing democracy',1);
+  performance.set('Mid-range performing democracy',2);
+  performance.set('Weak democracy',3);
+  performance.set('Hybrid Regime',4);
+  performance.set('Authoritarian Regime',5);
   console.log("countrylist");
   countrylist = {{ countrylist | safe }} ;
-
+  
   console.log("attributeslist");
   attributeslist = {{ attributeslist | safe }} ;
-
+  
   d3.select("#selectCountry")
-      .selectAll('myOptions')
-     	.data(countrylist)
-      .enter()
-    	.append('option')
-      .text(function (d) { return d; }) // text showed in the menu
-      .attr("value", function (d) { return d; }) // corresponding value returned by the button
-
+  .selectAll('myOptions')
+  .data(countrylist)
+  .enter()
+  .append('option')
+  .text(function (d) { return d; }) // text showed in the menu
+  .attr("value", function (d) { return d; }) // corresponding value returned by the button
+  
   countrylist2 = countrylist
   countrylist2.unshift("None");
   d3.select("#selectCountry2")
-      .selectAll('myOptions')
-      .data(countrylist2)
-      .enter()
-      .append('option')
-      .text(function (d) { return d; }) // text showed in the menu
-      .attr("value", function (d) { return d; }) // corresponding value returned by the button
-
+  .selectAll('myOptions')
+  .data(countrylist2)
+  .enter()
+  .append('option')
+  .text(function (d) { return d; }) // text showed in the menu
+  .attr("value", function (d) { return d; }) // corresponding value returned by the button
+  
   console.log("countrylist, None")
   console.log(countrylist.unshift("None"))
-
+  
   d3.select("#selectAttr")
-    .selectAll('myOptions')
-    .data(attributeslist)
-    .enter()
-    .append('option')
-    .text(function (d) { return d; }) // text showed in the menu
-    .attr("value", function (d) { return d; }) // corresponding value returned by the button
-
-
+  .selectAll('myOptions')
+  .data(attributeslist)
+  .enter()
+  .append('option')
+  .text(function (d) { return d; }) // text showed in the menu
+  .attr("value", function (d) { return d; }) // corresponding value returned by the button
+  
+  
   var slider = document.getElementById("myRange");
   var output = document.getElementById("demo");
   output.innerHTML = slider.value;
@@ -106,6 +106,7 @@ performance.set('Authoritarian Regime',5);
     drawPcpPlot('test',6,year)
     drawMap()
     google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
+    piechart()
   }
   function drawMap() {   
     
@@ -153,30 +154,30 @@ performance.set('Authoritarian Regime',5);
   google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
   drawPcpPlot('test',6,year)		
   piechart()
-
+  
   var country = document.getElementById("selectCountry").value;
   var country2 = document.getElementById("selectCountry2").value;
   var attr = document.getElementById("selectAttr").value;
   drawLinechart(country, country2, attr)
-
+  
   document.getElementById("selectCountry").onchange = function() {onchangeFunc()};
   document.getElementById("selectCountry2").onchange = function() {onchangeFunc()};
   document.getElementById("selectAttr").onchange = function() {onchangeFunc()};
-
+  
   function onchangeFunc() {
     var country = document.getElementById("selectCountry").value;
     var country2 = document.getElementById("selectCountry2").value;
     var attr = document.getElementById("selectAttr").value;
     drawLinechart(country, country2, attr)
   }
-
+  
   function drawLinechart(country, country2, attr){
     document.getElementById("line-chart").innerHTML = ""
-
+    
     var margin = { top: 30, right: 70, bottom: 70, left:50 },
     width = 800 - margin.left - margin.right,
     height = 450 - margin.top - margin.bottom;
-	
+    
     var svg = d3.select("#line-chart")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -198,15 +199,16 @@ performance.set('Authoritarian Regime',5);
     
     linechartdatafull = {{ linechartdata | safe }} ;
     linechartdata = linechartdatafull[country][attr]
-
+    
     if (country2 != "None") {
       linechartdata2 = linechartdatafull[country2][attr]
     }
-
+    
     var xScale = d3.scaleLinear().range([0, width]);
     var yScale = d3.scaleLinear().range([height, 0]);
     if (country2 != "None") {
-      xScale.domain([ Math.min(d3.min(linechartdata2, function (d) {return d.key;}), d3.min(linechartdata, function (d) {return d.key;})), d3.max(linechartdata, function (d) {return d.key;})]);
+      xScale.domain([ Math.min(d3.min(linechartdata2, function (d) {return d.key;}), 
+      d3.min(linechartdata, function (d) {return d.key;})), d3.max(linechartdata, function (d) {return d.key;})]);
     } else {
       xScale.domain([d3.min(linechartdata, function (d) {return d.key;}), d3.max(linechartdata, function (d) {return d.key;})]);
     }
@@ -249,7 +251,7 @@ performance.set('Authoritarian Regime',5);
     .x(function(d) { return xScale(d.key) })
     .y(function(d) { return yScale(d.value) })
     )
-
+    
     if (country2 != "None"){
       svg.append("path")
       .datum(linechartdata2)
@@ -262,7 +264,7 @@ performance.set('Authoritarian Regime',5);
       .y(function(d) { return yScale(d.value) })
       )
     }
-
+    
     var legend_h = height
     svg.append("circle").attr("cx", 70).attr("cy", legend_h).attr("r", 6).style("fill", "steelblue")
     svg.append("text").attr("x", 90).attr("y", legend_h).text(country).style("font-size", "10px").attr("alignment-baseline","middle")
@@ -274,173 +276,156 @@ performance.set('Authoritarian Regime',5);
   }
   
   function piechart() {
-
-  var data = {{ piedata | safe }} ;
-  console.log("piedata")
-  console.log(data)
-	
-	var csv_data=[];
-	var setdata=[];
-/*d3.csv("./static/data/afile.csv", function(error, data) {
-            if (error) {
-                throw error;
-            }
-            for (var i = 0; i < data.length; i++) {
-                var key = data[i]['name'] + '-' + data[i]['value'];
-				
-				if (!csv_data.includes(key)){
-					csv_data.push(key);
-					 console.log(key);
-					 var map = new Map();
-					 map.set('name', data[i]['name']);
-					 map.set('value', data[i]['value']);
-					 console.log(map);
-					 setdata.push(map);
-				}
-	}
-	});
-	console.log(setdata)
-	console.log(data)*/
-	var text = "";
-
-	var width = 200;
-	var height = 200;
-	var thickness = 40;
-	var duration = 750;
-	var padding = 10;
-	var opacity = .8;
-	var opacityHover = 1;
-	var otherOpacityOnHover = .8;
-	var tooltipMargin = 13;
-
-	var radius = Math.min(width - padding, height - padding) / 2;
-	var color = d3.scaleOrdinal(d3.schemeCategory10);
-
-	var svg = d3.select("#chart")
-		.append('svg')
-		.attr('class', 'pie')
-		.attr('width', width)
-		.attr('height', height);
-
-	var g = svg.append('g')
-		.attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
-
-	var arc = d3.arc()
-		.innerRadius(0)
-		.outerRadius(radius);
-
-	var pie = d3.pie()
-		.value(function(d) {
-			return d.value;
-		})
-		.sort(null);
-
-	var path = g.selectAll('path')
-		.data(pie(data))
-		.enter()
-		.append("g")
-		.append('path')
-		.attr('d', arc)
-		.attr('fill', function(d, i)  { 
-		var tmp=Object.values(Object.values(d)[0])[0];
-		var indx=performance.get(tmp);
-		return colorsg.get(indx)})
-		.style('opacity', opacity)
-		.style('stroke', 'white')
-		.on("mouseover", function(d) {
-			d3.selectAll('path')
-				.style("opacity", otherOpacityOnHover);
-			d3.select(this)
-				.style("opacity", opacityHover);
-
-			let g = d3.select("svg")
-				.style("cursor", "pointer")
-				.append("g")
-				.attr("class", "tooltip")
-				.style("opacity", 0);
-
-			g.append("text")
-				.attr("class", "name-text")
-				.text(`${d.data.name} (${d.data.value})`)
-				.attr('text-anchor', 'middle');
-
-			let text = g.select("text");
-			let bbox = text.node().getBBox();
-			let padding = 2;
-			g.insert("rect", "text")
-				.attr("x", bbox.x - padding)
-				.attr("y", bbox.y - padding)
-				.attr("width", bbox.width + (padding * 2))
-				.attr("height", bbox.height + (padding * 2))
-				.style("fill", "white")
-				.style("opacity", 0.75);
-		})
-		.on("click", function(d) {
-			let text = d3.select('.tooltip text');
-			value=text.node().innerHTML
-			var slider = document.getElementById("myRange");
-			var year = slider.value;
-			if(value.includes("High")){
-				drawPcpPlot('pie',1,year)	
-			}
-			if(value.includes("Mid-range")){
-				drawPcpPlot('pie',2,year)
-			}
-			if(value.includes("Weak")){
-				drawPcpPlot('pie',3,year)
-			}
-			if(value.includes("Hybrid")){
-			drawPcpPlot('pie',4,year)	
-			}
-			if(value.includes("Authoritarian")){
-			drawPcpPlot('pie',5,year)	
-			}
-
-		})
-		.on("mouseout", function(d) {
-			d3.select("svg")
-				.style("cursor", "none")
-				.select(".tooltip").remove();
-			d3.selectAll('path')
-				.style("opacity", opacity);
-		})
-		.on("touchstart", function(d) {
-			d3.select("svg")
-				.style("cursor", "none");
-		})
-		.each(function(d, i) {
-			this._current = i;
-		});
-
-	let legend = d3.select("#chart").append('div')
-		.attr('class', 'legend')
-		.style('margin-top', '30px');
-
-	let keys = legend.selectAll('.key')
-		.data(data)
-		.enter().append('div')
-		.attr('class', 'key')
-		.style('display', 'flex')
-		.style('align-items', 'center')
-		.style('margin-right', '20px');
-
-	keys.append('div')
-		.attr('class', 'symbol')
-		.style('height', '10px')
-		.style('width', '10px')
-		.style('margin', '5px 5px')
-		.style('background-color', function(d, i) { 
-		console.log(Object.values(d)[0]);
-		var tmp=Object.values(d)[0];
-		var indx=performance.get(tmp);
-		return colorsg.get(indx)});
-
-	keys.append('div')
-		.attr('class', 'name')
-		.text(d => `${d.name} (${d.value})`);
-
-	keys.exit().remove();
-}
-</script> 
-</body>
-</html>
+    document.getElementById("chart").innerHTML = ""
+    
+    
+    var dataall = {{ piedata | safe }} ;
+    console.log("piedata")
+    console.log(dataall)
+    console.log("piedata2020")
+    console.log(dataall[year - 1975])
+    var data = dataall[year - 1975]
+    
+    var text = "";
+    
+    var width = 200;
+    var height = 200;
+    var thickness = 40;
+    var duration = 750;
+    var padding = 10;
+    var opacity = .8;
+    var opacityHover = 1;
+    var otherOpacityOnHover = .8;
+    var tooltipMargin = 13;
+    
+    var radius = Math.min(width - padding, height - padding) / 2;
+    var color = d3.scaleOrdinal(d3.schemeCategory10);
+    
+    var svg = d3.select("#chart")
+    .append('svg')
+    .attr('class', 'pie')
+    .attr('width', width)
+    .attr('height', height);
+    
+    var g = svg.append('g')
+    .attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
+    
+    var arc = d3.arc()
+    .innerRadius(0)
+    .outerRadius(radius);
+    
+    var pie = d3.pie()
+    .value(function(d) {
+      return d.value;
+    })
+    .sort(null);
+    
+    var path = g.selectAll('path')
+    .data(pie(data))
+    .enter()
+    .append("g")
+    .append('path')
+    .attr('d', arc)
+    .attr('fill', function(d, i)  { 
+      var tmp=Object.values(Object.values(d)[0])[0];
+      var indx=performance.get(tmp);
+      return colorsg.get(indx)})
+      .style('opacity', opacity)
+      .style('stroke', 'white')
+      .on("mouseover", function(d) {
+        d3.selectAll('path')
+        .style("opacity", otherOpacityOnHover);
+        d3.select(this)
+        .style("opacity", opacityHover);
+        
+        let g = d3.select("svg")
+        .style("cursor", "pointer")
+        .append("g")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+        
+        g.append("text")
+        .attr("class", "name-text")
+        .text(`${d.data.name} (${d.data.value})`)
+        .attr('text-anchor', 'middle');
+        
+        let text = g.select("text");
+        let bbox = text.node().getBBox();
+        let padding = 2;
+        g.insert("rect", "text")
+        .attr("x", bbox.x - padding)
+        .attr("y", bbox.y - padding)
+        .attr("width", bbox.width + (padding * 2))
+        .attr("height", bbox.height + (padding * 2))
+        .style("fill", "white")
+        .style("opacity", 0.75);
+      })
+      .on("click", function(d) {
+        let text = d3.select('.tooltip text');
+        value=text.node().innerHTML
+        var slider = document.getElementById("myRange");
+        var year = slider.value;
+        if(value.includes("High")){
+          drawPcpPlot('pie',1,year)	
+        }
+        if(value.includes("Mid-range")){
+          drawPcpPlot('pie',2,year)
+        }
+        if(value.includes("Weak")){
+          drawPcpPlot('pie',3,year)
+        }
+        if(value.includes("Hybrid")){
+          drawPcpPlot('pie',4,year)	
+        }
+        if(value.includes("Authoritarian")){
+          drawPcpPlot('pie',5,year)	
+        }
+        
+      })
+      .on("mouseout", function(d) {
+        d3.select("svg")
+        .style("cursor", "none")
+        .select(".tooltip").remove();
+        d3.selectAll('path')
+        .style("opacity", opacity);
+      })
+      .on("touchstart", function(d) {
+        d3.select("svg")
+        .style("cursor", "none");
+      })
+      .each(function(d, i) {
+        this._current = i;
+      });
+      
+      let legend = d3.select("#chart").append('div')
+      .attr('class', 'legend')
+      .style('margin-top', '30px');
+      
+      let keys = legend.selectAll('.key')
+      .data(data)
+      .enter().append('div')
+      .attr('class', 'key')
+      .style('display', 'flex')
+      .style('align-items', 'center')
+      .style('margin-right', '20px');
+      
+      keys.append('div')
+      .attr('class', 'symbol')
+      .style('height', '10px')
+      .style('width', '10px')
+      .style('margin', '5px 5px')
+      .style('background-color', function(d, i) { 
+        console.log(Object.values(d)[0]);
+        var tmp=Object.values(d)[0];
+        var indx=performance.get(tmp);
+        return colorsg.get(indx)});
+        
+        keys.append('div')
+        .attr('class', 'name')
+        .text(d => `${d.name} (${d.value})`);
+        
+        keys.exit().remove();
+      }
+    </script> 
+  </body>
+  </html>

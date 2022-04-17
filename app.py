@@ -104,21 +104,24 @@ def index():
         final_dict[country] = country_dict
     linechartdata = pd.DataFrame(final_dict).to_json(orient="columns")
 
-    count_dict = data[data['ID_year'] == 2020]['democratic_performance_numeric'].value_counts().to_dict()
-    tmp_list = []
-    for i in range(1, 6):
-        if i == 1:
-            tmp_list.append({"name": "High performing democracy", "value": count_dict[i]})
-        elif i == 2:
-            tmp_list.append({"name": "Mid-range performing democracy", "value": count_dict[i]})
-        if i == 3:
-            tmp_list.append({"name": "Weak democracy", "value": count_dict[i]})
-        elif i == 4:
-            tmp_list.append({"name": "Hybrid Regime", "value": count_dict[i]})
-        elif i == 5:
-            tmp_list.append({"name": "Authoritarian Regime", "value": count_dict[i]})
-
-    return render_template('index.html', mapdata=maplist, linechartdata=linechartdata, countrylist=countrylist, attributeslist=attributeslist, piedata=tmp_list)
+    pielist = [0] * (2021 - 1975)
+    for j in range(1975, 2021):
+        count_dict = data[data['ID_year'] == j]['democratic_performance_numeric'].value_counts().to_dict()
+        tmp_list = []
+        for i in list(count_dict.keys()):
+            if i == 1:
+                tmp_list.append({"name": "High performing democracy", "value": count_dict[i]})
+            elif i == 2:
+                tmp_list.append({"name": "Mid-range performing democracy", "value": count_dict[i]})
+            if i == 3:
+                tmp_list.append({"name": "Weak democracy", "value": count_dict[i]})
+            elif i == 4:
+                tmp_list.append({"name": "Hybrid Regime", "value": count_dict[i]})
+            elif i == 5:
+                tmp_list.append({"name": "Authoritarian Regime", "value": count_dict[i]})
+        pielist[j - 1975] = tmp_list
+    
+    return render_template('index.html', mapdata=maplist, linechartdata=linechartdata, countrylist=countrylist, attributeslist=attributeslist, piedata=pielist)
 
 '''@app.route('/fetchPCPData', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
