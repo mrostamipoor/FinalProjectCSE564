@@ -90,7 +90,6 @@ def index():
 
     countrylist = np.unique(data['country'].values).tolist()
     attributeslist = data.columns.tolist()
-    print(f'attributeslist: {attributeslist}')
     attributeslist = attributeslist[1:2] + attributeslist[3:]
     final_dict = {}
     for country in countrylist:
