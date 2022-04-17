@@ -117,7 +117,24 @@ def index():
     for i in range(1975, 2021):
         tmplist = data[data['ID_year'] == i][['country', 'democratic_performance_numeric']].values
         mylist[i - 1975] = np.insert(tmplist, [0], ['Country', 'DemocraticPerformance'], axis = 0).tolist()
-    return render_template('index.html', mydata_json=mylist)
+
+
+    countrylist = np.unique(data['country'].values).tolist()
+    attributeslist = data.columns.tolist()
+    attributeslist = attributeslist[1:2] + attributeslist[3:]
+    final_dict = {}
+    for country in countrylist:
+        country_dict = {}
+        for attr in attributeslist:
+            attrvalues = data[data['country'] == country][[attr]].values.reshape(-1).tolist()
+            attrlist = []
+            for i in range(2021 - len(attrvalues), 2021):
+                attrlist.append({"key": i, "value": attrvalues[i - (2021 - len(attrvalues))]})
+            country_dict[attr] = attrlist
+        final_dict[country] = country_dict
+    linechartdata = pd.DataFrame(final_dict).to_json(orient="columns")
+
+    return render_template('index.html', mydata_json=mylist, linechartdata=linechartdata, countrylist=countrylist, attributeslist=attributeslist)
 
 @app.route('/fetchPCPData', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
