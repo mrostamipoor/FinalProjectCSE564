@@ -275,28 +275,10 @@ performance.set('Authoritarian Regime',5);
   
   function piechart() {
 
-	var data = [
-		{
-			name: "High performing democracy",
-			value: 60
-		},
-		{
-			name: "Mid-range performing democracy",
-			value: 20
-		},
-		{
-			name: "Weak democracy",
-			value: 30
-		},
-		{
-			name: "Hybrid Regime",
-			value: 15
-		},
-		{
-			name: "Authoritarian Regime",
-			value: 10
-		},
-	];
+  var data = {{ piedata | safe }} ;
+  console.log("piedata")
+  console.log(data)
+	
 	var csv_data=[];
 	var setdata=[];
 /*d3.csv("./static/data/afile.csv", function(error, data) {

@@ -30,8 +30,9 @@ def dokmeans(labaled_data):
     return labaled_data
     
 data = pd.read_csv('static/data/newDemo.csv')
+'''data = pd.read_csv('static/data/GSoDI_v5.1.csv')
 # data=data.dropna()
-'''data=data[['ID_year','democratic_performance_numeric','ID_country_name','C_SD11','C_SD12','C_SD13','C_SD14','C_SD21','C_SD22A','C_SD22B','C_SD22C','C_SD22D','C_SD22E','C_SD23A','C_SD23B','C_SD23C','C_SD31','C_SD32','C_SD33','C_SD41','C_SD42','C_SD51','C_SD52','C_SD53','C_SD54']]
+data=data[['ID_year','democratic_performance_numeric','ID_country_name','C_SD11','C_SD12','C_SD13','C_SD14','C_SD21','C_SD22A','C_SD22B','C_SD22C','C_SD22D','C_SD22E','C_SD23A','C_SD23B','C_SD23C','C_SD31','C_SD32','C_SD33','C_SD41','C_SD42','C_SD51','C_SD52','C_SD53','C_SD54']]
 data.rename(columns={'C_SD11':'clean_elections' }, inplace=True)
 data.rename(columns={'C_SD12':'inclusive_suffrage' }, inplace=True)
 data.rename(columns={'C_SD13':'free_political_parties' }, inplace=True)
@@ -66,7 +67,8 @@ for feature in features_name:
         data[feature] = data.groupby('democratic_performance_numeric')[feature].transform(lambda grp: grp.fillna(np.mean(grp)))
 
 print(data.columns)
-data.to_csv('static/data/newDemo.csv', sep=',')'''
+data.to_csv('static/data/newDemo.csv', index=False, sep=',')'''
+
 #corr_martrix=data.corr()
 #corr_martrix.to_csv('static/data/corr.csv', sep=',')
 
@@ -88,6 +90,7 @@ def index():
 
     countrylist = np.unique(data['country'].values).tolist()
     attributeslist = data.columns.tolist()
+    print(f'attributeslist: {attributeslist}')
     attributeslist = attributeslist[1:2] + attributeslist[3:]
     final_dict = {}
     for country in countrylist:
@@ -101,7 +104,21 @@ def index():
         final_dict[country] = country_dict
     linechartdata = pd.DataFrame(final_dict).to_json(orient="columns")
 
-    return render_template('index.html', mapdata=maplist, linechartdata=linechartdata, countrylist=countrylist, attributeslist=attributeslist)
+    count_dict = data[data['ID_year'] == 2020]['democratic_performance_numeric'].value_counts().to_dict()
+    tmp_list = []
+    for i in range(1, 6):
+        if i == 1:
+            tmp_list.append({"name": "High performing democracy", "value": count_dict[i]})
+        elif i == 2:
+            tmp_list.append({"name": "Mid-range performing democracy", "value": count_dict[i]})
+        if i == 3:
+            tmp_list.append({"name": "Weak democracy", "value": count_dict[i]})
+        elif i == 4:
+            tmp_list.append({"name": "Hybrid Regime", "value": count_dict[i]})
+        elif i == 5:
+            tmp_list.append({"name": "Authoritarian Regime", "value": count_dict[i]})
+
+    return render_template('index.html', mapdata=maplist, linechartdata=linechartdata, countrylist=countrylist, attributeslist=attributeslist, piedata=tmp_list)
 
 '''@app.route('/fetchPCPData', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])
