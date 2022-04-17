@@ -72,7 +72,8 @@
     output.innerHTML = this.value;
     year =this.value;
     drawPcpPlot('test',6,year)
-    data = google.visualization.arrayToDataTable(test[year-1975]);
+    // data = google.visualization.arrayToDataTable(test[year-1975]);
+    drawMap()
     google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
   }
   function drawMap() {   
