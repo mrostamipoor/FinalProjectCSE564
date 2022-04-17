@@ -75,29 +75,12 @@
     data = google.visualization.arrayToDataTable(test[year-1975]);
     google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
   }
-  function drawMap() {
-    countries=[]
-    var tmp=	['Country', 'DemocraticPerformance'];
-    countriesList=[]
-    countriesList.push(tmp);
-    d3.csv("./static/data/newDemo.csv", function(data) {
-      for (var i = 0; i < data.length; i++) {
-        if (!countries.includes(data[i].country, 0)){
-          tmp=[]
-          countries.push(data[i].country);
-          tmp.push(data[i].country);
-          tmp.push(parseInt(data[i].democratic_performance_numeric));
-          countriesList.push(tmp);
-        }
-      }
-    });
+  function drawMap() {   
     
     console.log("mydata");
     var test = {{ mydata_json | safe }} ;
     console.log(test);
     console.log("mydata end");
-
-    //console.log(countriesList);
     var data = google.visualization.arrayToDataTable(test[year-1975]);
     
     var options = {
