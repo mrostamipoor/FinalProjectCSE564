@@ -113,10 +113,10 @@ with open('./static/graph.json','w') as fp:
 
 @app.route('/')
 def index():
-    mylist = [0] * (2021 - 1975)
+    maplist = [0] * (2021 - 1975)
     for i in range(1975, 2021):
         tmplist = data[data['ID_year'] == i][['country', 'democratic_performance_numeric']].values
-        mylist[i - 1975] = np.insert(tmplist, [0], ['Country', 'DemocraticPerformance'], axis = 0).tolist()
+        maplist[i - 1975] = np.insert(tmplist, [0], ['Country', 'DemocraticPerformance'], axis = 0).tolist()
 
 
     countrylist = np.unique(data['country'].values).tolist()
@@ -134,7 +134,7 @@ def index():
         final_dict[country] = country_dict
     linechartdata = pd.DataFrame(final_dict).to_json(orient="columns")
 
-    return render_template('index.html', mydata_json=mylist, linechartdata=linechartdata, countrylist=countrylist, attributeslist=attributeslist)
+    return render_template('index.html', mapdata=maplist, linechartdata=linechartdata, countrylist=countrylist, attributeslist=attributeslist)
 
 @app.route('/fetchPCPData', methods=['GET'])
 @cross_origin(origin='*',headers=['Content-Type','Authorization'])

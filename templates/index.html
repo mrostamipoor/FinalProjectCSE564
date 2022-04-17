@@ -72,17 +72,16 @@
     output.innerHTML = this.value;
     year =this.value;
     drawPcpPlot('test',6,year)
-    // data = google.visualization.arrayToDataTable(test[year-1975]);
     drawMap()
     google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
   }
   function drawMap() {   
     
-    console.log("mydata");
-    var test = {{ mydata_json | safe }} ;
-    console.log(test);
-    console.log("mydata end");
-    var data = google.visualization.arrayToDataTable(test[year-1975]);
+    console.log("mapdata");
+    var mapdata = {{ mapdata | safe }} ;
+    console.log(mapdata);
+    console.log("mapdata end");
+    var data = google.visualization.arrayToDataTable(mapdata[year-1975]);
     
     var options = {
       colorAxis: {colors: ['#1f77b4','#2ca02c', '#9467bd','#d62728','#ff7f0e']},
@@ -102,10 +101,10 @@
       for (var i = 0; i < selection.length; i++) {
         var item = selection[i];
         if (item.row != null && item.column != null) {
-          message += '{row:' + test[year-1975][item.row] + ',column:' + item.column + '}';
+          message += '{row:' + mapdata[year-1975][item.row] + ',column:' + item.column + '}';
         } else if (item.row != null) {
-          message += '{row:' + test[year-1975][item.row][0] + '}';
-          drawPcpPlot(test[year-1975][item.row][0],6,year)	
+          message += '{row:' + mapdata[year-1975][item.row][0] + '}';
+          drawPcpPlot(mapdata[year-1975][item.row][0],6,year)	
         } else if (item.column != null) {
           message += '{column:' + item.column + '}';
         }
@@ -185,8 +184,6 @@
     } else {
       yScale.domain([0, d3.max(linechartdata, function (d) {return d.value;})]);
     }
-    
-    Math.max(1, 3)
     
     g.append("g")
     .attr("transform", "translate(0," + height + ")")
