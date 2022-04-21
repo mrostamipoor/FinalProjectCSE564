@@ -50,8 +50,10 @@
   colorsg.set(1, '#1f77b4');
   colorsg.set(2, '#2ca02c');
   colorsg.set(3, '#9467bd');
-  colorsg.set(4, '#d62728');
-  colorsg.set(5, '#ff7f0e');
+  // colorsg.set(4, '#d62728');
+  colorsg.set(5, '#d62728');
+  colorsg.set(4, '#ff7f0e');
+  // colorsg.set(5, '#ff7f0e');
   var performance = new Map();
   performance.set('High performing democracy',1);
   performance.set('Mid-range performing democracy',2);
@@ -116,7 +118,8 @@
     var data = google.visualization.arrayToDataTable(mapdata[year-1975]);
     
     var options = {
-      colorAxis: {colors: ['#1f77b4','#2ca02c', '#9467bd','#d62728','#ff7f0e']},
+      // colorAxis: {colors: ['#1f77b4','#2ca02c', '#9467bd','#d62728','#ff7f0e']},
+      colorAxis: {colors: ['#1f77b4','#2ca02c', '#9467bd', '#ff7f0e', '#d62728']},
       //['#1f77b4:5','#2ca02c: 4', '#9467bd: 3','#d62728: 2','#ff7f0e: 1']
       dataMode: 'regions',
       backgroundColor: '#efefef',
