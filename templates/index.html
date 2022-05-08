@@ -115,7 +115,7 @@ var countries=[];
   slider.oninput = function() {
     output.innerHTML = this.value;
     year =this.value;
-    drawPcpPlot('test',6,year)
+    drawPcpPlot('test',6,year,[])
     drawMap()
     google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
     piechart()
@@ -152,13 +152,14 @@ var countries=[];
           message += '{row:' + mapdata[year-1975][item.row][0] + '}';
 		  if(!countries.includes(mapdata[year-1975][item.row+1][0])){
 			countries.push(mapdata[year-1975][item.row+1][0]);
-			//console.log(countries);
 		  }
 		    var index = document.getElementById("index");
 			var index_value = index.value;
 		  if(countries.length==index_value)  {
-		  countries=[]
-          drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year)	}
+			  
+			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year,countries)
+			  countries=[]
+			  }
 		  
         } else if (item.column != null) {
           message += '{column:' + item.column + '}';

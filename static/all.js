@@ -43,17 +43,8 @@ performance.set('Hybrid Regime',4);
 performance.set('Authoritarian Regime',5);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-async function getPCPData() {
-	const url = baseUrl + "fetchPCPData"
-	let response = await fetch(url)
-	pcpData = await response.json()
 
-	return drawPcpPlot("labaled_data.csv", 18, 0)
-}
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function drawPcpPlot(coutryname, demo_status,year) {
+function drawPcpPlot(coutryname, demo_status,year,countries) {
 	document.getElementById("pcp").innerHTML = ""
 
 	//colors = ['#a6cee3','#cab2d6', '#b2df8a', '#b15928', '#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f', '#cab2d6', '#ffff99'];
@@ -120,11 +111,13 @@ function drawPcpPlot(coutryname, demo_status,year) {
 			.attr("d", line)
 			.style("stroke", function(d) {
 			if (demo_status==6){
-				if (d.country == coutryname) {
-					//return '#8c564b ';
-					return '#fa26a0';
+				if (coutryname == 'test') {
+					//return '#fa26a0';
 				} else {
-					if (coutryname == 'test') {
+					//if (d.country == coutryname)
+					console.log(countries)
+					if (countries.includes(d.country)) {
+						//return '#fa26a0';
 						return colorsg.get(+d.democratic_performance_numeric);
 					} else {
 						return '#dadada';
@@ -227,7 +220,6 @@ function drawPcpPlot(coutryname, demo_status,year) {
 						extent: d3.brushSelection(this)
 					});
 				});
-			//set un-brushed foreground line disappear
 			foreground.classed("fade", function(d, i) {
 
 				return !actives.every(function(active) {
@@ -384,19 +376,19 @@ function piechart() {
 			var slider = document.getElementById("myRange");
 			var year = slider.value;
 			if(value.includes("High")){
-				drawPcpPlot('pie',1,year)	
+				drawPcpPlot('pie',1,year,[])	
 			}
 			if(value.includes("Mid-range")){
-				drawPcpPlot('pie',2,year)
+				drawPcpPlot('pie',2,year,[])
 			}
 			if(value.includes("Weak")){
-				drawPcpPlot('pie',3,year)
+				drawPcpPlot('pie',3,year,[])
 			}
 			if(value.includes("Hybrid")){
-			drawPcpPlot('pie',4,year)	
+			drawPcpPlot('pie',4,year,[])	
 			}
 			if(value.includes("Authoritarian")){
-			drawPcpPlot('pie',5,year)	
+			drawPcpPlot('pie',5,year,[])	
 			}
 
 		})
