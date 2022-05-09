@@ -31,10 +31,8 @@ var colorsg = new Map();
 colorsg.set(1, '#037488');
 colorsg.set(2, '#89bbbd');
 colorsg.set(3, '#fdfbee');
-// colorsg.set(4, '#d62728');
-colorsg.set(5, '#d94620');
 colorsg.set(4, '#f5c0a2');
-// colorsg.set(5, '#ff7f0e');Z
+colorsg.set(5, '#d94620');
 var performance = new Map();
 performance.set('High performing democracy',1);
 performance.set('Mid-range performing democracy',2);
@@ -46,9 +44,6 @@ performance.set('Authoritarian Regime',5);
 
 function drawPcpPlot(coutryname, demo_status,year,countries) {
 	document.getElementById("pcp").innerHTML = ""
-
-	//colors = ['#a6cee3','#cab2d6', '#b2df8a', '#b15928', '#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f', '#cab2d6', '#ffff99'];
-	//colors = ['#74add4', '#b2df8a', '#f4a2a4', '#fb9a99', '#fdbf6f', '#cab2d6']
 
 	svgWidth = 900,
 		svgHeight = 550,
@@ -156,10 +151,7 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 				if (coutryname == 'default') {
 					return colorsg.get(+d.democratic_performance_numeric);
 				} else {
-					//if (d.country == coutryname)
-					//console.log(countries)
 					if (countries.includes(d.country)) {
-						//return '#fa26a0';
 						return colorsg.get(+d.democratic_performance_numeric);
 					} else {
 						return '#ffeeec';
@@ -294,189 +286,117 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 	});
 }
 
-function piechart() {
+function CreateBarChartInverse(column,year) {
+    d3.selectAll('barchart').remove();
+    var barHeight = 20;
+	padding = 90;
+    var margin = { top: 50, right: 50, bottom: 50, left: 80 },
+        height = 400 - margin.top - margin.bottom,
+        width = 650 - margin.left - margin.right;
 
-	var data = [
-		{
-			name: "High performing democracy",
-			value: 60
-		},
-		{
-			name: "Mid-range performing democracy",
-			value: 20
-		},
-		{
-			name: "Weak democracy",
-			value: 30
-		},
-		{
-			name: "Hybrid Regime",
-			value: 15
-		},
-		{
-			name: "Authoritarian Regime",
-			value: 10
-		},
-	];
-	var csv_data=[];
-	var setdata=[];
-/*d3.csv("./static/data/afile.csv", function(error, data) {
-            if (error) {
-                throw error;
-            }
-            for (var i = 0; i < data.length; i++) {
-                var key = data[i]['name'] + '-' + data[i]['value'];
-				
-				if (!csv_data.includes(key)){
-					csv_data.push(key);
-					 console.log(key);
-					 var map = new Map();
-					 map.set('name', data[i]['name']);
-					 map.set('value', data[i]['value']);
-					 console.log(map);
-					 setdata.push(map);
-				}
-	}
+    var svg = d3.select("#barchart").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    /*svg.append("text")
+		.attr("class", "astyle")
+        .attr("transform", "translate(100,0)")
+        .attr("x", 200)
+        .attr("y", -10)
+        .text("Bar Chart for IMDB Movie Data")*/
+
+    var g = svg.append("g")
+        .attr("transform", function (d, i) {
+            return "translate(0," + i * barHeight + ")";
+        });
+ Sortedvalue = [];
+    d3.csv("./static/data/newDemo.csv", function (error, data) {
+        if (error) {
+            throw error;
+        }
+
+
+       
+        for (let index = 0; index < data.length; index++) {
+			if (data[index]['ID_year']==year){
+				const newObj = new Object();
+				newObj.country=data[index]['country']
+				newObj.values=parseFloat(data[index][column])
+				newObj.perf=parseFloat(data[index]['democratic_performance_numeric'])
+				Sortedvalue.push(newObj)
+			}
+        }
+		mydata=[];
+		Sortedvalue.sort((a, b) => b.values - a.values);
+		for (let index = 0; index < 7; index++) {
+			 mydata.push(Sortedvalue[index])
+		}
+		var yScale = d3.scaleBand().range([height, 0]).padding(0.05);
+        var xScale = d3.scaleLinear().range([0, width]);
+
+        yScale.domain(mydata.map(function (d) {
+            return d.country;
+        }));
+        xScale.domain([0, d3.max(mydata, function (d) {
+
+            return d.values;
+        })]);
+
+
+        g.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("class", "axis")
+            .call(d3.axisBottom(xScale))
+            .append("text")
+            .attr("x", 30)
+            .attr("dx", "-3em")
+            .attr("y", 40)
+            .attr("dx", "68em")
+            .attr("stroke", "black")
+            .attr("font-size", "16px")
+            .attr("text-anchor", "end");
+
+ 
+		g.append("g")
+            .attr("class", "axis")
+            .call(d3.axisLeft(yScale))
+            .append("text")
+			.attr("transform", "rotate(-90)");
+		
+		svg.append("text")
+			.attr("class", "labeltext")
+			.attr("text-anchor", "middle") 
+			.attr("transform", "translate(" + (-70) + "," + (height / 2) + ")rotate(-90)") 	
+			.text('Country Name');
+
+		svg.append("text")
+			.attr("class", "labeltext")
+			.attr("text-anchor", "middle") 
+			.attr("transform", "translate(" + (250) + "," + (340) + ")") 
+			.text("Value");
+	
+        g.selectAll(".bar")
+            .data(mydata)
+            .enter().append("rect")
+            .attr("fill", function(d) {
+				return colorsg.get(+d.perf);
+			})
+            .attr("x", 1)
+			//.attr("stroke", "red")
+            .attr("y", function (d) {
+                return yScale(d.country);
+            })
+
+            .attr("width", function (d) { return xScale(d.values); })
+            .attr("height", yScale.bandwidth())
+			.on("click", function (d, i) {
+				alert(1);
+			});
+
+            
 	});
-	console.log(setdata)
-	console.log(data)*/
-	var text = "";
 
-	var width = 200;
-	var height = 200;
-	var thickness = 40;
-	var duration = 750;
-	var padding = 10;
-	var opacity = .8;
-	var opacityHover = 1;
-	var otherOpacityOnHover = .8;
-	var tooltipMargin = 13;
-
-	var radius = Math.min(width - padding, height - padding) / 2;
-	var color = d3.scaleOrdinal(d3.schemeCategory10);
-
-	var svg = d3.select("#chart")
-		.append('svg')
-		.attr('class', 'pie')
-		.attr('width', width)
-		.attr('height', height);
-
-	var g = svg.append('g')
-		.attr('transform', 'translate(' + (width / 2) + ',' + (height / 2) + ')');
-
-	var arc = d3.arc()
-		.innerRadius(0)
-		.outerRadius(radius);
-
-	var pie = d3.pie()
-		.value(function(d) {
-			return d.value;
-		})
-		.sort(null);
-
-	var path = g.selectAll('path')
-		.data(pie(data))
-		.enter()
-		.append("g")
-		.append('path')
-		.attr('d', arc)
-		.attr('fill', function(d, i)  { 
-		var tmp=Object.values(Object.values(d)[0])[0];
-		var indx=performance.get(tmp);
-		return colorsg.get(indx)})
-		.style('opacity', opacity)
-		.style('stroke', 'white')
-		.on("mouseover", function(d) {
-			d3.selectAll('path')
-				.style("opacity", otherOpacityOnHover);
-			d3.select(this)
-				.style("opacity", opacityHover);
-
-			let g = d3.select("svg")
-				.style("cursor", "pointer")
-				.append("g")
-				.attr("class", "tooltip")
-				.style("opacity", 0);
-
-			g.append("text")
-				.attr("class", "name-text")
-				.text(`${d.data.name} (${d.data.value})`)
-				.attr('text-anchor', 'middle');
-
-			let text = g.select("text");
-			let bbox = text.node().getBBox();
-			let padding = 2;
-			g.insert("rect", "text")
-				.attr("x", bbox.x - padding)
-				.attr("y", bbox.y - padding)
-				.attr("width", bbox.width + (padding * 2))
-				.attr("height", bbox.height + (padding * 2))
-				.style("fill", "white")
-				.style("opacity", 0.75);
-		})
-		.on("click", function(d) {
-			let text = d3.select('.tooltip text');
-			value=text.node().innerHTML
-			var slider = document.getElementById("myRange");
-			var year = slider.value;
-			if(value.includes("High")){
-				drawPcpPlot('pie',1,year,[])	
-			}
-			if(value.includes("Mid-range")){
-				drawPcpPlot('pie',2,year,[])
-			}
-			if(value.includes("Weak")){
-				drawPcpPlot('pie',3,year,[])
-			}
-			if(value.includes("Hybrid")){
-			drawPcpPlot('pie',4,year,[])	
-			}
-			if(value.includes("Authoritarian")){
-			drawPcpPlot('pie',5,year,[])	
-			}
-
-		})
-		.on("mouseout", function(d) {
-			d3.select("svg")
-				.style("cursor", "none")
-				.select(".tooltip").remove();
-			d3.selectAll('path')
-				.style("opacity", opacity);
-		})
-		.on("touchstart", function(d) {
-			d3.select("svg")
-				.style("cursor", "none");
-		})
-		.each(function(d, i) {
-			this._current = i;
-		});
-
-	let legend = d3.select("#chart").append('div')
-		.attr('class', 'legend')
-		.style('margin-top', '30px');
-
-	let keys = legend.selectAll('.key')
-		.data(data)
-		.enter().append('div')
-		.attr('class', 'key')
-		.style('display', 'flex')
-		.style('align-items', 'center')
-		.style('margin-right', '20px');
-
-	keys.append('div')
-		.attr('class', 'symbol')
-		.style('height', '10px')
-		.style('width', '10px')
-		.style('margin', '5px 5px')
-		.style('background-color', function(d, i) { 
-		console.log(Object.values(d)[0]);
-		var tmp=Object.values(d)[0];
-		var indx=performance.get(tmp);
-		return colorsg.get(indx)});
-
-	keys.append('div')
-		.attr('class', 'name')
-		.text(d => `${d.name} (${d.value})`);
-
-	keys.exit().remove();
 }

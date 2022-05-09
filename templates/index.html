@@ -55,9 +55,11 @@
   </div>
   <div id="pcp" ></div>
   <div id="chart"></div>
+  <div id="barchart"></div>
 </body>
 
 <script type="text/javascript">
+CreateBarChartInverse('free_political_parties',1985);
 var countries=[];
 /*var colorsg = new Map();
 colorsg.set(1, '#4fa39c');
@@ -77,19 +79,19 @@ var colorsg = new Map();
 colorsg.set(1, '#037488');
 colorsg.set(2, '#89bbbd');
 colorsg.set(3, '#fdfbee');
-// colorsg.set(4, '#d62728');
-colorsg.set(5, '#d94620');
 colorsg.set(4, '#f5c0a2');
+colorsg.set(5, '#d94620');
+
   var performance = new Map();
   performance.set('High performing democracy',1);
   performance.set('Mid-range performing democracy',2);
   performance.set('Weak democracy',3);
   performance.set('Hybrid Regime',4);
   performance.set('Authoritarian Regime',5);
-  console.log("countrylist");
+  //console.log("countrylist");
   countrylist = {{ countrylist | safe }} ;
   
-  console.log("attributeslist");
+  //console.log("attributeslist");
   attributeslist = {{ attributeslist | safe }} ;
   
   d3.select("#selectCountry")
@@ -110,16 +112,16 @@ colorsg.set(4, '#f5c0a2');
   .text(function (d) { return d; }) // text showed in the menu
   .attr("value", function (d) { return d; }) // corresponding value returned by the button
   
-  console.log("countrylist, None")
-  console.log(countrylist.unshift("None"))
+  //console.log("countrylist, None")
+  //console.log(countrylist.unshift("None"))
   
   d3.select("#selectAttr")
   .selectAll('myOptions')
   .data(attributeslist)
   .enter()
   .append('option')
-  .text(function (d) { return d; }) // text showed in the menu
-  .attr("value", function (d) { return d; }) // corresponding value returned by the button
+  .text(function (d) { return d; }) 
+  .attr("value", function (d) { return d; }) 
   
   
   var slider = document.getElementById("myRange");
@@ -137,16 +139,14 @@ colorsg.set(4, '#f5c0a2');
   }
   function drawMap() {   
     
-    console.log("mapdata");
+    //console.log("mapdata");
     var mapdata = {{ mapdata | safe }} ;
-    console.log(mapdata);
-    console.log("mapdata end");
+    //console.log(mapdata);
+    //console.log("mapdata end");
     var data = google.visualization.arrayToDataTable(mapdata[year-1975]);
     
     var options = {
-      // colorAxis: {colors: ['#1f77b4','#2ca02c', '#9467bd','#d62728','#ff7f0e']},
       colorAxis: {colors: ['#037488','#89bbbd', '#fdfbee', '#f5c0a2','#d94620']},
-      //['#1f77b4:5','#2ca02c: 4', '#9467bd: 3','#d62728: red','#ff7f0e: 1']
       dataMode: 'regions',
       backgroundColor: '#efefef',
       width: 850,
@@ -318,10 +318,10 @@ colorsg.set(4, '#f5c0a2');
     
     
     var dataall = {{ piedata | safe }} ;
-    console.log("piedata")
-    console.log(dataall)
-    console.log("piedata2020")
-    console.log(dataall[year - 1975])
+    //console.log("piedata")
+    //console.log(dataall)
+    //console.log("piedata2020")
+    //console.log(dataall[year - 1975])
     var data = dataall[year - 1975]
     
     var text = "";
@@ -404,19 +404,19 @@ colorsg.set(4, '#f5c0a2');
         var slider = document.getElementById("myRange");
         var year = slider.value;
         if(value.includes("High")){
-          drawPcpPlot('pie',1,year)	
+          drawPcpPlot('pie',1,year,[])	
         }
         if(value.includes("Mid-range")){
-          drawPcpPlot('pie',2,year)
+          drawPcpPlot('pie',2,year,[])
         }
         if(value.includes("Weak")){
-          drawPcpPlot('pie',3,year)
+          drawPcpPlot('pie',3,year,[])
         }
         if(value.includes("Hybrid")){
-          drawPcpPlot('pie',4,year)	
+          drawPcpPlot('pie',4,year,[])	
         }
         if(value.includes("Authoritarian")){
-          drawPcpPlot('pie',5,year)	
+          drawPcpPlot('pie',5,year,[])	
         }
         
       })
@@ -453,7 +453,7 @@ colorsg.set(4, '#f5c0a2');
       .style('width', '10px')
       .style('margin', '5px 5px')
       .style('background-color', function(d, i) { 
-        console.log(Object.values(d)[0]);
+        //console.log(Object.values(d)[0]);
         var tmp=Object.values(d)[0];
         var indx=performance.get(tmp);
         return colorsg.get(indx)});
