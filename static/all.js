@@ -112,6 +112,7 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 			.style("stroke", function(d) {
 			if (demo_status==6){
 				if (coutryname == 'test') {
+					return colorsg.get(+d.democratic_performance_numeric);
 					//return '#fa26a0';
 				} else {
 					//if (d.country == coutryname)
