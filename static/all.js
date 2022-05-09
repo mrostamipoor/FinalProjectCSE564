@@ -28,12 +28,12 @@ atrributes.set(12, 'imdb_score');
 atrributes.set(13, 'movie_facebook_likes');
 
 var colorsg = new Map();
-colorsg.set(1, '#1f77b4');
-colorsg.set(2, '#2ca02c');
-colorsg.set(3, '#9467bd');
+colorsg.set(1, '#037488');
+colorsg.set(2, '#89bbbd');
+colorsg.set(3, '#fdfbee');
 // colorsg.set(4, '#d62728');
-colorsg.set(5, '#d62728');
-colorsg.set(4, '#ff7f0e');Z
+colorsg.set(5, '#d94620');
+colorsg.set(4, '#f5c0a2');
 // colorsg.set(5, '#ff7f0e');Z
 var performance = new Map();
 performance.set('High performing democracy',1);
@@ -48,7 +48,7 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 	document.getElementById("pcp").innerHTML = ""
 
 	//colors = ['#a6cee3','#cab2d6', '#b2df8a', '#b15928', '#a6cee3', '#b2df8a', '#fb9a99', '#fdbf6f', '#cab2d6', '#ffff99'];
-	colors = ['#74add4', '#b2df8a', '#f4a2a4', '#fb9a99', '#fdbf6f', '#cab2d6']
+	//colors = ['#74add4', '#b2df8a', '#f4a2a4', '#fb9a99', '#fdbf6f', '#cab2d6']
 
 	svgWidth = 900,
 		svgHeight = 550,
@@ -133,21 +133,21 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 			.style("stroke-opacity", function(d) {
 				if (demo_status==6){
 				if (coutryname == 'default') {
-					return "0.8";
+					return "0.9";
 				} else {
 					if (countries.includes(d.country)) {
-						return "0.8";
+						return "0.9";
 					} else {
-						return '0.1';
+						return '0.3';
 					}
 				}
 			}
 			
 			else {
 				if (d.democratic_performance_numeric == demo_status) {
-					return "0.8";
+					return "0.9";
 				} else {
-					return '0.1'
+					return '0.3'
 				}
 			}
 			})
@@ -162,7 +162,7 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 						//return '#fa26a0';
 						return colorsg.get(+d.democratic_performance_numeric);
 					} else {
-						return '#dadada';
+						return '#ffeeec';
 					}
 				}
 			}
@@ -171,7 +171,7 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 				if (d.democratic_performance_numeric == demo_status) {
 					return colorsg.get(+d.democratic_performance_numeric);
 				} else {
-					return '#dadada'
+					return '#ffeeec'
 				}
 			}
 			});
