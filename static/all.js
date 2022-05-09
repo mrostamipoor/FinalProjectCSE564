@@ -109,14 +109,55 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 			.data(data)
 			.enter().append("path")
 			.attr("d", line)
+			.style("stroke-width", function(d) {
+				if (demo_status==6){
+				if (coutryname == 'default') {
+					return "1.5px";
+				} else {
+					if (countries.includes(d.country)) {
+						return "5px";
+					} else {
+						return '0.5px';
+					}
+				}
+			}
+			
+			else {
+				if (d.democratic_performance_numeric == demo_status) {
+					return "4.5px";
+				} else {
+					return '0.5px'
+				}
+			}
+			})
+			.style("stroke-opacity", function(d) {
+				if (demo_status==6){
+				if (coutryname == 'default') {
+					return "0.8";
+				} else {
+					if (countries.includes(d.country)) {
+						return "0.8";
+					} else {
+						return '0.1';
+					}
+				}
+			}
+			
+			else {
+				if (d.democratic_performance_numeric == demo_status) {
+					return "0.8";
+				} else {
+					return '0.1'
+				}
+			}
+			})
 			.style("stroke", function(d) {
 			if (demo_status==6){
-				if (coutryname == 'test') {
+				if (coutryname == 'default') {
 					return colorsg.get(+d.democratic_performance_numeric);
-					//return '#fa26a0';
 				} else {
 					//if (d.country == coutryname)
-					console.log(countries)
+					//console.log(countries)
 					if (countries.includes(d.country)) {
 						//return '#fa26a0';
 						return colorsg.get(+d.democratic_performance_numeric);
@@ -242,9 +283,11 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 
 		function line(d) {
 			if (d['ID_year']==year){
-			return d3.line()(dimensions.map(function(key) {
+			return d3.line()
+			(dimensions.map(function(key) {
 				return [x(key), y[key](d[key])];
-		}));}else{
+		}));}
+		else{
 			return;
 		}
 		}

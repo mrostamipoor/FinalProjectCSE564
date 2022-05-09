@@ -115,7 +115,7 @@ var countries=[];
   slider.oninput = function() {
     output.innerHTML = this.value;
     year =this.value;
-    drawPcpPlot('test',6,year,[])
+    drawPcpPlot('default',6,year,[])
     drawMap()
     google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
     piechart()
@@ -175,7 +175,7 @@ var countries=[];
     chart.draw(data, options);
   }
   google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
-  drawPcpPlot('test',6,year)		
+  drawPcpPlot('default',6,year,[])		
   piechart()
   
   var country = document.getElementById("selectCountry").value;
