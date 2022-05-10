@@ -98,7 +98,8 @@ def index():
             attrvalues = data[data['country'] == country][[attr]].values.reshape(-1).tolist()
             attrlist = []
             for i in range(2021 - len(attrvalues), 2021):
-                attrlist.append({"key": i, "value": attrvalues[i - (2021 - len(attrvalues))]})
+                # attrlist.append({"key": i, "value": attrvalues[i - (2021 - len(attrvalues))]})
+                attrlist.append({"date": f'{i}-01-01', "value": attrvalues[i - (2021 - len(attrvalues))]})
             country_dict[attr] = attrlist
         final_dict[country] = country_dict
     linechartdata = pd.DataFrame(final_dict).to_json(orient="columns")

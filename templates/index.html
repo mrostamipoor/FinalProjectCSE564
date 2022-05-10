@@ -214,6 +214,7 @@ colorsg.set(5, '#d94620');
   }
   
   function drawLinechart(country, country2, attr){
+    let colorArr = ["steelblue", "orange", "gray", "red", "green", "black", "yellow"]
     document.getElementById("line-chart").innerHTML = ""
     
     var margin = { top: 30, right: 70, bottom: 70, left:50 },
@@ -242,78 +243,156 @@ colorsg.set(5, '#d94620');
     linechartdatafull = {{ linechartdata | safe }} ;
     linechartdata = linechartdatafull[country][attr]
     
+    dataArr = [];
+    dataArr.push(linechartdata)
     if (country2 != "None") {
       linechartdata2 = linechartdatafull[country2][attr]
+      dataArr.push(linechartdata2)
     }
     
-    var xScale = d3.scaleLinear().range([0, width]);
-    var yScale = d3.scaleLinear().range([height, 0]);
-    if (country2 != "None") {
-      xScale.domain([ Math.min(d3.min(linechartdata2, function (d) {return d.key;}), 
-      d3.min(linechartdata, function (d) {return d.key;})), d3.max(linechartdata, function (d) {return d.key;})]);
+    
+    for (let i = 0; i < dataArr.length; i++) {
+      dataArr[i].forEach(function(d) {
+          d.date = d3.timeParse("%Y-%m-%d")(d.date);
+          d.value = +d.value;
+      });
+    }
+    
+    // Add X axis --> it is a date format
+    var minx = d3.min(dataArr[0], function(d) { return d.date; })
+    var maxx = d3.max(dataArr[0], function(d) { return d.date; })
+    for (let i = 0; i < dataArr.length; i++) {
+      mini = d3.min(dataArr[i], function(d) { return d.date; })
+      maxi = d3.max(dataArr[i], function(d) { return d.date; })
+      if (minx > mini) { minx = mini; }
+      if (maxx < maxi) { maxx = maxi; }
+    }
+
+    var x = d3.scaleTime()
+      .domain([minx, maxx])
+      .range([ 0, width ]);
+    xAxis = svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+
+    // Add Y axis
+    if (attr == "democratic_performance_numeric" ) {
+      var y = d3.scaleLinear().domain([0, 5]).range([ height, 0 ]);
     } else {
-      xScale.domain([d3.min(linechartdata, function (d) {return d.key;}), d3.max(linechartdata, function (d) {return d.key;})]);
-    }
-    if (country2 != "None") {
-      yScale.domain([0, Math.max(d3.max(linechartdata, function (d) {return d.value;}), d3.max(linechartdata2, function (d) {return d.value;}))]);
-    } else {
-      yScale.domain([0, d3.max(linechartdata, function (d) {return d.value;})]);
+      var y = d3.scaleLinear().domain([0, 1]).range([ height, 0 ]);
     }
     
-    g.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .attr("class", "axis")
-    .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
-    
-    g.append("g")
-    .attr("class", "axis")
-    .call(d3.axisLeft(yScale))
-    .append("text")
-    .attr("transform", "rotate(-90)");
-    
+    yAxis = svg.append("g").call(d3.axisLeft(y));
+
     svg.append("text")
     .attr("class", "labeltext")
     .attr("text-anchor", "middle") 
-    .attr("transform", "translate(" + (20) + "," + (height / 2) + ")rotate(-90)")
+    .attr("transform", "translate(" + (-30) + "," + (height / 2) + ")rotate(-90)")
     .text("Metric");
     
     svg.append("text")
     .attr("class", "labeltext")
     .attr("text-anchor", "middle") 
-    .attr("transform", "translate(" + (width/2) + "," + 1.175*height + ")") 
+    .attr("transform", "translate(" + (width/2) + "," + 1.16*height + ")") 
     .text("year");
+
+    lineArr = [];
+    for (let i = 0; i < dataArr.length; i++) {
+      data = dataArr[i];
+    // Add a clipPath: everything out of this area won't be drawn.
+    var clip = svg.append("defs").append("svg:clipPath")
+        .attr("id", "clip")
+        .append("svg:rect")
+        .attr("width", width )
+        .attr("height", height )
+        .attr("x", 0)
+        .attr("y", 0);
+
+    // Add brushing
+    var brush = d3.brushX()                   // Add the brush feature using the d3.brush function
+        .extent( [ [0,0], [width,height] ] )  // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
+        .on("end", updateChart)               // Each time the brush selection changes, trigger the 'updateChart' function
+
+    // Create the line variable: where both the line and the brush take place
+    lineArr.push(svg.append('g').attr("clip-path", "url(#clip)"))
+
+    // Add the line
     
-    svg.append("path")
-    .datum(linechartdata)
-    .attr("transform", "translate(" + (margin.left) + "," + (margin.top) + ")")
-    .attr("fill", "none")
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-    .x(function(d) { return xScale(d.key) })
-    .y(function(d) { return yScale(d.value) })
-    )
+      // line.append("path")
+      lineArr[i].append("path")
+        .datum(data)
+        .attr("class", "line"+i)  // I add the class line to be able to modify this line later on.
+        .attr("fill", "none")
+        .attr("stroke", colorArr[i])
+        .attr("stroke-width", 1.5)
+        .attr("d", d3.line()
+          .x(function(d) { return x(d.date) })
+          .y(function(d) { return y(d.value) })
+          )
     
-    if (country2 != "None"){
-      svg.append("path")
-      .datum(linechartdata2)
-      .attr("transform", "translate(" + (margin.left) + "," + (margin.top) + ")")
-      .attr("fill", "none")
-      .attr("stroke", "orange")
-      .attr("stroke-width", 1.5)
-      .attr("d", d3.line()
-      .x(function(d) { return xScale(d.key) })
-      .y(function(d) { return yScale(d.value) })
+    // Add the brushing
+    lineArr[i]
+      .append("g")
+        .attr("class", "brush")
+        .call(brush);
+
+    // A function that set idleTimeOut to null
+    var idleTimeout
+    function idled() { idleTimeout = null; }
+
+    // A function that update the chart for given boundaries
+    function updateChart() {
+
+      // What are the selected boundaries?
+      extent = d3.event.selection
+
+      // If no selection, back to initial coordinate. Otherwise, update X axis domain
+      if(!extent){
+        if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
+        x.domain([ 4,8])
+      }else{
+        x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
+        lineArr[i].select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
+      }
+
+      // Update axis and line position
+      xAxis.transition().duration(1000).call(d3.axisBottom(x))
+      for (let j = 0; j < lineArr.length; j++) {
+      lineArr[j]
+          .select('.line'+j)
+          .transition()
+          .duration(1000)
+          .attr("d", d3.line()
+            .x(function(d) { return x(d.date) })
+            .y(function(d) { return y(d.value) })
+          )
+      }
+    }
+
+    // If user double click, reinitialize the chart
+    svg.on("dblclick",function(){
+      for (let j = 0; j < lineArr.length; j++) {
+      x.domain([minx, maxx])
+      xAxis.transition().call(d3.axisBottom(x))
+      lineArr[j]
+        .select('.line'+j)
+        .transition()
+        .attr("d", d3.line()
+          .x(function(d) { return x(d.date) })
+          .y(function(d) { return y(d.value) })
       )
     }
+    });
+
+  }
     
-    var legend_h = height
-    svg.append("circle").attr("cx", 70).attr("cy", legend_h).attr("r", 6).style("fill", "steelblue")
-    svg.append("text").attr("x", 90).attr("y", legend_h).text(country).style("font-size", "10px").attr("alignment-baseline","middle")
-    if (country2 != "None"){
-      svg.append("circle").attr("cx", 70).attr("cy", legend_h - 30).attr("r", 6).style("fill", "orange")
-      svg.append("text").attr("x", 90).attr("y", legend_h - 30).text(country2).style("font-size", "10px").attr("alignment-baseline","middle")
-    }
+    // var legend_h = height
+    // svg.append("circle").attr("cx", 70).attr("cy", legend_h).attr("r", 6).style("fill", "steelblue")
+    // svg.append("text").attr("x", 90).attr("y", legend_h).text(country).style("font-size", "10px").attr("alignment-baseline","middle")
+    // if (country2 != "None"){
+    //   svg.append("circle").attr("cx", 70).attr("cy", legend_h - 30).attr("r", 6).style("fill", "orange")
+    //   svg.append("text").attr("x", 90).attr("y", legend_h - 30).text(country2).style("font-size", "10px").attr("alignment-baseline","middle")
+    // }
     
   }
   
@@ -322,10 +401,6 @@ colorsg.set(5, '#d94620');
     
     
     var dataall = {{ piedata | safe }} ;
-    //console.log("piedata")
-    //console.log(dataall)
-    //console.log("piedata2020")
-    //console.log(dataall[year - 1975])
     var data = dataall[year - 1975]
     
     var text = "";
