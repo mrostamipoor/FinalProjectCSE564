@@ -174,6 +174,7 @@ colorsg.set(5, '#d94620');
 			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year,countries)
 			  var attr = document.getElementById("selectAttr").value;
 			  CreateBarChartInverse(attr,year,'1');
+        drawLinechart(countries, attr)
 			  countries=[]
 			  }
 		  
@@ -194,29 +195,34 @@ colorsg.set(5, '#d94620');
   drawPcpPlot('default',6,year,[])		
   piechart()
 
-  var country = document.getElementById("selectCountry").value;
-  var country2 = document.getElementById("selectCountry2").value;
+  // var country = document.getElementById("selectCountry").value;
+  // var country2 = document.getElementById("selectCountry2").value;
   var attr = document.getElementById("selectAttr").value;
-  drawLinechart(country, country2, attr)
+  drawLinechart(countries, attr)
     //var attr = document.getElementById("selectAttr").value;
 	console.log(attr);
 	CreateBarChartInverse(attr,2020,'1');
   
-  document.getElementById("selectCountry").onchange = function() {onchangeFunc()};
-  document.getElementById("selectCountry2").onchange = function() {onchangeFunc()};
+  // document.getElementById("selectCountry").onchange = function() {onchangeFunc()};
+  // document.getElementById("selectCountry2").onchange = function() {onchangeFunc()};
   document.getElementById("selectAttr").onchange = function() {onchangeFunc()};
   
   function onchangeFunc() {
-    var country = document.getElementById("selectCountry").value;
-    var country2 = document.getElementById("selectCountry2").value;
+    // var country = document.getElementById("selectCountry").value;
+    // var country2 = document.getElementById("selectCountry2").value;
     var attr = document.getElementById("selectAttr").value;
-    drawLinechart(country, country2, attr)
+    drawLinechart(countries, attr)
   }
   
-  function drawLinechart(country, country2, attr){
+  function drawLinechart(countriesArr, attr){
     let colorArr = ["steelblue", "orange", "gray", "red", "green", "black", "yellow"]
     document.getElementById("line-chart").innerHTML = ""
     
+    console.log("countriesArr")
+    console.log(countriesArr)
+
+    console.log("typeof countriesArr")
+    console.log(typeof countriesArr)
     var margin = { top: 30, right: 70, bottom: 70, left:50 },
     width = 800 - margin.left - margin.right,
     height = 450 - margin.top - margin.bottom;
@@ -240,15 +246,28 @@ colorsg.set(5, '#d94620');
     var g = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
     
-    linechartdatafull = {{ linechartdata | safe }} ;
-    linechartdata = linechartdatafull[country][attr]
-    
     dataArr = [];
-    dataArr.push(linechartdata)
-    if (country2 != "None") {
-      linechartdata2 = linechartdatafull[country2][attr]
-      dataArr.push(linechartdata2)
+    linechartdatafull = {{ linechartdata | safe }} ;
+    if (countriesArr.length > 0 ){
+      for (let i = 0; i < countriesArr.length; i++) {
+        dataArr.push(linechartdatafull[countriesArr[i]][attr])
+      }
+    } else {
+      //default country
+      // countriesArr.push("United States")
+      dataArr.push(linechartdatafull["United States"][attr])
     }
+    
+    // linechartdata = linechartdatafull[country][attr]
+    
+    
+    // dataArr.push(linechartdata)
+
+    
+    // if (country2 != "None") {
+    //   linechartdata2 = linechartdatafull[country2][attr]
+    //   dataArr.push(linechartdata2)
+    // }
     
     
     for (let i = 0; i < dataArr.length; i++) {
@@ -386,9 +405,9 @@ colorsg.set(5, '#d94620');
 
   }
     
-    // var legend_h = height
-    // svg.append("circle").attr("cx", 70).attr("cy", legend_h).attr("r", 6).style("fill", "steelblue")
-    // svg.append("text").attr("x", 90).attr("y", legend_h).text(country).style("font-size", "10px").attr("alignment-baseline","middle")
+    var legend_h = height
+    svg.append("circle").attr("cx", 70).attr("cy", legend_h -20).attr("r", 6).style("fill", colorArr[0])
+    svg.append("text").attr("x", 90).attr("y", legend_h - 20).text(countriesArr[0]).style("font-size", "10px").attr("alignment-baseline","middle")
     // if (country2 != "None"){
     //   svg.append("circle").attr("cx", 70).attr("cy", legend_h - 30).attr("r", 6).style("fill", "orange")
     //   svg.append("text").attr("x", 90).attr("y", legend_h - 30).text(country2).style("font-size", "10px").attr("alignment-baseline","middle")
