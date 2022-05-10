@@ -350,9 +350,9 @@ colorsg.set(1, '#d94620');
         x.domain([ 4,8])
       }else{
         console.log("x.invert(extent[0])")
-        console.log(x.invert(extent[0]))
+        console.log(x.invert(extent[0]).getFullYear())
         console.log("x.invert(extent[1])")
-        console.log(x.invert(extent[1]))
+        console.log(x.invert(extent[1]).getFullYear())
         x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
         lineArr[i].select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
       }
