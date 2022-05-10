@@ -36,8 +36,11 @@
     </div>
     
     <div style="text-align: center;">
-      <div>
-        Metric: <select id="selectAttr" style="width: 150px;"></select>
+      <div style="display: flex; justify-content: space-evenly;">
+        <button type="reset-btn">Reset</button>
+        <div>
+          Metric: <select id="selectAttr" style="width: 150px;"></select>
+        </div>
       </div>
       <div id="line-chart"></div>
     </div>
@@ -207,14 +210,11 @@ colorsg.set(1, '#d94620');
   function drawLinechart(countriesArr, attr){
     // let colorArr = ["steelblue", "orange", "gray", "red", "green", "black", "yellow"]
     // let colorArr = ["#00a4e4", "#c1d82f", "#ffdd00", "#fbb034", "#ff0000", "#8a7967", "#6a737b"]
-    let colorArr = ["#00a4e4", "Chartreuse", "orange", "gold", "red", "brown", "black"]
+    // let colorArr = ["#00a4e4", "Chartreuse", "orange", "gold", "red", "brown", "black"]
+    // let colorArr = ["RoyalBlue", "Cyan", "orange", "BlueViolet", "red", "brown", "black"]
+    let colorArr = ["RoyalBlue", "Cyan", "orange", "BlueViolet", "red", "#964F4C", "black"]
     document.getElementById("line-chart").innerHTML = ""
     
-    console.log("countriesArr")
-    console.log(countriesArr)
-
-    console.log("typeof countriesArr")
-    console.log(typeof countriesArr)
     var margin = { top: 30, right: 70, bottom: 70, left:50 },
     width = 800 - margin.left - margin.right,
     height = 450 - margin.top - margin.bottom;
@@ -349,6 +349,10 @@ colorsg.set(1, '#d94620');
         if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
         x.domain([ 4,8])
       }else{
+        console.log("x.invert(extent[0])")
+        console.log(x.invert(extent[0]))
+        console.log("x.invert(extent[1])")
+        console.log(x.invert(extent[1]))
         x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
         lineArr[i].select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
       }
