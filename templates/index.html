@@ -197,7 +197,8 @@ colorsg.set(5, '#d94620');
   }
   
   function drawLinechart(countriesArr, attr){
-    let colorArr = ["steelblue", "orange", "gray", "red", "green", "black", "yellow"]
+    // let colorArr = ["steelblue", "orange", "gray", "red", "green", "black", "yellow"]
+    let colorArr = ["#00a4e4", "#c1d82f", "#ffdd00", "#fbb034", "#ff0000", "#fbb034", "#6a737b"]
     document.getElementById("line-chart").innerHTML = ""
     
     console.log("countriesArr")
@@ -376,12 +377,15 @@ colorsg.set(5, '#d94620');
   }
     
     var legend_h = height
-    svg.append("circle").attr("cx", 70).attr("cy", legend_h -20).attr("r", 6).style("fill", colorArr[0])
-    svg.append("text").attr("x", 90).attr("y", legend_h - 20).text(countriesArr[0]).style("font-size", "10px").attr("alignment-baseline","middle")
-    // if (country2 != "None"){
-    //   svg.append("circle").attr("cx", 70).attr("cy", legend_h - 30).attr("r", 6).style("fill", "orange")
-    //   svg.append("text").attr("x", 90).attr("y", legend_h - 30).text(country2).style("font-size", "10px").attr("alignment-baseline","middle")
-    // }
+    if (countriesArr.length > 0){
+      for (let i = 0; i < countriesArr.length; i++) {
+        svg.append("circle").attr("cx", 70).attr("cy", legend_h -20 - 30*i).attr("r", 6).style("fill", colorArr[i])
+        svg.append("text").attr("x", 90).attr("y", legend_h - 20 - 30*i).text(countriesArr[i]).style("font-size", "10px").attr("alignment-baseline","middle")
+      }
+    } else {
+      svg.append("circle").attr("cx", 70).attr("cy", legend_h -20).attr("r", 6).style("fill", colorArr[0])
+      svg.append("text").attr("x", 90).attr("y", legend_h - 20).text("United States").style("font-size", "10px").attr("alignment-baseline","middle")
+    }
     
   }
   
