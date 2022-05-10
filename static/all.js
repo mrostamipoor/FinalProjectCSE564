@@ -398,7 +398,9 @@ function CreateBarChartInverse(column,year,country) {
 				var slider = document.getElementById("myRange");
 				var year=slider.value;
 				//console.log(mapdata[year-1975][d.country][0]);
-				CreateBarChartInverse('free_political_parties',year,d.country);
+				var attr = document.getElementById("selectAttr").value;
+				console.log(attr);
+				CreateBarChartInverse(attr,year,d.country);
 				var tmp=[];
 				tmp.push(d.country);
 				drawPcpPlot(d.country,6,year,tmp)
@@ -427,7 +429,8 @@ function CreateBarChartInverse(column,year,country) {
 			.on("click", function (d, i) {
 				var slider = document.getElementById("myRange");
 				var year=slider.value;
-				CreateBarChartInverse('free_political_parties',year,d.country);
+				var attr = document.getElementById("selectAttr").value;
+				CreateBarChartInverse(attr,year,d.country);
 				//console.log(mapdata[year-1975][d.country][0])
 				var tmp=[];
 				tmp.push(d.country);
