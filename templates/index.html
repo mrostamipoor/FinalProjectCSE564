@@ -14,42 +14,31 @@
   
   <div style="display:flex;">
     <div>
-	
-      <input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 840px;">
-	  <label for="index">compare size:</label>
-	  <select name="index" id="index">
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-		<option value="4">4</option>
-		<option value="5">5</option>
-		<option value="6">6</option>
-		<option value="7">7</option>
-	  </select>
-	  <br><br>
-      <p>Year: <span id="demo"></span></p>
+      <div style="display: flex; justify-content: space-evenly;">
+        <input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 80%;">
+      
+        <div style="display: flex;">
+          <label for="index">compare size:</label>
+          <select name="index" id="index">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          </select>
+        </div>
+      </div>
+      
+      <p style="text-align: center;">Year: <span id="demo"></span></p>
       <div id="map_canvas" ></div>
     </div>
     
     <div style="text-align: center;">
-      <div style="display: flex; justify-content: space-evenly;">
-        <div>
-          <div>Country 1</div>
-          <br>
-          <select id="selectCountry" style="width: 150px;"></select>
-        </div>
-        <div>
-          <div>Country 2</div>
-          <br>
-          <select id="selectCountry2" style="width: 150px;"></select>
-        </div>
-        <div>
-          <div>Metric</div>
-          <br>
-          <select id="selectAttr" style="width: 150px;"></select>
-        </div>
+      <div>
+        Metric: <select id="selectAttr" style="width: 150px;"></select>
       </div>
-      
       <div id="line-chart"></div>
     </div>
   </div>
@@ -195,21 +184,14 @@ colorsg.set(5, '#d94620');
   drawPcpPlot('default',6,year,[])		
   piechart()
 
-  // var country = document.getElementById("selectCountry").value;
-  // var country2 = document.getElementById("selectCountry2").value;
   var attr = document.getElementById("selectAttr").value;
   drawLinechart(countries, attr)
-    //var attr = document.getElementById("selectAttr").value;
-	console.log(attr);
+
 	CreateBarChartInverse(attr,2020,'1');
   
-  // document.getElementById("selectCountry").onchange = function() {onchangeFunc()};
-  // document.getElementById("selectCountry2").onchange = function() {onchangeFunc()};
   document.getElementById("selectAttr").onchange = function() {onchangeFunc()};
-  
+
   function onchangeFunc() {
-    // var country = document.getElementById("selectCountry").value;
-    // var country2 = document.getElementById("selectCountry2").value;
     var attr = document.getElementById("selectAttr").value;
     drawLinechart(countries, attr)
   }
@@ -254,20 +236,8 @@ colorsg.set(5, '#d94620');
       }
     } else {
       //default country
-      // countriesArr.push("United States")
       dataArr.push(linechartdatafull["United States"][attr])
     }
-    
-    // linechartdata = linechartdatafull[country][attr]
-    
-    
-    // dataArr.push(linechartdata)
-
-    
-    // if (country2 != "None") {
-    //   linechartdata2 = linechartdatafull[country2][attr]
-    //   dataArr.push(linechartdata2)
-    // }
     
     
     for (let i = 0; i < dataArr.length; i++) {
