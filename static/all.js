@@ -399,12 +399,12 @@ function CreateBarChartInverse(column,year,country) {
 				var slider = document.getElementById("myRange");
 				var year=slider.value;
 				var attr = document.getElementById("selectAttr").value;
-				console.log(attr);
-				CreateBarChartInverse(attr,year,d.country);
+				//console.log(attr);
+				//CreateBarChartInverse(attr,year,d.country);
 				var tmp=[];
 				tmp.push(d.country);
 				drawPcpPlot(d.country,6,year,tmp)
-				CreateBarChartInverse(attr,year,'1');
+				CreateBarChartInverse(attr,year,d.country);
 				drawLinechart(tmp, attr);
 			});
 		}
