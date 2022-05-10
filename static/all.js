@@ -285,3 +285,153 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 		}
 	});
 }
+	  
+function CreateBarChartInverse(column,year,country) {
+    //d3.selectAll('barchart').remove();
+	document.getElementById("barchart").innerHTML = ""
+    var barHeight = 20;
+	padding = 90;
+    var margin = { top: 50, right: 50, bottom: 50, left: 80 },
+        height = 400 - margin.top - margin.bottom,
+        width = 650 - margin.left - margin.right;
+
+    var svg = d3.select("#barchart").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    /*svg.append("text")
+		.attr("class", "astyle")
+        .attr("transform", "translate(100,0)")
+        .attr("x", 200)
+        .attr("y", -10)
+        .text("Bar Chart for IMDB Movie Data")*/
+
+    var g = svg.append("g")
+        .attr("transform", function (d, i) {
+            return "translate(0," + i * barHeight + ")";
+        });
+ Sortedvalue = [];
+    d3.csv("./static/data/newDemo.csv", function (error, data) {
+        if (error) {
+            throw error;
+        }
+
+
+       
+        for (let index = 0; index < data.length; index++) {
+			if (data[index]['ID_year']==year){
+				const newObj = new Object();
+				newObj.country=data[index]['country']
+				newObj.values=parseFloat(data[index][column])
+				newObj.perf=parseFloat(data[index]['democratic_performance_numeric'])
+				Sortedvalue.push(newObj)
+			}
+        }
+		mydata=[];
+		Sortedvalue.sort((a, b) => b.values - a.values);
+		for (let index = 0; index < 7; index++) {
+			 mydata.push(Sortedvalue[index])
+		}
+		var yScale = d3.scaleBand().range([height, 0]).padding(0.05);
+        var xScale = d3.scaleLinear().range([0, width]);
+
+        yScale.domain(mydata.map(function (d) {
+            return d.country;
+        }));
+        xScale.domain([0, d3.max(mydata, function (d) {
+
+            return d.values;
+        })]);
+
+
+        g.append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .attr("class", "axis")
+            .call(d3.axisBottom(xScale))
+            .append("text")
+            .attr("x", 30)
+            .attr("dx", "-3em")
+            .attr("y", 40)
+            .attr("dx", "68em")
+            .attr("stroke", "black")
+            .attr("font-size", "16px")
+            .attr("text-anchor", "end");
+
+ 
+		g.append("g")
+            .attr("class", "axis")
+            .call(d3.axisLeft(yScale))
+            .append("text")
+			.attr("transform", "rotate(-90)");
+		
+		svg.append("text")
+			.attr("class", "labeltext")
+			.attr("text-anchor", "middle") 
+			.attr("transform", "translate(" + (-70) + "," + (height / 2) + ")rotate(-90)") 	
+			.text('Country Name');
+
+		svg.append("text")
+			.attr("class", "labeltext")
+			.attr("text-anchor", "middle") 
+			.attr("transform", "translate(" + (250) + "," + (340) + ")") 
+			.text(column);
+	
+        if (country==='1'){
+			g.selectAll(".bar")
+            .data(mydata)
+            .enter().append("rect")
+            .attr("fill", function(d) {
+				return colorsg.get(+d.perf);
+			})
+            .attr("x", 1)
+			//.attr("stroke", "red")
+            .attr("y", function (d) {
+                return yScale(d.country);
+            })
+
+            .attr("width", function (d) { return xScale(d.values); })
+            .attr("height", yScale.bandwidth())
+			.on("click", function (d, i) {
+				var slider = document.getElementById("myRange");
+				var year=slider.value;
+				//console.log(mapdata[year-1975][d.country][0]);
+				CreateBarChartInverse('free_political_parties',year,d.country);
+				drawPcpPlot(d.country,6,year,[])
+			});
+		}
+		//#DCDCDC
+		else{
+			g.selectAll(".bar")
+            .data(mydata)
+            .enter().append("rect")
+            .attr("fill", function(d) {
+				if (d.country===country)
+				return colorsg.get(+d.perf);
+				else {
+					return '#DCDCDC'
+				}
+			})
+            .attr("x", 1)
+			//.attr("stroke", "red")
+            .attr("y", function (d) {
+                return yScale(d.country);
+            })
+
+            .attr("width", function (d) { return xScale(d.values); })
+            .attr("height", yScale.bandwidth())
+			.on("click", function (d, i) {
+				var slider = document.getElementById("myRange");
+				var year=slider.value;
+				CreateBarChartInverse('free_political_parties',year,d.country);
+				console.log(mapdata[year-1975][d.country][0])
+				drawPcpPlot(mapdata[year-1975][d.country][0],6,year,[])
+			});
+		}
+
+            
+	});
+
+}
