@@ -66,6 +66,9 @@ for feature in features_name:
     if feature != 'country' and data[feature].isnull().sum() > 0:
         data[feature] = data.groupby('democratic_performance_numeric')[feature].transform(lambda grp: grp.fillna(np.mean(grp)))
 
+#change democratic_performance_numeric (now more is better)
+data['democratic_performance_numeric'] = data['democratic_performance_numeric'].apply(lambda x: -x + 6)
+
 print(data.columns)
 data.to_csv('static/data/newDemo.csv', index=False, sep=',')'''
 
