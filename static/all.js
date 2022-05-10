@@ -399,7 +399,9 @@ function CreateBarChartInverse(column,year,country) {
 				var year=slider.value;
 				//console.log(mapdata[year-1975][d.country][0]);
 				CreateBarChartInverse('free_political_parties',year,d.country);
-				drawPcpPlot(d.country,6,year,[])
+				var tmp=[];
+				tmp.push(d.country);
+				drawPcpPlot(d.country,6,year,tmp)
 			});
 		}
 		//#DCDCDC
@@ -426,8 +428,10 @@ function CreateBarChartInverse(column,year,country) {
 				var slider = document.getElementById("myRange");
 				var year=slider.value;
 				CreateBarChartInverse('free_political_parties',year,d.country);
-				console.log(mapdata[year-1975][d.country][0])
-				drawPcpPlot(mapdata[year-1975][d.country][0],6,year,[])
+				//console.log(mapdata[year-1975][d.country][0])
+				var tmp=[];
+				tmp.push(d.country);
+				drawPcpPlot(d.country,6,year,tmp)
 			});
 		}
 
