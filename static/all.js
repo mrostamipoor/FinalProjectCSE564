@@ -28,11 +28,12 @@ atrributes.set(12, 'imdb_score');
 atrributes.set(13, 'movie_facebook_likes');
 
 var colorsg = new Map();
-colorsg.set(1, '#037488');
-colorsg.set(2, '#89bbbd');
+var colorsg = new Map();
+colorsg.set(5, '#037488');
+colorsg.set(4, '#89bbbd');
 colorsg.set(3, '#fdfbee');
-colorsg.set(4, '#f5c0a2');
-colorsg.set(5, '#d94620');
+colorsg.set(2, '#f5c0a2');
+colorsg.set(1, '#d94620');
 var performance = new Map();
 performance.set('High performing democracy',1);
 performance.set('Mid-range performing democracy',2);
@@ -397,13 +398,14 @@ function CreateBarChartInverse(column,year,country) {
 			.on("click", function (d, i) {
 				var slider = document.getElementById("myRange");
 				var year=slider.value;
-				//console.log(mapdata[year-1975][d.country][0]);
 				var attr = document.getElementById("selectAttr").value;
 				console.log(attr);
 				CreateBarChartInverse(attr,year,d.country);
 				var tmp=[];
 				tmp.push(d.country);
 				drawPcpPlot(d.country,6,year,tmp)
+				CreateBarChartInverse(attr,year,'1');
+				drawLinechart(tmp, attr);
 			});
 		}
 		//#DCDCDC
@@ -435,6 +437,7 @@ function CreateBarChartInverse(column,year,country) {
 				var tmp=[];
 				tmp.push(d.country);
 				drawPcpPlot(d.country,6,year,tmp)
+				drawLinechart(tmp, attr);
 			});
 		}
 

@@ -65,19 +65,19 @@ colorsg.set(3, '#f4f5e3');
 colorsg.set(5, '#ed6769');
 colorsg.set(4, '#efac86');*/
 var colorsg = new Map();
-colorsg.set(1, '#037488');
-colorsg.set(2, '#89bbbd');
+colorsg.set(5, '#037488');
+colorsg.set(4, '#89bbbd');
 colorsg.set(3, '#fdfbee');
-colorsg.set(4, '#f5c0a2');
-colorsg.set(5, '#d94620');
+colorsg.set(2, '#f5c0a2');
+colorsg.set(1, '#d94620');
 
 
   var performance = new Map();
-  performance.set('High performing democracy',1);
-  performance.set('Mid-range performing democracy',2);
+  performance.set('High performing democracy',5);
+  performance.set('Mid-range performing democracy',4);
   performance.set('Weak democracy',3);
-  performance.set('Hybrid Regime',4);
-  performance.set('Authoritarian Regime',5);
+  performance.set('Hybrid Regime',2);
+  performance.set('Authoritarian Regime',1);
   //console.log("countrylist");
   countrylist = {{ countrylist | safe }} ;
   
@@ -124,6 +124,7 @@ colorsg.set(5, '#d94620');
     drawMap
 	var attr = document.getElementById("selectAttr").value;
 	CreateBarChartInverse(attr,year,'1');
+	drawLinechart(countries, attr);
     google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
     piechart()
   }
@@ -133,7 +134,8 @@ colorsg.set(5, '#d94620');
     var data = google.visualization.arrayToDataTable(mapdata[year-1975]);
     
     var options = {
-      colorAxis: {colors: ['#037488','#89bbbd', '#fdfbee', '#f5c0a2','#d94620']},
+      colorAxis: {colors: ['#d94620','#f5c0a2', '#fdfbee', '#89bbbd','#037488']},
+							
       dataMode: 'regions',
       backgroundColor: '#efefef',
       width: 850,
@@ -150,20 +152,25 @@ colorsg.set(5, '#d94620');
         var item = selection[i];
         if (item.row != null && item.column != null) {
           message += '{row:' + mapdata[year-1975][item.row] + ',column:' + item.column + '}';
+		  
         } else if (item.row != null) {
           message += '{row:' + mapdata[year-1975][item.row][0] + '}';
 		  if(!countries.includes(mapdata[year-1975][item.row+1][0])){
 			countries.push(mapdata[year-1975][item.row+1][0]);
+			
 		  }
 		    var index = document.getElementById("index");
 			var index_value = index.value;
 		  if(countries.length==index_value)  {
 				//console.log(item.row+1)
 			  //console.log(mapdata[year-1975][item.row+1][0])
-			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year,countries)
+			  let slider1= document.getElementById("myRange");
+			  let year1=slider1.value;
+			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year1,countries)
 			  var attr = document.getElementById("selectAttr").value;
-			  CreateBarChartInverse(attr,year,'1');
-        drawLinechart(countries, attr)
+			  CreateBarChartInverse(attr,year1,'1');
+
+			  drawLinechart( countries,attr)
 			  countries=[]
 			  }
 		  
@@ -186,14 +193,15 @@ colorsg.set(5, '#d94620');
 
   var attr = document.getElementById("selectAttr").value;
   drawLinechart(countries, attr)
-
-	CreateBarChartInverse(attr,2020,'1');
+	let year1=slider.value;
+	CreateBarChartInverse(attr,year1,'1');
   
   document.getElementById("selectAttr").onchange = function() {onchangeFunc()};
 
   function onchangeFunc() {
     var attr = document.getElementById("selectAttr").value;
     drawLinechart(countries, attr)
+	
   }
   
   function drawLinechart(countriesArr, attr){
