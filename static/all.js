@@ -34,6 +34,7 @@ colorsg.set(4, '#89bbbd');
 colorsg.set(3, '#fdfbee');
 colorsg.set(2, '#f5c0a2');
 colorsg.set(1, '#d94620');
+
 var performance = new Map();
 performance.set('High performing democracy',1);
 performance.set('Mid-range performing democracy',2);

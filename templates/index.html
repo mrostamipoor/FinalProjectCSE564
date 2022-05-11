@@ -466,6 +466,8 @@ colorsg.set(1, '#d94620');
     .attr('fill', function(d, i)  { 
       var tmp=Object.values(Object.values(d)[0])[0];
       var indx=performance.get(tmp);
+	  console.log(tmp)
+	  console.log(colorsg.get(indx))
       return colorsg.get(indx)})
       .style('opacity', opacity)
       .style('stroke', 'white')
@@ -506,16 +508,16 @@ colorsg.set(1, '#d94620');
           drawPcpPlot('pie',1,year,[])	
         }
         if(value.includes("Mid-range")){
-          drawPcpPlot('pie',2,year,[])
+          drawPcpPlot('pie',4,year,[])
         }
         if(value.includes("Weak")){
           drawPcpPlot('pie',3,year,[])
         }
         if(value.includes("Hybrid")){
-          drawPcpPlot('pie',4,year,[])	
+          drawPcpPlot('pie',2,year,[])	
         }
         if(value.includes("Authoritarian")){
-          drawPcpPlot('pie',5,year,[])	
+          drawPcpPlot('pie',1,year,[])	
         }
         
       })
