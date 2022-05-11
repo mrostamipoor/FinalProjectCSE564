@@ -129,10 +129,10 @@ colorsg.set(1, '#d94620');
   var year='2020'
   
   slider.oninput = function() {
+  // document.getElementById('index').value = 1
     output.innerHTML = this.value;
     year =this.value;
     drawPcpPlot('default',6,year,[],0,0)
-    drawMap
 	var attr = document.getElementById("selectAttr").value;
 	CreateBarChartInverse(attr,year,'1');
 	drawLinechart(['United States'], attr);
@@ -272,9 +272,12 @@ colorsg.set(1, '#d94620');
 	}
   
   function drawLinechart(countriesArr, attr){
-    let colorArr = ["RoyalBlue", "Cyan", "orange", "BlueViolet", "red", "Violet", "black"]
+  //#f2e9cc" 
+    //let colorArr = ["RoyalBlue", "Cyan", "orange", "BlueViolet", "red", "Violet", "black"]
+	//let colorArr = ["#f0d5ba", "#e3a7c0", "#b0abcb", "#c2d5a8", "#f2e9cc", "#a5d5d5", "#c36f31 "]
+	let colorArr = ["#b0abcb", "#DC799C","#A7BEB6","#f0d5ba", "#81CEC8","#c36f31","#3D708F"]
     document.getElementById("line-chart").innerHTML = ""
-    
+    //console.log(countriesArr)
     var margin = { top: 30, right: 70+70, bottom: 50, left:50 },
     width = 820 - margin.left - margin.right,
     height = 350 - margin.top - margin.bottom;
@@ -305,7 +308,6 @@ colorsg.set(1, '#d94620');
         dataArr.push(linechartdatafull[countriesArr[i]][attr])
       }
     } else {
-      //default country
       dataArr.push(linechartdatafull["United States"][attr])
     }
     
@@ -371,18 +373,15 @@ colorsg.set(1, '#d94620');
         .extent( [ [0,0], [width,height] ] )  // initialise the brush area: start at 0,0 and finishes at width,height: it means I select the whole graph area
         .on("end", updateChart)               // Each time the brush selection changes, trigger the 'updateChart' function
 
-    // Create the line variable: where both the line and the brush take place
     lineArr.push(svg.append('g').attr("clip-path", "url(#clip)"))
 
-    // Add the line
-    
-      // line.append("path")
       lineArr[i].append("path")
         .datum(data)
         .attr("class", "line"+i)  // I add the class line to be able to modify this line later on.
         .attr("fill", "none")
         .attr("stroke", colorArr[i])
-        .attr("stroke-width", 1.5)
+        .attr("stroke-width", 7)
+		.style("stroke-opacity",'0.7')
         .attr("d", d3.line()
           .x(function(d) { return x(d.date) })
           .y(function(d) { return y(d.value) })

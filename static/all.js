@@ -45,6 +45,7 @@ performance.set('Authoritarian Regime',5);
 
 
 function drawPcpPlot(coutryname, demo_status,year,countries,start,stop) {
+	let colorArr = ["#b0abcb", "#DC799C","#A7BEB6","#f0d5ba", "#81CEC8","#c36f31","#3D708F"]
 	document.getElementById("pcp").innerHTML = ""
 
 	svgWidth = 900,
@@ -195,14 +196,12 @@ function drawPcpPlot(coutryname, demo_status,year,countries,start,stop) {
 					return '#ffeeec'
 				}
 				}else{
-					//console.log(countries)
 					if(countries.includes(d.country)){
-					//if (+d.ID_year >= start && +d.ID_year <=stop){
-						return colorsg.get(+d.democratic_performance_numeric);
-					//}
+						console.log(countries.indexOf(d.country))
+						return colorArr[countries.indexOf(d.country)];
 					}
 					else{
-						return '#ffeeec'
+						return '#ffeeec';
 					}
 				}
 			}
