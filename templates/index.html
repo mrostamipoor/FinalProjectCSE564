@@ -50,8 +50,11 @@
   </div>
   <div style="display: flex; justify-content: space-evenly;">
     <div id="pcp"></div>
-    <div id="chart" style="display: flex; flex-direction: column;"></div>
-    <div id="barchart" style="display: flex; flex-direction: column; justify-content: center;"></div>
+    <div id="chart" style="display: flex; flex-direction: column; padding-top: 25px;"></div>
+    <div>
+      <div id="barchart" style="display: flex;"></div>
+    </div>
+    
   </div>
 </body>
 
@@ -147,8 +150,10 @@ colorsg.set(1, '#d94620');
       dataMode: 'regions',
       // backgroundColor: '#efefef',
       backgroundColor: '#DCDCDC',
-      width: 850,
-      height: 400
+      // width: 850,
+      width: 800,
+      // height: 400
+      height: 350
     };
     
     var container = document.getElementById('map_canvas');
@@ -222,9 +227,9 @@ colorsg.set(1, '#d94620');
     let colorArr = ["RoyalBlue", "Cyan", "orange", "BlueViolet", "red", "Violet", "black"]
     document.getElementById("line-chart").innerHTML = ""
     
-    var margin = { top: 30, right: 70, bottom: 70, left:50 },
+    var margin = { top: 30, right: 70, bottom: 50, left:50 },
     width = 750 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 350 - margin.top - margin.bottom;
     
     var svg = d3.select("#line-chart")
     .append("svg")
@@ -237,7 +242,7 @@ colorsg.set(1, '#d94620');
     // graph title
     svg.append("text")
     .attr("class", "astyle")
-    .attr("transform", "translate(100,0)")
+    // .attr("transform", "translate(100,0)")
     .attr("x", 0.4*width)
     .attr("y", -10)
     .text("Changes over years")
@@ -298,7 +303,7 @@ colorsg.set(1, '#d94620');
     svg.append("text")
     .attr("class", "labeltext")
     .attr("text-anchor", "middle") 
-    .attr("transform", "translate(" + (width/2) + "," + 1.16*height + ")") 
+    .attr("transform", "translate(" + (width/2) + "," + 1.14*height + ")") 
     .text("year");
 
     lineArr = [];
