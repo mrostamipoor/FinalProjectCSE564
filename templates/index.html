@@ -131,7 +131,7 @@ colorsg.set(1, '#d94620');
   slider.oninput = function() {
     output.innerHTML = this.value;
     year =this.value;
-    drawPcpPlot('default',6,year,[])
+    drawPcpPlot('default',6,year,[],0,0)
     drawMap
 	var attr = document.getElementById("selectAttr").value;
 	CreateBarChartInverse(attr,year,'1');
@@ -177,7 +177,7 @@ colorsg.set(1, '#d94620');
 			 countries.push(mapdata[year-1975][item.row+1][0]);
 			  let slider1= document.getElementById("myRange");
 			  let year1=slider1.value;
-			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year1,countries)
+			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year1,countries,0,0)
 			  var attr = document.getElementById("selectAttr").value;
 			  CreateBarChartInverse(attr,year1,'1');
 			  drawLinechart( countries,attr)
@@ -188,7 +188,7 @@ colorsg.set(1, '#d94620');
 			  countries.push(mapdata[year-1975][item.row+1][0]);
 			  let slider1= document.getElementById("myRange");
 			  let year1=slider1.value;
-			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year1,countries)
+			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year1,countries,0,0)
 			  var attr = document.getElementById("selectAttr").value;
 			  CreateBarChartInverse(attr,year1,'1');
 			  drawLinechart( countries,attr)
@@ -220,7 +220,7 @@ colorsg.set(1, '#d94620');
     chart.draw(data, options);
   }
   google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
-  drawPcpPlot('default',6,year,[])		
+  drawPcpPlot('default',6,year,[],0,0)		
   piechart()
 
   var attr = document.getElementById("selectAttr").value;
@@ -247,7 +247,7 @@ colorsg.set(1, '#d94620');
 		let slider1= document.getElementById("myRange");
 		let year1=slider1.value;
 		google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
-		drawPcpPlot('default',6,year1,[])		
+		drawPcpPlot('default',6,year1,[],0,0)		
 		piechart()
 		document.getElementById('index').value = 1
 		var attr = document.getElementById("selectAttr").value;
@@ -260,7 +260,7 @@ colorsg.set(1, '#d94620');
 		let slider1= document.getElementById("myRange");
 		let year1=slider1.value;
 		google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
-		drawPcpPlot('default',6,year1,[])		
+		drawPcpPlot('default',6,year1,[],0,0)		
 		piechart()
 		document.getElementById('index').value = index
 		var attr = document.getElementById("selectAttr").value;
@@ -407,12 +407,18 @@ colorsg.set(1, '#d94620');
         if (!idleTimeout) return idleTimeout = setTimeout(idled, 350); // This allows to wait a little bit
         x.domain([ 4,8])
       }else{
-        console.log("x.invert(extent[0])")
-        console.log(x.invert(extent[0]).getFullYear())
-        console.log("x.invert(extent[1])")
-        console.log(x.invert(extent[1]).getFullYear())
+        //console.log("x.invert(extent[0])")
+		let start=x.invert(extent[0]).getFullYear();
+        //console.log(start)
+        //console.log("x.invert(extent[1])")
+		let stop=x.invert(extent[1]).getFullYear()
+        //console.log(stop)
         x.domain([ x.invert(extent[0]), x.invert(extent[1]) ])
-        lineArr[i].select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done
+        lineArr[i].select(".brush").call(brush.move, null) // This remove the grey brush area as soon as the selection has been done3
+		if(countries.length!=0)
+		drawPcpPlot('line',7,year1,countries,start,stop)
+		else
+		drawPcpPlot('line',7,year1,['United States'],start,stop)
       }
 
       // Update axis and line position
@@ -512,8 +518,8 @@ colorsg.set(1, '#d94620');
     .attr('fill', function(d, i)  { 
       var tmp=Object.values(Object.values(d)[0])[0];
       var indx=performance.get(tmp);
-	  console.log(tmp)
-	  console.log(colorsg.get(indx))
+	  //console.log(tmp)
+	  //console.log(colorsg.get(indx))
       return colorsg.get(indx)})
       .style('opacity', opacity)
       .style('stroke', 'white')
@@ -551,19 +557,19 @@ colorsg.set(1, '#d94620');
         var slider = document.getElementById("myRange");
         var year = slider.value;
         if(value.includes("High")){
-          drawPcpPlot('pie',5,year,[])	
+          drawPcpPlot('pie',5,year,[],0,0)	
         }
         if(value.includes("Mid-range")){
-          drawPcpPlot('pie',4,year,[])
+          drawPcpPlot('pie',4,year,[],0,0)
         }
         if(value.includes("Weak")){
-          drawPcpPlot('pie',3,year,[])
+          drawPcpPlot('pie',3,year,[],0,0)
         }
         if(value.includes("Hybrid")){
-          drawPcpPlot('pie',2,year,[])	
+          drawPcpPlot('pie',2,year,[],0,0)	
         }
         if(value.includes("Authoritarian")){
-          drawPcpPlot('pie',1,year,[])	
+          drawPcpPlot('pie',1,year,[],0,0)	
         }
         
       })

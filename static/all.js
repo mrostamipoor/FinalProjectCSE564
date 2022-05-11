@@ -44,7 +44,7 @@ performance.set('Authoritarian Regime',5);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-function drawPcpPlot(coutryname, demo_status,year,countries) {
+function drawPcpPlot(coutryname, demo_status,year,countries,start,stop) {
 	document.getElementById("pcp").innerHTML = ""
 
 	svgWidth = 900,
@@ -75,7 +75,11 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 
 	d3.csv("static/data/newDemo.csv", function(error, data) {
 		dimensions = d3.keys(data[0]).filter(function(key) {
-			if (key == 'ID_year' || key == 'absence_of_corruption'|| key ==  'inclusive_suffrage'|| key ==  'electoral_participation'|| key ==  'social_group_equality'|| key ==  'predictable_enforcement'|| key ==  'elected_government'|| key ==  'basic_welfare'|| key ==  'access_to_justice'|| key ==  'personal_integrity_and_security2'|| key ==  'free_political_parties') {
+			if (key == 'ID_year' || key == 'absence_of_corruption'
+			|| key ==  'inclusive_suffrage'|| key ==  'electoral_participation'
+			|| key ==  'social_group_equality'|| key ==  'predictable_enforcement'||
+			key ==  'elected_government'|| key ==  'basic_welfare'|| key ==  'access_to_justice'
+			|| key ==  'personal_integrity_and_security2'|| key ==  'free_political_parties') {
 				
 					y[key] = d3.scaleLinear()
 					.domain(d3.extent(data, function(d) {
@@ -124,10 +128,19 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 			}
 			
 			else {
+				if (demo_status!=7){
 				if (d.democratic_performance_numeric == demo_status) {
 					return "4.5px";
 				} else {
 					return '0.5px'
+				}
+				}else{
+					if(countries.includes(d.country)){
+						return "2.5px";
+					}
+					else{
+						return '0.5px'
+					}
 				}
 			}
 			})
@@ -139,22 +152,31 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 					if (countries.includes(d.country)) {
 						return "0.9";
 					} else {
-						return '0.3';
+						return '0.2';
 					}
 				}
 			}
 			
 			else {
+				if (demo_status!=7){
 				if (d.democratic_performance_numeric == demo_status) {
 					return "0.9";
 				} else {
-					return '0.3'
+					return '0.2'
+				}
+				}else{
+					if(countries.includes(d.country)){
+						return "0.9";
+					}
+					else{
+						return '0.05'
+					}
 				}
 			}
 			})
 			.style("stroke", function(d) {
 			if (demo_status==6){
-				if (coutryname == 'default') {
+				if (coutryname == 	'default') {
 					return colorsg.get(+d.democratic_performance_numeric);
 				} else {
 					if (countries.includes(d.country)) {
@@ -166,10 +188,22 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 			}
 			
 			else {
+				if (demo_status!=7){
 				if (d.democratic_performance_numeric == demo_status) {
 					return colorsg.get(+d.democratic_performance_numeric);
 				} else {
 					return '#ffeeec'
+				}
+				}else{
+					//console.log(countries)
+					if(countries.includes(d.country)){
+					//if (+d.ID_year >= start && +d.ID_year <=stop){
+						return colorsg.get(+d.democratic_performance_numeric);
+					//}
+					}
+					else{
+						return '#ffeeec'
+					}
 				}
 			}
 			});
@@ -280,13 +314,26 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 		}
 
 		function line(d) {
+			if (demo_status!=7){
 			if (d['ID_year']==year){
 			return d3.line()
 			(dimensions.map(function(key) {
 				return [x(key), y[key](d[key])];
-		}));}
+		}));
+		}
 		else{
 			return;
+		}
+		}else{
+			if (d['ID_year']>=start && d['ID_year']<=stop ){				
+			return d3.line()
+			(dimensions.map(function(key) {
+				return [x(key), y[key](d[key])];
+		}));
+		}
+		else{
+			return;
+		}
 		}
 		}
 	});
