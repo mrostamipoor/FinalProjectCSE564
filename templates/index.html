@@ -135,7 +135,7 @@ colorsg.set(1, '#d94620');
     drawMap
 	var attr = document.getElementById("selectAttr").value;
 	CreateBarChartInverse(attr,year,'1');
-	drawLinechart(countries, attr);
+	drawLinechart(['United States'], attr);
     google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
     piechart()
   }
@@ -231,7 +231,7 @@ colorsg.set(1, '#d94620');
   document.getElementById("selectAttr").onchange = function() {onchangeFunc()};
  document.getElementById("index").onchange = function() {
  var attr = document.getElementById("index").value;
- resetAll(index)
+ resetAllwithIndex()
  };
   function onchangeFunc() {
     var attr = document.getElementById("selectAttr").value;
@@ -255,7 +255,9 @@ colorsg.set(1, '#d94620');
 		CreateBarChartInverse(attr,year1,'1');
 	
 	}
-	function resetAllwithIndex(index) {
+	function resetAllwithIndex() {
+	var index = document.getElementById("index").value;
+	console.log(index);
 		countries=[]
 		let slider1= document.getElementById("myRange");
 		let year1=slider1.value;
