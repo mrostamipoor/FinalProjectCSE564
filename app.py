@@ -111,15 +111,15 @@ def index():
         count_dict = data[data['ID_year'] == j]['democratic_performance_numeric'].value_counts().to_dict()
         tmp_list = []
         for i in list(count_dict.keys()):
-            if i == 1:
+            if i == 5:
                 tmp_list.append({"name": "High performing democracy", "value": count_dict[i]})
-            elif i == 2:
+            elif i == 4:
                 tmp_list.append({"name": "Mid-range performing democracy", "value": count_dict[i]})
             if i == 3:
                 tmp_list.append({"name": "Weak democracy", "value": count_dict[i]})
-            elif i == 4:
+            elif i == 2:
                 tmp_list.append({"name": "Hybrid Regime", "value": count_dict[i]})
-            elif i == 5:
+            elif i == 1:
                 tmp_list.append({"name": "Authoritarian Regime", "value": count_dict[i]})
         pielist[j - 1975] = tmp_list
     
