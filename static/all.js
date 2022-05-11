@@ -47,12 +47,16 @@ function drawPcpPlot(coutryname, demo_status,year,countries) {
 	document.getElementById("pcp").innerHTML = ""
 
 	svgWidth = 900,
-		svgHeight = 550,
+		// svgHeight = 550,
+		svgHeight = 500,
 		margin = {
-			top: 80,
+			// top: 80,
+			top: 55,
 			right: 50,
-			bottom: 30,
-			left: 100
+			// bottom: 30,
+			bottom: 10,
+			// left: 100
+			left: 50
 		},
 		width = svgWidth - margin.left - margin.right,
 		height = svgHeight - margin.top - margin.bottom;
@@ -293,8 +297,8 @@ function CreateBarChartInverse(column,year,country) {
     var barHeight = 20;
 	padding = 90;
     var margin = { top: 50, right: 50, bottom: 50, left: 80 },
-        height = 400 - margin.top - margin.bottom,
-        width = 650 - margin.left - margin.right;
+        height = 300 - margin.top - margin.bottom,
+        width = 450 - margin.left - margin.right;
 
     var svg = d3.select("#barchart").append("svg")
         .attr("width", width + margin.left + margin.right)

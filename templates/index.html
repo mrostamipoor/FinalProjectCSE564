@@ -11,12 +11,23 @@
 </head>
 <body>
   
-  
-  <div style="display:flex;">
+  <div style="text-align: center; font-size: 2em; margin-bottom: 0.2em;"><b>The Truth Behind Dictatorship And Democracy</b></div>
+  <div style="display:flex; justify-content: space-evenly;">
     <div>
       <div style="display: flex; justify-content: space-evenly;">
         <input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 80%;">
+        <div style="text-align: center;">Year: <span id="demo"></span></div>
+        
+      </div>
       
+      
+      <div id="map_canvas" ></div>
+    </div>
+    
+    <div style="text-align: center;">
+      <div style="display: flex; justify-content: space-evenly;">
+        <button type="reset-btn">Reset</button>
+
         <div style="display: flex;">
           <label for="index">compare size:</label>
           <select name="index" id="index">
@@ -29,15 +40,7 @@
           <option value="7">7</option>
           </select>
         </div>
-      </div>
-      
-      <p style="text-align: center;">Year: <span id="demo"></span></p>
-      <div id="map_canvas" ></div>
-    </div>
-    
-    <div style="text-align: center;">
-      <div style="display: flex; justify-content: space-evenly;">
-        <button type="reset-btn">Reset</button>
+
         <div>
           Metric: <select id="selectAttr" style="width: 150px;"></select>
         </div>
@@ -45,9 +48,11 @@
       <div id="line-chart"></div>
     </div>
   </div>
-  <div id="pcp" ></div>
-  <div id="chart"></div>
-  <div id="barchart"></div>
+  <div style="display: flex; justify-content: space-evenly;">
+    <div id="pcp"></div>
+    <div id="chart" style="display: flex; flex-direction: column;"></div>
+    <div id="barchart" style="display: flex; flex-direction: column; justify-content: center;"></div>
+  </div>
 </body>
 
 <script type="text/javascript">
@@ -217,8 +222,8 @@ colorsg.set(1, '#d94620');
     document.getElementById("line-chart").innerHTML = ""
     
     var margin = { top: 30, right: 70, bottom: 70, left:50 },
-    width = 800 - margin.left - margin.right,
-    height = 450 - margin.top - margin.bottom;
+    width = 750 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
     
     var svg = d3.select("#line-chart")
     .append("svg")
