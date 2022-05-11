@@ -244,25 +244,27 @@ colorsg.set(1, '#d94620');
 
 	function resetAll() {
 		countries=[]
+		let slider1= document.getElementById("myRange");
+		let year1=slider1.value;
 		google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
-		drawPcpPlot('default',6,year,[])		
+		drawPcpPlot('default',6,year1,[])		
 		piechart()
 		document.getElementById('index').value = 1
 		var attr = document.getElementById("selectAttr").value;
 		drawLinechart(countries, attr)
-		let year1=slider.value;
 		CreateBarChartInverse(attr,year1,'1');
 	
 	}
 	function resetAllwithIndex(index) {
 		countries=[]
+		let slider1= document.getElementById("myRange");
+		let year1=slider1.value;
 		google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
-		drawPcpPlot('default',6,year,[])		
+		drawPcpPlot('default',6,year1,[])		
 		piechart()
 		document.getElementById('index').value = index
 		var attr = document.getElementById("selectAttr").value;
 		drawLinechart(countries, attr)
-		let year1=slider.value;
 		CreateBarChartInverse(attr,year1,'1');
 	
 	}

@@ -410,6 +410,7 @@ function CreateBarChartInverse(column,year,country) {
 				tmp.push(d.country);
 				drawPcpPlot(d.country,6,year,tmp)
 				CreateBarChartInverse(attr,year,d.country);
+				document.getElementById('index').value = 1
 				drawLinechart(tmp, attr);
 			});
 		}
@@ -437,6 +438,7 @@ function CreateBarChartInverse(column,year,country) {
 				var slider = document.getElementById("myRange");
 				var year=slider.value;
 				var attr = document.getElementById("selectAttr").value;
+				document.getElementById('index').value = 1
 				CreateBarChartInverse(attr,year,d.country);
 				//console.log(mapdata[year-1975][d.country][0])
 				var tmp=[];
