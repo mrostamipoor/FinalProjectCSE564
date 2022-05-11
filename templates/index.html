@@ -26,7 +26,7 @@
     
     <div style="text-align: center;">
       <div style="display: flex; justify-content: space-evenly;">
-        <button type="reset-btn">Reset</button>
+        <button type="reset-btn" id="reset">Reset</button>
 
         <div style="display: flex;">
           <label for="index">compare size:</label>
@@ -168,25 +168,43 @@ colorsg.set(1, '#d94620');
           message += '{row:' + mapdata[year-1975][item.row] + ',column:' + item.column + '}';
 		  
         } else if (item.row != null) {
+			var index = document.getElementById("index");
+			var index_value = index.value;
           message += '{row:' + mapdata[year-1975][item.row][0] + '}';
 		  if(!countries.includes(mapdata[year-1975][item.row+1][0])){
-			countries.push(mapdata[year-1975][item.row+1][0]);
-			
-		  }
-		    var index = document.getElementById("index");
-			var index_value = index.value;
-		  if(countries.length==index_value)  {
-				//console.log(item.row+1)
-			  //console.log(mapdata[year-1975][item.row+1][0])
+			 if(countries.length!=7)  {
+			 if(countries.length==index.value-1){
+			 countries.push(mapdata[year-1975][item.row+1][0]);
 			  let slider1= document.getElementById("myRange");
 			  let year1=slider1.value;
 			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year1,countries)
 			  var attr = document.getElementById("selectAttr").value;
 			  CreateBarChartInverse(attr,year1,'1');
-
 			  drawLinechart( countries,attr)
-			  countries=[]
-			  }
+			 }
+			 else{
+			 if(countries.length>=index.value){
+			 document.getElementById('index').value = countries.length+1
+			  countries.push(mapdata[year-1975][item.row+1][0]);
+			  let slider1= document.getElementById("myRange");
+			  let year1=slider1.value;
+			  drawPcpPlot(mapdata[year-1975][item.row+1][0],6,year1,countries)
+			  var attr = document.getElementById("selectAttr").value;
+			  CreateBarChartInverse(attr,year1,'1');
+			  drawLinechart( countries,attr)
+			 }
+			 else{
+			 countries.push(mapdata[year-1975][item.row+1][0]);
+			 }
+			 
+			 }
+			 }
+			 else{
+			 alert("Please use reset button! You have reached the max length of comparing size")
+			 }
+			
+		  }
+
 		  
         } else if (item.column != null) {
           message += '{column:' + item.column + '}';
@@ -211,19 +229,45 @@ colorsg.set(1, '#d94620');
 	CreateBarChartInverse(attr,year1,'1');
   
   document.getElementById("selectAttr").onchange = function() {onchangeFunc()};
-
+ document.getElementById("index").onchange = function() {
+ var attr = document.getElementById("index").value;
+ resetAll(index)
+ };
   function onchangeFunc() {
     var attr = document.getElementById("selectAttr").value;
     drawLinechart(countries, attr)
-	
+	let year1=slider.value;
+	CreateBarChartInverse(attr,year1,'1');
   }
+  const element = document.getElementById("reset");
+	element.addEventListener("click", resetAll);
+
+	function resetAll() {
+		countries=[]
+		google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
+		drawPcpPlot('default',6,year,[])		
+		piechart()
+		document.getElementById('index').value = 1
+		var attr = document.getElementById("selectAttr").value;
+		drawLinechart(countries, attr)
+		let year1=slider.value;
+		CreateBarChartInverse(attr,year1,'1');
+	
+	}
+	function resetAllwithIndex(index) {
+		countries=[]
+		google.load('visualization', '1', {packages: ['geochart'], callback: drawMap});
+		drawPcpPlot('default',6,year,[])		
+		piechart()
+		document.getElementById('index').value = index
+		var attr = document.getElementById("selectAttr").value;
+		drawLinechart(countries, attr)
+		let year1=slider.value;
+		CreateBarChartInverse(attr,year1,'1');
+	
+	}
   
   function drawLinechart(countriesArr, attr){
-    // let colorArr = ["steelblue", "orange", "gray", "red", "green", "black", "yellow"]
-    // let colorArr = ["#00a4e4", "#c1d82f", "#ffdd00", "#fbb034", "#ff0000", "#8a7967", "#6a737b"]
-    // let colorArr = ["#00a4e4", "Chartreuse", "orange", "gold", "red", "brown", "black"]
-    // let colorArr = ["RoyalBlue", "Cyan", "orange", "BlueViolet", "red", "brown", "black"]
-    // let colorArr = ["RoyalBlue", "Cyan", "orange", "BlueViolet", "red", "#964F4C", "black"]
     let colorArr = ["RoyalBlue", "Cyan", "orange", "BlueViolet", "red", "Violet", "black"]
     document.getElementById("line-chart").innerHTML = ""
     
