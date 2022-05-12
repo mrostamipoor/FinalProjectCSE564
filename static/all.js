@@ -424,8 +424,9 @@ function CreateBarChartInverse(column,year,country) {
 		svg.append("text")
 			.attr("class", "labeltext")
 			.attr("text-anchor", "middle") 
-			.attr("transform", "translate(" + (250) + "," + (340) + ")") 
-			.text(column);
+			// .attr("transform", "translate(" + (250) + "," + (340) + ")") 
+			.attr("transform", "translate(" + (0.5*width) + "," + (340) + ")") 
+			.text(column.replace(/_/g, ' '));
 	
         if (country==='1'){
 			g.selectAll(".bar")
