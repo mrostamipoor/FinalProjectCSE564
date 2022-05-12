@@ -16,32 +16,33 @@
 </div>
 <!----for title---->
 <div style="display:flex; justify-content:space-evenly;">
-   <div>
-      <div class="back_color" style="text-align: center; font-size: 1em; margin-bottom: 0.4em; margin-top: 0.4em; display: flex; justify-content:  space-evenly;border:white; border-width:4px; border-style:outset;padding: 10px;  border-radius: 30px;">
-         <span><b>1975</b></span><input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 60%;"><b>2020</b>
-         <div style="text-align: center;"><b>Current Year: <span style="color: #55d6c2; text-transform: uppercase;" id="demo"></span></b></div>
-         
-         <div style="display: flex; justify-content: space-evenly;">
-            <label for="index"><b>Compare Size: </b></label>
-            <!-- <div for="index" style="display: flex; flex-direction: column; text-align: center; justify-content: center"><div><b>Compare Size: </b></div></div> -->
-            <select name="index" id="index" class="dropdown" style="padding: 0.3em; margin-left: 0.3em; margin-right: 0.3em;">
-               <option value="1">1</option>
-               <option value="2">2</option>
-               <option value="3">3</option>
-               <option value="4">4</option>
-               <option value="5">5</option>
-               <option value="6">6</option>
-               <option value="7">7</option>
-            </select>
-			      <button type="reset-btn" id="reset" class="button"><b>Reset</b></button>
-         </div>
-      </div>
-      <div style="display: flex; justify-content:space-evenly;">
-         <div id="map_canvas" class="back_color" style="border:white; border-width:4px; border-style:outset;padding: 10px;  border-radius: 30px;"></div>
-         <div id="chart" class="back_color" style="display: flex; flex-direction: column; padding-top: 25px; border:white; padding: 10px;  border-radius: 30px;border-width:4px; border-style:outset;"></div>
-         <div id="barchart" class="back_color" style="display: flex;padding-top: 15px; border:white;padding: 10px;  border-radius: 30px; border-width:4px; border-style:outset;"></div>
-      </div>
-   </div>
+  <div>
+     <div class="back_color" style="display: flex; justify-content:  space-evenly; text-align: center; font-size: 1em; margin-bottom: 0.4em; margin-top: 0.4em; border:white; border-width:4px; border-style:outset;padding: 10px;  border-radius: 30px;">
+        <span style="display: flex; flex-direction: column; text-align: center; justify-content: center"><b>1975</b></span><input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 60%; margin-top: 0.75%;"><span style="display: flex; flex-direction: column; text-align: center; justify-content: center"><b>2020</b></span>       
+        
+        <div style="display: flex; flex-direction: column; text-align: center; justify-content: center"><b>Current Year: <span style="color: #55d6c2; text-transform: uppercase;" id="demo"></span></b></div>
+        
+        <div style="display: flex; justify-content: space-evenly;">
+           <!-- <label for="index"><b>Compare Size: </b></label> -->
+           <div for="index" style="display: flex; flex-direction: column; text-align: center; justify-content: center"><div><b>Compare Size: </b></div></div>
+           <select name="index" id="index" class="dropdown" style="padding: 0.3em; margin-left: 0.3em; margin-right: 0.3em;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+           </select>
+           <button type="reset-btn" id="reset" class="button"><b>Reset</b></button>
+        </div>
+     </div>
+     <div style="display: flex; justify-content:space-evenly;">
+        <div id="map_canvas" class="back_color" style="border:white; border-width:4px; border-style:outset;padding: 10px;  border-radius: 30px;"></div>
+        <div id="chart" class="back_color" style="display: flex; flex-direction: column; padding-top: 25px; border:white; padding: 10px;  border-radius: 30px;border-width:4px; border-style:outset;"></div>
+        <div id="barchart" class="back_color" style="display: flex;padding-top: 15px; border:white;padding: 10px;  border-radius: 30px; border-width:4px; border-style:outset;"></div>
+     </div>
+  </div>
 </div>
 <!-----for first raw--->
 <div style="display: flex; justify-content: center;">
