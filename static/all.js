@@ -350,12 +350,12 @@ function CreateBarChartInverse(column,year,country) {
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    /*svg.append("text")
+    svg.append("text")
 		.attr("class", "astyle")
         .attr("transform", "translate(100,0)")
-        .attr("x", 200)
-        .attr("y", -10)
-        .text("Bar Chart for IMDB Movie Data")*/
+        .attr("x", 20)
+        .attr("y", -15)
+        .text("The Best 7 Contries with The Feature")
 
     var g = svg.append("g")
         .attr("transform", function (d, i) {
