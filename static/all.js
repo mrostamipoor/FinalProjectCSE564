@@ -48,16 +48,12 @@ function drawPcpPlot(coutryname, demo_status,year,countries,start,stop) {
 	let colorArr = ["#b0abcb", "#DC799C","#A7BEB6","#f0d5ba", "#81CEC8","#c36f31","#3D708F"]
 	document.getElementById("pcp").innerHTML = ""
 
-	svgWidth = 880,
-		// svgHeight = 550,
+	svgWidth = 890,
 		svgHeight = 400,
 		margin = {
-			// top: 80,
 			top: 55,
 			right: 50,
-			// bottom: 30,
 			bottom: 10,
-			// left: 100
 			left: 50
 		},
 		width = svgWidth - margin.left - margin.right,
