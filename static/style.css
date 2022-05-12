@@ -172,3 +172,12 @@ svg {
     height: 600px;
 }
 
+.dropdown {
+  /* background-color: #A0A1A2; */
+  border-radius: 0.6em;
+  font-size: 1em;
+  /* border-color: lightgray; */
+  border-color: darkgray;
+  height: 100%;
+  text-align: center;
+}
