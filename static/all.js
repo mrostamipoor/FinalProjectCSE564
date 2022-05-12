@@ -343,9 +343,9 @@ function CreateBarChartInverse(column,year,country) {
 	document.getElementById("barchart").innerHTML = ""
     var barHeight = 20;
 	padding = 90;
-    var margin = { top: 50, right: 50, bottom: 50, left: 80 },
-        height = 300 - margin.top - margin.bottom,
-        width = 450 - margin.left - margin.right;
+    var margin = { top: 50, right: 50, bottom: 50, left: 110 },
+        height = 400 - margin.top - margin.bottom,
+        width = 600 - margin.left - margin.right;
 
     var svg = d3.select("#barchart").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -422,7 +422,7 @@ function CreateBarChartInverse(column,year,country) {
 		svg.append("text")
 			.attr("class", "labeltext")
 			.attr("text-anchor", "middle") 
-			.attr("transform", "translate(" + (-70) + "," + (height / 2) + ")rotate(-90)") 	
+			.attr("transform", "translate(" + (-100) + "," + (height / 2) + ")rotate(-90)") 	
 			.text('Country Name');
 
 		svg.append("text")

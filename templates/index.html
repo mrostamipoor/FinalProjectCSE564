@@ -10,71 +10,61 @@
   <meta name="viewport" charset="utf-8" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-  
-  <div style="text-align: center; font-size: 2em; margin-bottom: 0.2em;"><b>The Truth Behind <span style="color: #d94620; text-transform: uppercase;">Dictatorship</span> And <span style="color: #037488; text-transform: uppercase;">Democracy</span></b></div>
-  <div style="display:flex; justify-content: space-evenly;">
-    <div>
-      <div style="display: flex; justify-content: space-evenly;">
-        <input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 80%;">
-        <div style="text-align: center;">Year: <span id="demo"></span></div>
-        
+<div style="text-align: center; font-size: 2em; margin-bottom: 0.4em; margin-top: 0.4em;">
+   <b>The Truth Behind <span style="color: #d94620; text-transform: uppercase;">Dictatorship</span> And 
+   <span style="color: #037488; text-transform: uppercase;">Democracy</span></b>
+</div>
+<!----for title---->
+<div style="display:flex; justify-content:space-evenly;">
+   <div>
+      <div style="display: flex; justify-content:  space-evenly;">
+         <input type="range" min="1975" max="2020" value="2020" class="slider" id="myRange" style="width: 80%;">
+         <div style="text-align: center;">Year: <span id="demo"></span></div>
+         <button type="reset-btn" id="reset">Reset</button>
+         <div style="display: flex;">
+            <label for="index">compare size:</label>
+            <select name="index" id="index">
+               <option value="1">1</option>
+               <option value="2">2</option>
+               <option value="3">3</option>
+               <option value="4">4</option>
+               <option value="5">5</option>
+               <option value="6">6</option>
+               <option value="7">7</option>
+            </select>
+         </div>
       </div>
-      
-      
-      <div id="map_canvas" ></div>
-    </div>
-    
-    <div style="text-align: center;">
-      <div style="display: flex; justify-content: space-evenly;">
-        <button type="reset-btn" id="reset">Reset</button>
-
-        <div style="display: flex;">
-          <label for="index">compare size:</label>
-          <select name="index" id="index">
-          <option value="1">1</option>
-          <option value="2">2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-          <option value="7">7</option>
-          </select>
-        </div>
-
-        <div>
-          Metric: <select id="selectAttr" style="width: 150px;"></select>
-        </div>
+      <div style="display: flex; justify-content:space-evenly;">
+         <div id="map_canvas"></div>
+         <div id="chart" style="display: flex; flex-direction: column; padding-top: 25px;"></div>
+         <div id="barchart" style="display: flex;padding-top: 15px;"></div>
       </div>
-      <div id="line-chart"></div>
-    </div>
-  </div>
-  <div style="display: flex; justify-content: space-evenly;">
-    <div id="pcp"></div>
-    <div id="chart" style="display: flex; flex-direction: column; padding-top: 25px;"></div>
-    <div>
-      <div id="barchart" style="display: flex;"></div>
-    </div>
-    
-  </div>
+   </div>
+</div>
+<!-----for first raw--->
+<div style="display: flex; justify-content: space-evenly;">
+	<div id="pcp"></div>
+
+   
+<div id="container"><!-- flex container -->
+
+   <div> Metric:
+      <select id="selectAttr" style="width: 150px;"></select>
+   </div>
+
+    <div id="line-chart"></div>
+
+</div>
+      
+</div>     
+     
+
 </body>
 
 <script type="text/javascript">
 
 var countries=[];
-/*var colorsg = new Map();
-colorsg.set(1, '#4fa39c');
-colorsg.set(2, '#68c4b4');
-colorsg.set(3, '#fcecdc');
-// colorsg.set(4, '#d62728');
-colorsg.set(5, '#e9610b');
-colorsg.set(4, '#fcc49b');*/
-/*var colorsg = new Map();
-colorsg.set(1, '#7895ac');
-colorsg.set(2, '#c9dabd');
-colorsg.set(3, '#f4f5e3');
-// colorsg.set(4, '#d62728');
-colorsg.set(5, '#ed6769');
-colorsg.set(4, '#efac86');*/
+
 var colorsg = new Map();
 colorsg.set(5, '#037488');
 colorsg.set(4, '#89bbbd');
@@ -89,10 +79,7 @@ colorsg.set(1, '#d94620');
   performance.set('Weak democracy',3);
   performance.set('Hybrid Regime',2);
   performance.set('Authoritarian Regime',1);
-  //console.log("countrylist");
   countrylist = {{ countrylist | safe }} ;
-  
-  //console.log("attributeslist");
   attributeslist = {{ attributeslist | safe }} ;
   
   d3.select("#selectCountry")
@@ -153,7 +140,7 @@ colorsg.set(1, '#d94620');
       // width: 850,
       width: 800,
       // height: 400
-      height: 350
+      height: 400
     };
     
     var container = document.getElementById('map_canvas');
@@ -278,9 +265,9 @@ colorsg.set(1, '#d94620');
 	let colorArr = ["#b0abcb", "#DC799C","#A7BEB6","#f0d5ba", "#81CEC8","#c36f31","#3D708F"]
     document.getElementById("line-chart").innerHTML = ""
     //console.log(countriesArr)
-    var margin = { top: 30, right: 70+70, bottom: 50, left:50 },
-    width = 820 - margin.left - margin.right,
-    height = 350 - margin.top - margin.bottom;
+    var margin = { top: 30, right: 50+70, bottom: 50, left:50 },
+    width = 750 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
     
     var svg = d3.select("#line-chart")
     .append("svg")

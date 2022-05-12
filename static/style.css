@@ -118,3 +118,11 @@ svg {
   background: #04AA6D;
   cursor: pointer;
 }
+#container1 {
+    display: flex;           /* establish flex container */
+    flex-direction: column;  /* make main axis vertical */
+    justify-content: center; /* center items vertically, in this case */
+    align-items: center;     /* center items horizontally, in this case */
+    height: 600px;
+}
+
