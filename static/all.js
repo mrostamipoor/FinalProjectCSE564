@@ -177,7 +177,7 @@ function drawPcpPlot(coutryname, demo_status,year,countries,start,stop) {
 					return colorsg.get(+d.democratic_performance_numeric);
 				} else {
 					if (countries.includes(d.country)) {
-						return colorsg.get(+d.democratic_performance_numeric);
+						return colorArr[countries.indexOf(d.country)];
 					} else {
 						return '#ffeeec';
 					}
@@ -193,7 +193,7 @@ function drawPcpPlot(coutryname, demo_status,year,countries,start,stop) {
 				}
 				}else{
 					if(countries.includes(d.country)){
-						console.log(countries.indexOf(d.country))
+						//console.log(countries.indexOf(d.country))
 						return colorArr[countries.indexOf(d.country)];
 					}
 					else{
