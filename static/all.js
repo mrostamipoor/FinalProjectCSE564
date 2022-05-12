@@ -45,7 +45,7 @@ performance.set('Authoritarian Regime',5);
 
 
 function drawPcpPlot(coutryname, demo_status,year,countries,start,stop) {
-	let colorArr = ["#b0abcb", "#DC799C","#A7BEB6","#f0d5ba", "#81CEC8","#c36f31","#3D708F"]
+	let colorArr = ["#3D708F","#c36f31","#81CEC8","#b0abcb","#DC799C",  "#A7BEB6","#E0DAA5"]
 	document.getElementById("pcp").innerHTML = ""
 
 	svgWidth = 890,
@@ -76,7 +76,7 @@ function drawPcpPlot(coutryname, demo_status,year,countries,start,stop) {
 			|| key ==  'inclusive_suffrage'|| key ==  'electoral_participation'
 			|| key ==  'social_group_equality'|| key ==  'predictable_enforcement'||
 			key ==  'elected_government'|| key ==  'basic_welfare'|| key ==  'access_to_justice'
-			|| key ==  'personal_integrity_and_security2'|| key ==  'free_political_parties') {
+			|| key ==  'personal_integrity'|| key ==  'free_political_parties') {
 				
 					y[key] = d3.scaleLinear()
 					.domain(d3.extent(data, function(d) {
