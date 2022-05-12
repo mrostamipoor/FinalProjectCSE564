@@ -1,12 +1,14 @@
 
 body {
-  background-color: #DCDCDC;
+  background-color: #A0A1A2;
 	font-family: monospace;
 	  height: 100%;
   padding: 0;
   margin: 0;
 }
-
+ .back_color {
+    	background-color: #DCDCDC;
+    }
 .PCPaxis .title {
   font-size: 10px;
   transform: rotate(90deg) translate(-5px,-6px);
