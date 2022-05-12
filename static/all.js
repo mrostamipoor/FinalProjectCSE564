@@ -248,6 +248,7 @@ function drawPcpPlot(coutryname, demo_status,year,countries,start,stop) {
 					d3.select(this).call(d3.axisLeft().scale(y[d]));
 				}
 			})
+
 			.append("text")
 			.style("text-anchor", "middle")
 			.attr("font-size", "12")
@@ -339,7 +340,7 @@ function CreateBarChartInverse(column,year,country) {
 	document.getElementById("barchart").innerHTML = ""
     var barHeight = 20;
 	padding = 90;
-    var margin = { top: 50, right: 50, bottom: 50, left: 110 },
+    var margin = { top: 50, right: 50, bottom: 50, left: 130 },
         height = 400 - margin.top - margin.bottom,
         width = 600 - margin.left - margin.right;
 
@@ -352,8 +353,7 @@ function CreateBarChartInverse(column,year,country) {
 
     svg.append("text")
 		.attr("class", "astyle")
-        .attr("transform", "translate(100,0)")
-        .attr("x", 20)
+        .attr("transform", "translate(50,0)")
         .attr("y", -15)
         .text("The Best 7 Contries with The Feature")
 
@@ -418,7 +418,7 @@ function CreateBarChartInverse(column,year,country) {
 		svg.append("text")
 			.attr("class", "labeltext")
 			.attr("text-anchor", "middle") 
-			.attr("transform", "translate(" + (-100) + "," + (height / 2) + ")rotate(-90)") 	
+			.attr("transform", "translate(" + (-120) + "," + (height / 2) + ")rotate(-90)") 	
 			.text('Country Name');
 
 		svg.append("text")
