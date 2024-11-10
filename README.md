@@ -18,4 +18,8 @@ The dataset used in this project is the 2021 version (v5.1) of the Global State 
 Dataset Highlights:
 1) Time Period: 1975 to 2020
 2) Metrics: Multiple indices representing democratic attributes across nations
-3) Source: International IDEA publishes the Global State of Democracy [dataset](https://www.idea.int/gsod/). 
+3) Source: International IDEA publishes the Global State of Democracy [dataset](https://www.idea.int/gsod/).
+
+# Video
+You can find the video presentation [here](https://www.youtube.com/watch?v=Xs-KXwQ0PD8&list=PLyCRt3MN8s8PcL9uMoobW3dO03qTKdriu&index=10).
+
